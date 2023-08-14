@@ -1,0 +1,40 @@
+title: Name
+description: Description of your Jig
+type: jig.list
+icon: contact
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+datasources:
+  userData: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+      
+      entities:
+        - default/user
+        
+      query: |
+        SELECT
+          id
+          ,'$.firstName'
+          ,'$.surName'
+          ,'$.dateOfBirth'
+          ,'$.email'
+          ,'$.phoneNum'
+        FROM [default/user]
+
+data: =@ctx.datasources.userData
+item:
+  type: component.list-item
+  options:
+    title: =@ctx.current.item.firstName & ' ' & @ctx.current.item.surName
+    subtitle: =@ctx.current.item.datasourcefield

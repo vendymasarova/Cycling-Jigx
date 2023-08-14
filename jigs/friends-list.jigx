@@ -1,0 +1,56 @@
+title: My Friends
+description: See your friends statistics
+type: jig.list
+icon: party-beer-cheers
+
+actions:
+  - children:
+      - type: action.go-to
+        options:
+          title: Add friend
+          linkTo: new-friend-form
+
+isHorizontal: false
+isCollapsible: false
+isInitiallyCollapsed: true
+
+header:
+  type: component.jig-header
+  options:
+    height: small
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1517649763962-0c623066013b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+
+data: =@ctx.datasources.friends-data-dynamic
+item:
+  type: component.list-item
+  instanceId: =@ctx.current.item.id
+  options:
+    title: =@ctx.current.item.firstName & ' ' & @ctx.current.item.lastName
+    subtitle: =@ctx.current.item.statistics
+    horizontalItemSize: regular
+    leftElement: 
+      element: avatar
+      text: ''
+      uri: =@ctx.current.item.picture
+    onPress: 
+      type: action.go-to
+      options:
+        linkTo: edit-friend
+        parameters:
+          friend: =@ctx.current.item.id
+    swipeable: 
+      right:
+        - label: Delete
+          color: negative
+          onPress: 
+            type: action.execute-entity
+            options:
+              provider: DATA_PROVIDER_DYNAMIC
+              entity: default/friends
+              method: delete
+              data: 
+                id: =@ctx.current.item.id

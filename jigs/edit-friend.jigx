@@ -1,0 +1,60 @@
+title: Edit friend information
+description: Description of your Jig
+type: jig.default
+
+actions:
+  - children:
+      - type: action.submit-form
+        options:
+          formId: friend-form
+          provider: DATA_PROVIDER_DYNAMIC
+          title: Update Record
+          entity: default/friends
+          method: update
+          recordId: =@ctx.jig.inputs.friend
+          goBack: previous
+
+datasources:
+  friendData: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+      entities:
+        - default/friends
+      query: |
+        SELECT
+          id
+          ,'$.firstName'
+          ,'$.lastName'
+          ,'$.picture'
+          ,'$.statistics'
+        FROM [default/friends] WHERE id = @custId
+      queryParameters:
+        custId: =@ctx.jig.inputs.friend
+      isDocument: true
+        
+children:
+  - type: component.form
+    instanceId: friend-form
+    options:
+      children:
+        - type: component.text-field
+          instanceId: firstName
+          options:
+            label: First name
+            initialValue: =@ctx.datasources.friendData.firstName
+        - type: component.text-field
+          instanceId: lastName
+          options:
+            label: Last name
+            initialValue: =@ctx.datasources.friendData.lastName
+        - type: component.text-field
+          instanceId: statistics
+          options:
+            label: Statistics
+            initialValue: =@ctx.datasources.friendData.statistics
+        - type: component.avatar-field
+          instanceId: picture
+          options:
+            label: Picture
+            initialValue: =@ctx.datasources.friendData.picture

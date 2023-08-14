@@ -4,8 +4,6 @@ options:
 
   entities:
     - default/trainings
-  queryParameters:
-    trainingId: =@ctx.solution.state.hello
 
   query: |
     SELECT
@@ -21,4 +19,4 @@ options:
       ,'$.name'
       ,'$.calories'
       ,'$.moving_time'
-    FROM [default/trainings] WHERE id = @trainingId
+    FROM [default/trainings]

@@ -25,7 +25,7 @@ children:
           color: color3
   
 widgets:
-  "4x2": 
+  2x2: 
     type: widget.chart
     options:        
       chart: 
@@ -42,5 +42,5 @@ widgets:
       top:
         type: component.titles
         options:
-          title: Your month statistics
+          title: Month statistics
           align: center

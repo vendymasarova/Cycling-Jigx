@@ -7,6 +7,6 @@ widgets:
   - size: 2x2 
     jigId: statistics
   - size: 2x2 
-    jigId: friends-horizontal-list
+    jigId: friends-list
   - size: 4x2 
     jigId: traning-composite

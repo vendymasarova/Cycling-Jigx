@@ -3,6 +3,6 @@
 #   table2:
 databaseId: default
 tables:
-  user:
   friends:
   trainings:
+  profile-user:

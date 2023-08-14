@@ -1,0 +1,34 @@
+title: Add friend
+type: jig.default
+
+actions:
+  - children:
+      - type: action.submit-form
+        options:
+          formId: friend-form
+          provider: DATA_PROVIDER_DYNAMIC
+          title: Submit form
+          entity: default/friends
+          method: save
+
+children:
+  - type: component.form
+    instanceId: friend-form
+    options:
+      children:
+        - type: component.text-field
+          instanceId: firstName
+          options:
+            label: First name
+        - type: component.text-field
+          instanceId: lastName
+          options:
+            label: Last name
+        - type: component.text-field
+          instanceId: statistics
+          options:
+            label: Statistics
+        - type: component.avatar-field
+          instanceId: picture
+          options:
+            label: Picture

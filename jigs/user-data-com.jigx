@@ -1,0 +1,9 @@
+title: Name
+description: Description of your Jig
+type: jig.composite
+
+children:
+  - jigId: user-data-list
+    inputs:
+      recordid: =@ctx.jig.inputs.parameter
+  - jigId: myjig2
