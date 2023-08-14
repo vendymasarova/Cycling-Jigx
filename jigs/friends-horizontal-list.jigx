@@ -1,0 +1,32 @@
+title: Mine Friends
+description: See your friends statistics
+type: jig.list
+icon: party-beer-cheers
+
+isHorizontal: true
+isCollapsible: false
+isInitiallyCollapsed: true
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+data: =@ctx.datasources.friends-data-dynamic
+item:
+  type: component.list-item
+  instanceId: =@ctx.current.item.id
+  options:
+    title: =@ctx.current.item.firstName & ' ' & @ctx.current.item.lastName
+    subtitle: =@ctx.current.item.statistics
+    horizontalItemSize: regular
+
+    leftElement: 
+      element: avatar
+      text: ''
+      uri: =@ctx.current.item.picture

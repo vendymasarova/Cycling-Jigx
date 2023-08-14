@@ -1,0 +1,24 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/trainings
+  queryParameters:
+    trainingId: =@ctx.solution.state.hello
+
+  query: |
+    SELECT
+      id
+      ,'$.avg_heart_rate'
+      ,'$.date'
+      ,'$.elevation'
+      ,'$.country'
+      ,'$.distance'
+      ,'$.avg_speed'
+      ,'$.city'
+      ,'$.street'
+      ,'$.name'
+      ,'$.calories'
+      ,'$.moving_time'
+    FROM [default/trainings] WHERE id = @trainingId

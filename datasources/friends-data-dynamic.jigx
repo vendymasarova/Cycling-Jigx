@@ -1,0 +1,17 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/friends
+
+  query: |
+    SELECT
+      id
+      ,'$.firstName'
+      ,'$.lastName'
+      ,'$.picture'
+      ,'$.statistics'
+    FROM [default/friends]
+  queryParameters:
+    myParam: value

@@ -1,0 +1,41 @@
+title: List of trainings
+
+type: jig.list
+icon: contact 
+isHorizontal: true
+isCollapsible: false
+isInitiallyCollapsed: true
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+
+outputs:
+  output-key: =@ctx.solution.state.hello
+
+data: =@ctx.datasources.training-data-dynamic
+item:
+  type: component.list-item
+  options:
+    title: =@ctx.current.item.name
+    subtitle: =@ctx.current.item.date
+    horizontalItemSize: large
+
+    progress: =@ctx.current.item.id = @ctx.solution.state.hello ? 1 :0
+    color:
+      - when: =@ctx.current.item.id = @ctx.solution.state.hello ? true :false
+        color: color2
+    onPress: 
+      type: action.action-list
+      options:
+        actions:
+          - type: action.set-state
+            options:
+              state: =@ctx.solution.state.hello
+              value: =@ctx.current.item.id

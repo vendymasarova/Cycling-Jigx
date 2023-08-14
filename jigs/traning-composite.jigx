@@ -1,0 +1,32 @@
+title: Cycling trainings
+type: jig.composite
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+
+children:
+  - jigId: training-list
+  - jigId: training-details
+    instanceId: training-deets
+    inputs:
+      id: =@ctx.solution.state.hello
+    
+widgets:
+  4x2:
+    type: widget.image
+    options:
+      source:
+        uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+      isContentOverlaid: true
+      bottom: 
+        type: component.titles
+        options:
+          title: Your trainings 
+          subtitle: June 2023

@@ -1,0 +1,18 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/user
+
+  query: |
+    SELECT
+      id
+      ,'$.firstName'
+      ,'$.surName'
+      ,'$.dateOfBirth'
+      ,'$.email'
+      ,'$.phoneNum'
+    FROM [default/user]
+
+    

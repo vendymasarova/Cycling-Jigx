@@ -1,0 +1,46 @@
+title: Statistics
+type: jig.default
+
+datasources:
+  static-data:
+    type: datasource.static
+    options:
+      data:
+        - y: 20
+          x: kukuk
+        - y: 60
+          x: tralala
+          color: transparent
+        
+children:
+  - type: component.pie-chart
+    options:
+      chart:
+        title:
+          text: "67%"
+          verticalAlign: center         
+      series:
+        - data: =@ctx.datasources.static-data
+          layout: pie
+          color: color3
+  
+widgets:
+  "4x2": 
+    type: widget.chart
+    options:        
+      chart: 
+        type: component.pie-chart
+        options:
+          chart:
+            title:
+              text: "67%"
+              verticalAlign: center         
+          series:
+            - data: =@ctx.datasources.static-data
+              layout: arch
+              color: color3
+      top:
+        type: component.titles
+        options:
+          title: Your month statistics
+          align: center

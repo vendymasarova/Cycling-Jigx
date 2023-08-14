@@ -1,0 +1,81 @@
+title: Profile information
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80
+
+datasources:
+  user-data-dynamic:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/user
+  
+      query: |
+        SELECT
+          id
+          ,'$.firstName'
+          ,'$.surName'
+          ,'$.dateOfBirth'
+          ,'$.email'
+          ,'$.phoneNum'
+        FROM [default/user]
+
+children:
+  - type: component.avatar
+    options:
+      title: =$substring(@ctx.datasources.user-data-dynamic.firstName, 0, 1) & $substring(@ctx.datasources.user-data-dynamic.surName, 0, 1)
+      uri: https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80
+      size: large
+      align: center
+  - type: component.entity
+    options:
+      children:
+        - type: component.section
+          options:
+            title: Personal information
+            children:
+              - type: component.entity-field
+                options:
+                  label: Date of birth
+                  value: =@ctx.datasources.user-data-dynamic.dateOfBirth
+              - type: component.entity-field
+                options:
+                  label: Phone number
+                  value: =@ctx.datasources.user-data-dynamic.phoneNum
+                  contentType: phone
+              - type: component.entity-field
+                options:
+                  label: E-mail
+                  value: =@ctx.datasources.user-data-dynamic.email
+                  contentType: email
+
+actions:
+  - children:
+      - type: action.open-url
+        options:
+          title: Edit employee
+          url: https://docs.jigx.com/examples/execute-entity
+
+widgets:
+  "4x2": 
+    type: widget.avatar
+    options:
+      text: ''
+      uri: https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80
+      bottom: 
+        type: component.titles
+        options:
+          align: center
+          title:  Welcome Vendy!
+          subtitle: Today is August 28th 2023
+        
