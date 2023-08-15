@@ -17,7 +17,7 @@ children:
     options:
       chart:
         title:
-          text: "67%"
+          text: "20%"
           verticalAlign: center         
       series:
         - data: =@ctx.datasources.static-data
@@ -33,7 +33,7 @@ widgets:
         options:
           chart:
             title:
-              text: "67%"
+              text: "20%"
               verticalAlign: center         
           series:
             - data: =@ctx.datasources.static-data

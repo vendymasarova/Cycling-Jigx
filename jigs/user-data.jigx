@@ -74,5 +74,5 @@ widgets:
         options:
           align: center
           title:  Welcome Vendy!
-          subtitle: Today is August 28th 2023
+          subtitle: =$now()
         

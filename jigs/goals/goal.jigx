@@ -1,0 +1,68 @@
+title: Your goal
+type: jig.default
+
+actions:
+  - children:
+      - type: action.go-to
+        options:
+          title: Edit your goal
+          linkTo: new-goal
+
+datasources:
+  goalData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+      entities:
+        - default/goals 
+      query: |
+        SELECT   
+          id
+          ,'$.activity_name'
+          ,'$.start'
+          ,'$.end'
+          ,'$.amount'
+        FROM [default/goals]
+
+children:
+  - type: component.entity
+    options:
+      children:
+        - type: component.section
+          options:
+            title: Training Goal
+            children:
+              - type: component.entity-field
+                options:
+                  label: Activity Name
+                  value: =@ctx.datasources.goalData.activity_name
+              - type: component.entity-field
+                options:
+                  label: Starting date
+                  value: =@ctx.datasources.goalData.start
+              - type: component.entity-field
+                options:
+                  label: End date
+                  value: =@ctx.datasources.goalData.end
+                  style:
+                    isPrimary: false
+              - type: component.entity-field
+                options:
+                  label: Goal for the activity
+                  value: =@ctx.datasources.goalData.amount
+
+widgets:
+  "2x2": 
+    type: widget.image
+    options:
+      source:
+        uri: https://images.unsplash.com/photo-1506784983877-45594efa4cbe?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1736&q=80
+      bottom: 
+        type: component.titles
+        options:
+          align: center
+          title:  See your goal for
+          subtitle: =@ctx.datasources.goalData.activity_name
+        
+          
+        

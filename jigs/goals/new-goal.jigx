@@ -1,0 +1,68 @@
+title: Edit your goal
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80
+
+datasources:
+  goalData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+      entities:
+        - default/goals 
+      query: |
+        SELECT   
+          id
+          ,'$.activity_name'
+          ,'$.start'
+          ,'$.end'
+          ,'$.amount'
+        FROM [default/goals]
+
+children:
+  - type: component.form
+    instanceId: new-goal-form
+    options:
+      children:
+        - type: component.text-field
+          instanceId: activity_name
+          options:
+            label: Activity name
+            initialValue: =@ctx.datasources.goalData.activity_name
+        - type: component.date-picker
+          instanceId: start
+          options:
+            label: Start date
+            initialValue: =@ctx.datasources.goalData.start
+            format: LL
+        - type: component.date-picker
+          instanceId: end
+          options:
+            label: End date
+            initialValue: =@ctx.datasources.goalData.end
+            format: LL
+        - type: component.number-field
+          instanceId: amount
+          options:
+            label: How much km do you want to ride?
+            initialValue: =@ctx.datasources.goalData.amount
+        
+
+actions:
+  - children:
+      - type: action.submit-form
+        options:
+          formId: new-goal-form
+          provider: DATA_PROVIDER_DYNAMIC
+          title: Submit form
+          entity: default/goals
+          method: save
+        

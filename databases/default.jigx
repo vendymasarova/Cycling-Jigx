@@ -6,3 +6,4 @@ tables:
   friends:
   trainings:
   profile-user:
+  goals: 
