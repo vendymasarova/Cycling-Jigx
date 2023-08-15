@@ -24,23 +24,73 @@ children:
           layout: pie
           color: color3
   
+# widgets:
+#   2x2: 
+#     type: widget.chart
+#     options:        
+#       chart: 
+#         type: component.pie-chart
+#         options:
+#           chart:
+#             title:
+#               text: "20%"
+#               verticalAlign: center         
+#           series:
+#             - data: =@ctx.datasources.static-data
+#               layout: arch
+#               color: color3
+#       top:
+#         type: component.titles
+#         options:
+#           title: Month statistics
+#           align: center
+
 widgets:
-  2x2: 
-    type: widget.chart
-    options:        
-      chart: 
-        type: component.pie-chart
-        options:
-          chart:
-            title:
-              text: "20%"
-              verticalAlign: center         
-          series:
-            - data: =@ctx.datasources.static-data
-              layout: arch
-              color: color3
-      top:
-        type: component.titles
-        options:
-          title: Month statistics
-          align: center
+  "4x2": 
+    type: widget.group
+    options:
+      children:
+        - type: widget.chart
+          options:        
+            chart: 
+              type: component.pie-chart
+              options:
+                chart:
+                  title:
+                    text: "20%"
+                    verticalAlign: center         
+                series:
+                  - data: =@ctx.datasources.static-data
+                    layout: arch
+                    color: color3
+            top:
+              type: component.titles
+              options:
+                title: Month statistics
+                align: center
+                
+        - type: widget.chart
+          options:
+            chart: 
+              type: component.bar-chart
+              options:
+                yAxis:
+                  labels: 
+                    format:
+                      notation: standard
+                  tickAmount: 2
+                  isFirstTickHidden: false
+                  isFirstLabelHidden: false
+                series:
+                - data: =@ctx.datasources.progress-data-dynamic
+                  name: "2021/2022"
+                  color: color9
+            top:
+              type: component.titles
+              options:
+                title: Quick overview 
+                align: center
+
+          
+
+          

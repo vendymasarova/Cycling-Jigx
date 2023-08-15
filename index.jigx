@@ -4,11 +4,11 @@ category: business
 widgets:
   - size: 4x2 
     jigId: user-data
-  - size: 2x2 
-    jigId: goal
-  - size: 2x2 
+  - size: 4x2 
     jigId: statistics
   - size: 4x2 
     jigId: traning-composite
+  - size: 2x2 
+    jigId: goal
   - size: 2x2 
     jigId: friends-list

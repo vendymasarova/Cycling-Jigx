@@ -1,0 +1,11 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+  entities:
+    - entity: default/trainings
+  query: |
+    SELECT 
+      id, 
+      json_extract(data, '$.date') as x, 
+      json_extract(data, '$.distance') as y
+    FROM [default/trainings] ORDER BY '$.date' ASC

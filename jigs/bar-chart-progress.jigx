@@ -1,0 +1,46 @@
+title: Current account overview
+type: jig.default
+
+children:
+  - type: component.bar-chart
+    options:
+      legend:
+        isHidden: true
+      chart:
+        title:
+          text: "12 months overview"
+        height: 260
+        isAnimated: false
+      yAxis:
+        min: 0
+        labels:
+          format:
+            numberStyle: decimal
+            compactDisplay: short
+            notation: compact
+        tickAmount: 2
+        isFirstTickHidden: false
+        isFirstLabelHidden: false
+      series:
+        - data: =@ctx.datasources.progress-data-dynamic
+          name: "2021/2022"
+          color: color1
+          
+widgets:
+  "2x2": 
+    type: widget.chart
+    options:
+      chart: 
+        type: component.bar-chart
+        options:
+          yAxis:
+            labels: 
+              format:
+                notation: standard
+            tickAmount: 2
+            isFirstTickHidden: false
+            isFirstLabelHidden: false
+          series:
+          - data: =@ctx.datasources.progress-data-dynamic
+            name: "2021/2022"
+            color: color3
