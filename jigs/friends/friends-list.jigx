@@ -2,6 +2,7 @@ title: My Friends
 description: See your friends statistics
 type: jig.list
 icon: party-beer-cheers
+isSearchable: true
 
 actions:
   - children:
@@ -9,10 +10,6 @@ actions:
         options:
           title: Add friend
           linkTo: new-friend-form
-
-isHorizontal: false
-isCollapsible: false
-isInitiallyCollapsed: true
 
 header:
   type: component.jig-header
@@ -23,11 +20,30 @@ header:
       options:
         source:
           uri: https://images.unsplash.com/photo-1517649763962-0c623066013b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+          
+datasources:
+  friendsData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/friends
+  
+      query: |
+        SELECT
+          id
+          ,'$.firstName'
+          ,'$.lastName'
+          ,'$.picture'
+          ,'$.statistics'
+        FROM [default/friends] WHERE '$.firstName' LIKE '%'||@friendQ||'%' OR @friendQ IS NULL
+      queryParameters:
+        friendQ: =@ctx.jig.state.searchText
 
-data: =@ctx.datasources.friends-data-dynamic
+data: =@ctx.datasources.friendsData
 item:
   type: component.list-item
-  instanceId: =@ctx.current.item.id
   options:
     title: =@ctx.current.item.firstName & ' ' & @ctx.current.item.lastName
     subtitle: =@ctx.current.item.statistics

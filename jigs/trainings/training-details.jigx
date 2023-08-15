@@ -63,14 +63,13 @@ children:
                 options:
                   label: Average Speed
                   value: =@ctx.datasources.trainingDetails.avg_speed
-                  contentType: checkbox
-        - type: component.entity-field
-          options:
-            label: Calories
-            value: =@ctx.datasources.trainingDetails.calories
         - type: component.field-row
           options:
             children:
+              - type: component.entity-field
+                options:
+                  label: Calories
+                  value: =@ctx.datasources.trainingDetails.calories
               - type: component.entity-field
                 options:
                   label: Average Heart Rate
