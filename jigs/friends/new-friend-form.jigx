@@ -5,15 +5,18 @@ actions:
   - children:
       - type: action.submit-form
         options:
-          formId: friend-form
+          formId: newFriend-form
           provider: DATA_PROVIDER_DYNAMIC
           title: Submit form
           entity: default/friends
           method: save
+          onSuccess: 
+            title: Huraa
+          
 
 children:
   - type: component.form
-    instanceId: friend-form
+    instanceId: newFriend-form
     options:
       children:
         - type: component.text-field

@@ -3,7 +3,7 @@ options:
   provider: DATA_PROVIDER_DYNAMIC
 
   entities:
-    - default/profile-user
+    - default/user-profile
 
   query: |
     SELECT
@@ -13,6 +13,6 @@ options:
       ,'$.dateOfBirth'
       ,'$.email'
       ,'$.phoneNum'
-    FROM [default/profile-user]
+    FROM [default/user-profile]
 
     

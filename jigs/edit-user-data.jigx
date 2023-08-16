@@ -6,14 +6,14 @@ actions:
   - children:
       - type: action.submit-form
         options:
-          formId: friend-form
+          formId: user-form
           provider: DATA_PROVIDER_DYNAMIC
           title: Update Record
-          entity: default/profile-user
+          entity: default/user-profile
           method: update
           data: 
             id: =@ctx.datasources.userData.id
-          goBack: previous
+          # goBack: previous
           onSuccess: 
             title: Data updated
 
@@ -24,7 +24,7 @@ actions:
 #         options:
 #           title: Update Record
 #           provider: DATA_PROVIDER_DYNAMIC
-#           entity: default/profile-user
+#           entity: default/user-profile
 #           method: update
 #           goBack: previous
 #           data:
@@ -39,7 +39,7 @@ datasources:
     options:
       provider: DATA_PROVIDER_DYNAMIC
       entities:
-        - default/profile-user
+        - default/user-profile
       query: |
         SELECT
           id
@@ -49,7 +49,7 @@ datasources:
           ,'$.email'
           ,'$.phoneNum'
           ,'$.userId'
-        FROM [default/profile-user]
+        FROM [default/user-profile]
         WHERE id = @userId
       queryParameters:
         userId: =@ctx.jig.inputs.userId
@@ -57,7 +57,7 @@ datasources:
         
 children:
   - type: component.form
-    instanceId: friend-form
+    instanceId: user-form
     options:
       children:
         - type: component.text-field
@@ -73,7 +73,7 @@ children:
         - type: component.date-picker
           instanceId: dateOfBirth
           options:
-            label: Statistics
+            label: Date of Birth
             initialValue: =$fromMillis($toMillis(@ctx.datasources.userData.dateOfBirth), '[D1o] [MNn] [Y]') 
         - type: component.email-field
           instanceId: picture

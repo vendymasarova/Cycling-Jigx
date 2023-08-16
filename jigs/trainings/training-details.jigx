@@ -44,7 +44,6 @@ datasources:
         - lat: 50.1041660
           lng: 12.7688430
 
-
 children:
   - type: component.location
     options:
@@ -63,11 +62,11 @@ children:
               - type: component.entity-field
                 options:
                   label: Distance
-                  value: =@ctx.datasources.trainingDetails.distance
+                  value: =@ctx.datasources.trainingDetails.distance & ' km'
               - type: component.entity-field
                 options:
                   label: Elevation Gain
-                  value: =@ctx.datasources.trainingDetails.elevation
+                  value: =@ctx.datasources.trainingDetails.elevation & ' m'
         - type: component.field-row
           options:
             children:
@@ -78,7 +77,7 @@ children:
               - type: component.entity-field
                 options:
                   label: Average Speed
-                  value: =@ctx.datasources.trainingDetails.avg_speed
+                  value: =@ctx.datasources.trainingDetails.avg_speed & ' km/h'
         - type: component.field-row
           options:
             children:

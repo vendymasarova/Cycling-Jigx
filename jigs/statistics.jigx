@@ -6,18 +6,19 @@ datasources:
     type: datasource.static
     options:
       data:
-        - y: 20
+        - y: =$number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100)))
           x: kukuk
         - y: 60
           x: tralala
           color: transparent
-        
+          
 children:
   - type: component.pie-chart
     options:
       chart:
         title:
-          text: "20%"
+          # text: =@ctx.datasources.goal-data-dynamic.amount
+          text: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
           verticalAlign: center         
       series:
         - data: =@ctx.datasources.static-data
@@ -57,7 +58,7 @@ widgets:
               options:
                 chart:
                   title:
-                    text: "20%"
+                    text: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
                     verticalAlign: center         
                 series:
                   - data: =@ctx.datasources.static-data

@@ -6,13 +6,16 @@ actions:
   - children:
       - type: action.submit-form
         options:
-          formId: friend-form
+          formId: friendDetail-form
           provider: DATA_PROVIDER_DYNAMIC
           title: Update Record
           entity: default/friends
           method: update
-          recordId: =@ctx.jig.inputs.friend
+          data: 
+            id: =@ctx.datasources.friendData.id
           goBack: previous
+          onSuccess: 
+            title: Friend data updated updated
 
 datasources:
   friendData: 
@@ -28,14 +31,16 @@ datasources:
           ,'$.lastName'
           ,'$.picture'
           ,'$.statistics'
-        FROM [default/friends] WHERE id = @custId
+          ,'$.dateOfBirth'
+          ,'$.phoneNum'
+          ,'$.email'
+        FROM [default/friends] WHERE id = @friendId
       queryParameters:
-        custId: =@ctx.jig.inputs.friend
-      isDocument: true
+        friendId: =@ctx.jig.inputs.friendId
         
 children:
   - type: component.form
-    instanceId: friend-form
+    instanceId: friendDetail-form
     options:
       children:
         - type: component.text-field
@@ -48,6 +53,21 @@ children:
           options:
             label: Last name
             initialValue: =@ctx.datasources.friendData.lastName
+        - type: component.date-picker
+          instanceId: dateOfBirth
+          options:
+            label: Date of Birth
+            initialValue: =@ctx.datasources.friendData.dateOfBirth
+        - type: component.email-field
+          instanceId: email
+          options:
+            label: Date of Birth
+            initialValue: =@ctx.datasources.friendData.email
+        - type: component.number-field
+          instanceId: phoneNum
+          options:
+            label: Date of Birth
+            initialValue: =@ctx.datasources.friendData.phoneNum
         - type: component.text-field
           instanceId: statistics
           options:

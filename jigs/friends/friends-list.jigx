@@ -37,7 +37,8 @@ datasources:
           ,'$.lastName'
           ,'$.picture'
           ,'$.statistics'
-        FROM [default/friends] WHERE '$.firstName' LIKE '%'||@friendQ||'%' OR @friendQ IS NULL
+        FROM [default/friends] 
+        WHERE '$.firstName' LIKE '%'||@friendQ||'%' OR @friendQ IS NULL
       queryParameters:
         friendQ: =@ctx.jig.state.searchText
 
@@ -52,10 +53,17 @@ item:
       element: avatar
       text: ''
       uri: =@ctx.current.item.picture
+    # k použití v friends-detail
+    # onPress: 
+    #   type: action.go-to
+    #   options:
+    #     linkTo: edit-friend
+    #     parameters:
+    #       friend: =@ctx.current.item.id
     onPress: 
       type: action.go-to
       options:
-        linkTo: edit-friend
+        linkTo: friends-details
         parameters:
           friend: =@ctx.current.item.id
     swipeable: 

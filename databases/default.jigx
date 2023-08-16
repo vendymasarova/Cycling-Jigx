@@ -5,5 +5,5 @@ databaseId: default
 tables:
   friends:
   trainings:
-  profile-user:
+  user-profile:
   goals: 
