@@ -31,13 +31,29 @@ datasources:
           ,'$.calories'
           ,'$.moving_time'
         FROM [default/trainings] WHERE id = @trainingId
+  coordinates:
+    type: datasource.static
+    options:
+      data:
+        - lat: 50.1042100
+          lng: 12.7688230
+        - lat: 50.1042060
+          lng: 12.7688420
+        - lat: 50.1041870
+          lng: 12.7688400
+        - lat: 50.1041660
+          lng: 12.7688430
 
 
 children:
   - type: component.location
     options:
-      address: =@ctx.datasources.trainingDetails.street & ',' & @ctx.datasources.trainingDetails.city & ',' & @ctx.datasources.trainingDetails.country
-      zoomLevel: 9
+      pathsData: =@ctx.datasources.coordinates
+    
+  # - type: component.location
+  #   options:
+  #     address: =@ctx.datasources.trainingDetails.street & ',' & @ctx.datasources.trainingDetails.city & ',' & @ctx.datasources.trainingDetails.country
+  #     zoomLevel: 9
   - type: component.entity
     options:
       children:
