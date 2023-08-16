@@ -1,0 +1,82 @@
+title: Edit friend information
+description: Description of your Jig
+type: jig.default
+
+actions:
+  - children:
+      - type: action.submit-form
+        options:
+          formId: friend-form
+          provider: DATA_PROVIDER_DYNAMIC
+          title: Update Record
+          entity: default/profile-user
+          method: update
+          data: 
+            id: =@ctx.datasources.userData.id
+          goBack: previous
+          onSuccess: 
+            title: Data updated
+
+# použiju pokud chci změnit třeba jen jedno pole, pokud jich chci měnit více, je lepší použít submit-form
+# actions:
+#   - children:
+#       - type: action.execute-entity
+#         options:
+#           title: Update Record
+#           provider: DATA_PROVIDER_DYNAMIC
+#           entity: default/profile-user
+#           method: update
+#           goBack: previous
+#           data:
+#             id: =@ctx.datasources.userData.id
+#             firstName: =@ctx.components.firstName.state.value
+            
+
+
+datasources:
+  userData: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+      entities:
+        - default/profile-user
+      query: |
+        SELECT
+          id
+          ,'$.firstName'
+          ,'$.surName'
+          ,'$.dateOfBirth'
+          ,'$.email'
+          ,'$.phoneNum'
+          ,'$.userId'
+        FROM [default/profile-user]
+        WHERE id = @userId
+      queryParameters:
+        userId: =@ctx.jig.inputs.userId
+      
+        
+children:
+  - type: component.form
+    instanceId: friend-form
+    options:
+      children:
+        - type: component.text-field
+          instanceId: firstName
+          options:
+            label: First name
+            initialValue: =@ctx.datasources.userData.firstName
+        - type: component.text-field
+          instanceId: surName
+          options:
+            label: Last name
+            initialValue: =@ctx.datasources.userData.surName
+        - type: component.date-picker
+          instanceId: dateOfBirth
+          options:
+            label: Statistics
+            initialValue: =$fromMillis($toMillis(@ctx.datasources.userData.dateOfBirth), '[D1o] [MNn] [Y]') 
+        - type: component.email-field
+          instanceId: picture
+          options:
+            label: email
+            initialValue: =@ctx.datasources.userData.email

@@ -5,8 +5,10 @@ actions:
   - children:
       - type: action.go-to
         options:
-          title: Edit your goal
-          linkTo: new-goal
+          title: Edit goal
+          linkTo: edit-goal
+          parameters:
+            goalId: =@ctx.datasources.goalData.id
 
 datasources:
   goalData:
@@ -39,13 +41,11 @@ children:
               - type: component.entity-field
                 options:
                   label: Starting date
-                  value: =@ctx.datasources.goalData.start
+                  value: =$fromMillis($toMillis(@ctx.datasources.goalData.start), '[D1o] [MNn] [Y]')
               - type: component.entity-field
                 options:
                   label: End date
-                  value: =@ctx.datasources.goalData.end
-                  style:
-                    isPrimary: false
+                  value: =$fromMillis($toMillis(@ctx.datasources.goalData.end), '[D1o] [MNn] [Y]')
               - type: component.entity-field
                 options:
                   label: Goal for the activity

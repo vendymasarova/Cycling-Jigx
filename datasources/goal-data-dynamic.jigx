@@ -1,0 +1,15 @@
+type: datasource.sqlite
+options:
+  provider: DATA_PROVIDER_DYNAMIC
+
+  entities:
+    - default/goals
+
+  query: | 
+    SELECT 
+      id
+      ,'$.activity_name'
+      ,'$.amount'
+      ,'$.start'
+      ,'$.end'
+    FROM [default/goals]

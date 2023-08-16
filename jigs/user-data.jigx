@@ -11,6 +11,16 @@ header:
         source:
           uri: https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80
           
+actions:
+  - children:
+      - type: action.go-to
+        options:
+          title: Edit user data
+          linkTo: edit-user-data
+          parameters:
+            userId: =@ctx.datasources.userData.id
+        
+          
 datasources:
   userData:
     type: datasource.sqlite
@@ -28,6 +38,7 @@ datasources:
           ,'$.dateOfBirth'
           ,'$.email'
           ,'$.phoneNum'
+          ,'$.userId'
         FROM [default/profile-user]
 
 children:
@@ -51,7 +62,7 @@ children:
               - type: component.entity-field
                 options:
                   label: Date of birth
-                  value: =@ctx.datasources.userData.dateOfBirth
+                  value: =$fromMillis($toMillis(@ctx.datasources.userData.dateOfBirth), '[D1o] [MNn] [Y]') 
               - type: component.entity-field
                 options:
                   label: Phone number
@@ -74,5 +85,5 @@ widgets:
         options:
           align: center
           title:  Welcome Vendy!
-          subtitle: =$now()
+          subtitle: =$fromMillis($toMillis($now()), '[FNn], [D1o] [MNn] [Y]')
         

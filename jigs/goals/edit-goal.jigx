@@ -26,6 +26,9 @@ datasources:
           ,'$.end'
           ,'$.amount'
         FROM [default/goals]
+        WHERE id = @goalId
+      queryParameters:
+        goalId: =@ctx.jig.inputs.goalId
 
 children:
   - type: component.form
@@ -47,7 +50,7 @@ children:
           instanceId: end
           options:
             label: End date
-            initialValue: =@ctx.datasources.goalData.end
+            initialValue: =@ctx.datasources.goalData.end 
             format: LL
         - type: component.number-field
           instanceId: amount
@@ -55,14 +58,22 @@ children:
             label: How much km do you want to ride?
             initialValue: =@ctx.datasources.goalData.amount
         
-
 actions:
   - children:
-      - type: action.submit-form
-        options:
-          formId: new-goal-form
-          provider: DATA_PROVIDER_DYNAMIC
-          title: Submit form
-          entity: default/goals
-          method: save
+    - type: action.execute-entity
+      options:
+        title: Edit goal
+        provider: DATA_PROVIDER_DYNAMIC
+        method: update
+        entity: default/goals
+        data:
+          id: =@ctx.datasources.goalData.id
+          activity_name: =@ctx.components.activity_name.state.value
+          amount: =@ctx.components.amount.state.value
+          start: =@ctx.components.start.state.value
+          end: =@ctx.components.end.state.value
+        onSuccess: 
+          title: Goal updated
+        icon: check
+        goBack: previous
         
