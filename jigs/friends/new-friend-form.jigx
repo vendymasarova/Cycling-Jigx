@@ -27,6 +27,18 @@ children:
           instanceId: lastName
           options:
             label: Last name
+        - type: component.date-picker
+          instanceId: dateOfBirth
+          options:
+            label: Date of Birth
+        - type: component.email-field
+          instanceId: email
+          options:
+            label: Email
+        - type: component.number-field
+          instanceId: phoneNum
+          options:
+            label: Phone number
         - type: component.text-field
           instanceId: statistics
           options:

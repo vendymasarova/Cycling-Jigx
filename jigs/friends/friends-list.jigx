@@ -53,13 +53,6 @@ item:
       element: avatar
       text: ''
       uri: =@ctx.current.item.picture
-    # k použití v friends-detail
-    # onPress: 
-    #   type: action.go-to
-    #   options:
-    #     linkTo: edit-friend
-    #     parameters:
-    #       friend: =@ctx.current.item.id
     onPress: 
       type: action.go-to
       options:
@@ -67,9 +60,9 @@ item:
         parameters:
           friend: =@ctx.current.item.id
     swipeable: 
-      right:
+      left:
         - label: Delete
-          color: negative
+          color: warning
           onPress: 
             type: action.execute-entity
             options:
@@ -78,3 +71,5 @@ item:
               method: delete
               data: 
                 id: =@ctx.current.item.id
+            
+                

@@ -1,0 +1,58 @@
+# type: datasource.sqlite
+# options:
+#   provider: DATA_PROVIDER_DYNAMIC
+
+#   entities:
+#     - default/trainings
+#     - default/goals
+    
+#   # query: | 
+#   #   WITH cte AS (
+#   #     SELECT 
+#   #       id,
+#   #       json_extract(data,'$.avg_heart_rate') as avgHeart,
+#   #       json_extract(data,'$.date') as date,
+#   #       json_extract(data,'$.elevation') as elevation,
+#   #       json_extract(data,'$.country') as country,
+#   #       json_extract(data,'$.distance') as distance,
+#   #       json_extract(data,'$.avg_speed') as avgSpeed,
+#   #       json_extract(data,'$.city') as city,
+#   #       json_extract(data,'$.street') as street,
+#   #       json_extract(data,'$.name') as name,
+#   #       json_extract(data,'$.calories') as calories,
+#   #       json_extract(data,'$.moving_time') as movingTime
+#   #     FROM [default/trainings])
+#   #   SELECT
+#   #     SUM(distance) as totalDistance
+#   #   FROM cte
+    
+    
+#   query: |
+#     WITH cte AS (
+#         SELECT 
+#           id,
+#           json_extract(data,'$.avg_heart_rate') as avgHeart,
+#           json_extract(data,'$.date') as date,
+#           json_extract(data,'$.elevation') as elevation,
+#           json_extract(data,'$.country') as country,
+#           json_extract(data,'$.distance') as distance,
+#           json_extract(data,'$.avg_speed') as avgSpeed,
+#           json_extract(data,'$.city') as city,
+#           json_extract(data,'$.street') as street,
+#           json_extract(data,'$.name') as name,
+#           json_extract(data,'$.calories') as calories,
+#           json_extract(data,'$.moving_time') as movingTime
+#         FROM [default/trainings]
+#       temp AS (
+#         SELECT
+#           id
+#           ,'$.amount' as amount
+#         FROM [default/goals]
+#       )
+#     SELECT
+#       SUM(distance) as totalDistance
+#     FROM cte
+#     UNION ALL
+#     SELECT 
+#       amount 
+#     FROM temp

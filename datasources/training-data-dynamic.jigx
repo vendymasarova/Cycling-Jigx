@@ -20,3 +20,5 @@ options:
       ,'$.calories'
       ,'$.moving_time'
     FROM [default/trainings]
+  
+    

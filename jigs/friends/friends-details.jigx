@@ -1,15 +1,16 @@
-title: Profile information
+title: ' '
+
 type: jig.default
 
 header:
   type: component.jig-header
   options:
-    height: medium
+    height: small
     children:
       type: component.image
       options:
         source:
-          uri: https://images.unsplash.com/photo-1600403477955-2b8c2cfab221?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+          uri: =@ctx.datasources.friendData.banerPicture
           
 actions:
   - children:
@@ -37,9 +38,20 @@ datasources:
           ,'$.dateOfBirth'
           ,'$.phoneNum'
           ,'$.email'
+          ,'$.banerPicture'
         FROM [default/friends] WHERE id = @friendIdDetail
       queryParameters:
         friendIdDetail: =@ctx.jig.inputs.friend
+  scoreDataStatic:
+    type: datasource.static
+    options:
+      data:
+        - y: =@ctx.datasources.friendData.statistics
+          x: kukuk
+        - y: 100 - @ctx.datasources.friendData.statistics
+          x: tralala
+          color: transparent
+    
 
 children:
   - type: component.avatar
@@ -73,7 +85,30 @@ children:
                   label: E-mail
                   value: =@ctx.datasources.friendData.email
                   contentType: email
-          
+                  
+        - type: component.section
+          options:
+            title: Training informations
+            children:
+              - type: component.entity-field
+                options:
+                  label: Score
+                  value: =@ctx.datasources.friendData.statistics & ' %'
+        
+  - type: component.pie-chart
+    options:
+      chart:
+        title:
+          # text: =@ctx.datasources.goal-data-dynamic.amount
+          text: =@ctx.datasources.friendData.statistics
+          verticalAlign: center         
+      series:
+        - data: =@ctx.datasources.scoreDataStatic
+          layout: pie
+          color: color3
+              
+              
+
                 
                   
               

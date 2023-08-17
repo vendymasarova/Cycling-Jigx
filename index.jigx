@@ -5,10 +5,13 @@ widgets:
   - size: 4x2 
     jigId: user-data
   - size: 4x2 
-    jigId: statistics
-  - size: 4x2 
     jigId: traning-composite
+  - size: 4x2 
+    jigId: statistics
   - size: 2x2 
     jigId: goal
   - size: 2x2 
     jigId: friends-list
+    
+stories: 
+  - solution-story

@@ -1,0 +1,15 @@
+type: datasource.static
+options:
+  data:
+    - id: 1
+      title: "Pedal with passion, and let every mile be a testament to your determination."
+      description: '- Unknown'
+      image: https://images.unsplash.com/photo-1534787238916-9ba6764efd4f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2062&q=80
+    - id: 2
+      title: "Ride beyond limits, chase your goals, and let the wind whisper your success."
+      description: ' - ChatGPT (Inspired by the cycling community)'
+      image: https://images.unsplash.com/photo-1475666675596-cca2035b3d79?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+    - id: 3
+      title: "In the journey of a thousand pedals, each turn brings you closer to your strength." 
+      description: '- Anonymous'
+      image: https://images.unsplash.com/photo-1530143584546-02191bc84eb5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1738&q=80

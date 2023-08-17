@@ -40,6 +40,15 @@ datasources:
           ,'$.phoneNum'
           ,'$.userId'
         FROM [default/user-profile]
+  static-data:
+    type: datasource.static
+    options:
+      data:
+        - y: =$number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100)))
+          x: kukuk
+        - y: 81
+          x: tralala
+          color: transparent
 
 children:
   - type: component.avatar
@@ -73,17 +82,75 @@ children:
                   label: Phone number
                   value: =@ctx.datasources.userProfileData.phoneNum
                   contentType: phone
-
+  - type: component.section
+    options:
+      title: Address
+      children:
+        - type: component.expander
+          options:
+            header:
+              centerElement:
+                type: component.titles
+                options:
+                  subtitle: Smetanova 459, 357 31 Horní Slavkov, Česká republika
+            children:
+              - type: component.location
+                options:
+                  address: Smetanova 459, 357 31 Horní Slavkov, Česká republika
+            isInitiallyCollapsed: true
+            
+  - type: component.section
+    options:
+      title: Your Score
+      children:
+        - type: component.pie-chart
+          options:
+            chart:
+              title:
+                text: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
+                verticalAlign: center
+              width: 80
+              height: 80
+            series:
+              - data: =@ctx.datasources.static-data
+                
+            
 widgets:
   "4x2": 
-    type: widget.avatar
+    type: widget.group
     options:
-      text: ''
-      uri: https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80
-      bottom: 
-        type: component.titles
-        options:
-          align: center
-          title:  Welcome Vendy!
-          subtitle: =$fromMillis($toMillis($now()), '[FNn], [D1o] [MNn] [Y]')
-        
+      children:
+        - type: widget.avatar
+          options:
+            text: ''
+            uri: https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80
+            bottom: 
+              type: component.titles
+              options:
+                align: center
+                title: ='Welcome ' & @ctx.datasources.userProfileData.firstName
+                subtitle: =$fromMillis($toMillis($now()), '[FNn], [D1o] [MNn] [Y]')
+        - type: widget.value
+          options:
+            top: 
+              type: component.titles
+              options:
+                title: Cycling goal
+                subtitle: =$fromMillis($toMillis(@ctx.datasources.goal-data-dynamic.start), '[D]/[M]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.goal-data-dynamic.end), '[D]/[M]')
+                align: left
+                icon: pie-line-graph
+                iconColor: color9
+                
+            value: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance))
+            format:
+              unit: ='/ ' & @ctx.datasources.goal-data-dynamic.amount & 'km'
+            align: right
+
+            bottom: 
+              type: component.titles
+              options:
+                # title: 'Your score:'
+                subtitle: ='Your score' & ':' & ' ' & $ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
+                align: right
+                
+  

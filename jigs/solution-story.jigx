@@ -1,0 +1,27 @@
+title: Name
+description: Description of your Jig
+type: jig.default
+
+children:
+  - type: component.entity
+    options:
+      children:
+      #Entity fields display data from a datasource
+        - type: component.entity-field
+          options:
+            label: Story
+            value: Customer
+
+stories:
+  type: component.story-group
+  options:
+    data: =@ctx.datasources.story-static
+    groupName: Account News
+    item: 
+      type: component.image
+      options:
+        source:
+          uri: =@ctx.current.item.image
+        resizeMode: cover
+        title: =@ctx.current.item.title
+        subtitle: =@ctx.current.item.description

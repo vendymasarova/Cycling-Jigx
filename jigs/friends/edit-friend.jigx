@@ -34,6 +34,7 @@ datasources:
           ,'$.dateOfBirth'
           ,'$.phoneNum'
           ,'$.email'
+          ,'$.banerPicture'
         FROM [default/friends] WHERE id = @friendId
       queryParameters:
         friendId: =@ctx.jig.inputs.friendId
@@ -61,20 +62,25 @@ children:
         - type: component.email-field
           instanceId: email
           options:
-            label: Date of Birth
+            label: Email
             initialValue: =@ctx.datasources.friendData.email
         - type: component.number-field
           instanceId: phoneNum
           options:
-            label: Date of Birth
+            label: Phone number
             initialValue: =@ctx.datasources.friendData.phoneNum
         - type: component.text-field
           instanceId: statistics
           options:
-            label: Statistics
+            label: Score
             initialValue: =@ctx.datasources.friendData.statistics
         - type: component.avatar-field
           instanceId: picture
           options:
             label: Picture
             initialValue: =@ctx.datasources.friendData.picture
+        - type: component.avatar-field
+          instanceId: banerPicture
+          options:
+            label: Baner Image
+            initialValue: =@ctx.datasources.friendData.banerPicture
