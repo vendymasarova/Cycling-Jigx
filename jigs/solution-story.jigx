@@ -1,16 +1,25 @@
-title: Name
-description: Description of your Jig
+title: Motivation quotes
 type: jig.default
 
 children:
-  - type: component.entity
+  - type: component.list
+    instanceId: list
     options:
-      children:
-      #Entity fields display data from a datasource
-        - type: component.entity-field
-          options:
-            label: Story
-            value: Customer
+      maximumItemsToRender: 8
+      data: =@ctx.datasources.story-static
+      item:
+        type: component.list-item
+        options:
+          title: =@ctx.current.item.title
+          subtitle: =@ctx.current.item.description
+          leftElement: 
+            element: image
+            text: ''
+            uri: =@ctx.current.item.image
+          # leftElement:
+          #   element: progress
+          #   title: Title
+          #   value: =$number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100)) / 100
 
 stories:
   type: component.story-group
