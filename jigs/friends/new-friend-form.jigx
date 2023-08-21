@@ -47,3 +47,4 @@ children:
           instanceId: picture
           options:
             label: Picture
+            isRequired: false

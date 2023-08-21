@@ -42,16 +42,6 @@ datasources:
         FROM [default/friends] WHERE id = @friendIdDetail
       queryParameters:
         friendIdDetail: =@ctx.jig.inputs.friend
-  scoreDataStatic:
-    type: datasource.static
-    options:
-      data:
-        - y: =@ctx.datasources.friendData.statistics
-          x: kukuk
-        - y: 100 - @ctx.datasources.friendData.statistics
-          x: tralala
-          color: transparent
-    
 
 children:
   - type: component.avatar
@@ -85,33 +75,19 @@ children:
                   label: E-mail
                   value: =@ctx.datasources.friendData.email
                   contentType: email
-                  
-        - type: component.section
-          options:
-            title: Training informations
-            children:
-              - type: component.entity-field
-                options:
-                  label: Score
-                  value: =@ctx.datasources.friendData.statistics & ' %'
-        
-  - type: component.pie-chart
+  - type: component.section
     options:
-      chart:
-        title:
-          # text: =@ctx.datasources.goal-data-dynamic.amount
-          text: =@ctx.datasources.friendData.statistics
-          verticalAlign: center         
-      series:
-        - data: =@ctx.datasources.scoreDataStatic
-          layout: pie
-          color: color3
-              
-              
-
-                
-                  
-              
-     
-        
-        
+      title: Training informations
+      children:
+      - type: component.pie-chart
+        options:
+          chart:
+            title:
+              text: =@ctx.datasources.friendData.statistics & '%'
+              verticalAlign: center
+            subtitle: Score
+            width: 180
+            height: 180
+          series:
+            - data: =[{'y':$number(@ctx.datasources.friendData.statistics), 'color':'color9'}, {'y':100 - $number(@ctx.datasources.friendData.statistics), 'color':'transparent'}]
+              layout: pie

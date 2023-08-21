@@ -1,41 +1,37 @@
 title: Statistics
 type: jig.default
-
-datasources:
-  static-data:
-    type: datasource.static
-    options:
-      data:
-        - y: =$number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100))
-          x: kukuk
-        - y: =100 - $number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100))
-          x: tralala
-          color: transparent
           
 children:
-  - type: component.pie-chart
+  - type: component.section
     options:
-      chart:
-        title:
-          # text: =@ctx.datasources.goal-data-dynamic.amount
-          text: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
-          verticalAlign: center         
-      series:
-        - data: =[{"y":$number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"color9"}, {"y":100 - $number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"transparent"}]
-          layout: pie
-  - type: component.bar-chart
+      title: Your progress
+      children:
+        - type: component.pie-chart
+          options:
+            chart:
+              title:
+                text: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
+                verticalAlign: center         
+            series:
+              - data: =[{"y":$number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"color9"}, {"y":100 - $number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"transparent"}]
+                layout: pie
+  - type: component.section
     options:
-      yAxis:
-        labels: 
-          format:
-            notation: standard
-        tickAmount: 2
-        isFirstTickHidden: false
-        isFirstLabelHidden: false
-      series:
-      - data: =@ctx.datasources.progress-data-dynamic
-        name: "Month view"
-        color: color9
+      title: Month overview
+      children:
+        - type: component.bar-chart
+          options:
+            yAxis:
+              labels: 
+                format:
+                  notation: standard
+              tickAmount: 2
+              isFirstTickHidden: false
+              isFirstLabelHidden: false
+            series:
+            - data: =@ctx.datasources.progress-data-dynamic
+              name: "Month view"
+              color: color9
           
 widgets:
   "2x2": 
