@@ -4,12 +4,12 @@ type: jig.default
 header:
   type: component.jig-header
   options:
-    height: medium
+    height: small
     children:
       type: component.image
       options:
         source:
-          uri: https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80
+          uri: =@ctx.datasources.userProfileData.banner
           
 actions:
   - children:
@@ -20,7 +20,6 @@ actions:
           parameters:
             userId: =@ctx.datasources.userProfileData.id
         
-          
 datasources:
   userProfileData:
     type: datasource.sqlite
@@ -33,12 +32,17 @@ datasources:
       query: |
         SELECT
           id
+          ,'$.avatar'
+          ,'$.banner'
           ,'$.firstName'
           ,'$.surName'
           ,'$.dateOfBirth'
           ,'$.email'
           ,'$.phoneNum'
           ,'$.userId'
+          ,'$.isDarkMode'
+          ,'$.isMotivationOn'
+          ,'$.isNotificationOn'
         FROM [default/user-profile]
   # static-data:
   #   type: datasource.static
@@ -49,19 +53,35 @@ datasources:
   #       - y: 81
   #         x: tralala
   #         color: transparent
-  score-data:
+  score-desc-data:
     type: datasource.static
     options:
       data:
         - id: 1
           title: Your score
           subtitle: click to edit
+  account-setting-data:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/account-settings
+  
+      query: |
+        SELECT
+          id
+          ,'$.color'
+          ,'$.icon'
+          ,'$.isSwitched'
+          ,'$.title'
+        FROM [default/account-settings]
 
 children:
   - type: component.avatar
     options:
       title: =$substring(@ctx.datasources.userProfileData.firstName, 0, 1) & $substring(@ctx.datasources.userProfileData.surName, 0, 1)
-      uri: https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80
+      uri: =@ctx.datasources.userProfileData.avatar
       size: large
       align: center
   - type: component.entity
@@ -122,13 +142,13 @@ children:
         #       - data: =@ctx.datasources.static-data
         - type: component.list
           options:
-            data: =@ctx.datasources.score-data
+            data: =@ctx.datasources.score-desc-data
             maximumItemsToRender: 8
             item: 
               type: component.list-item
               options:
-                title: =@ctx.datasources.score-data.title
-                subtitle: =@ctx.datasources.score-data.subtitle
+                title: =@ctx.datasources.score-desc-data.title
+                subtitle: =@ctx.datasources.score-desc-data.subtitle
                 leftElement: 
                   element: progress
                   title: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
@@ -137,7 +157,31 @@ children:
                   type: action.go-to
                   options:
                     linkTo: goal
-            
+  - type: component.section
+    options:
+      title: Account settings
+      children:
+        - type: component.list
+          options:
+            isHorizontal: false
+            data: =@ctx.datasources.account-setting-data
+            item:
+              type: component.list-item
+              options:
+                title: =@ctx.current.item.title
+                color:
+                  - when: true
+                    color: =@ctx.current.item.color
+                divider: solid
+                leftElement:
+                  element: icon
+                  name: =@ctx.current.item.icon
+                  isContained: true
+                  isDuotone: false
+                rightElement:
+                  element: switch
+                  value: =@ctx.current.item.isSwitched
+
 widgets:
   "4x2": 
     type: widget.group
@@ -146,20 +190,20 @@ widgets:
         - type: widget.avatar
           options:
             text: ''
-            uri: https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=774&q=80
+            uri: =@ctx.datasources.userProfileData.avatar
             bottom: 
               type: component.titles
               options:
                 align: center
                 title: ='Welcome ' & @ctx.datasources.userProfileData.firstName
-                subtitle: =$fromMillis($toMillis($now()), '[FNn], [D1o] [MNn] [Y]')
+                subtitle: ='Today is:' & ' ' & $fromMillis($toMillis($now()), '[FNn], [D]. [M]. [Y]')
         - type: widget.value
           options:
             top: 
               type: component.titles
               options:
                 title: Cycling goal
-                subtitle: =$fromMillis($toMillis(@ctx.datasources.goal-data-dynamic.start), '[D]/[M]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.goal-data-dynamic.end), '[D]/[M]')
+                subtitle: =$fromMillis($toMillis(@ctx.datasources.goal-data-dynamic.start), '[D]. [M]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.goal-data-dynamic.end), '[D]. [M]. [Y]')
                 align: left
                 icon: pie-line-graph
                 iconColor: color9

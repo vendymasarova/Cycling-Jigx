@@ -1,4 +1,4 @@
-title: Edit friend information
+title: Edit user information
 description: Description of your Jig
 type: jig.default
 
@@ -17,22 +17,6 @@ actions:
           onSuccess: 
             title: Data updated
 
-# použiju pokud chci změnit třeba jen jedno pole, pokud jich chci měnit více, je lepší použít submit-form
-# actions:
-#   - children:
-#       - type: action.execute-entity
-#         options:
-#           title: Update Record
-#           provider: DATA_PROVIDER_DYNAMIC
-#           entity: default/user-profile
-#           method: update
-#           goBack: previous
-#           data:
-#             id: =@ctx.datasources.userData.id
-#             firstName: =@ctx.components.firstName.state.value
-            
-
-
 datasources:
   userData: 
     type: datasource.sqlite
@@ -43,6 +27,8 @@ datasources:
       query: |
         SELECT
           id
+          ,'$.avatar'
+          ,'$.banner'
           ,'$.firstName'
           ,'$.surName'
           ,'$.dateOfBirth'
@@ -53,13 +39,22 @@ datasources:
         WHERE id = @userId
       queryParameters:
         userId: =@ctx.jig.inputs.userId
-      
         
 children:
   - type: component.form
     instanceId: user-form
     options:
       children:
+        - type: component.avatar-field
+          instanceId: avatar
+          options:
+            label: First name
+            initialValue: =@ctx.datasources.userData.avatar
+        - type: component.avatar-field
+          instanceId: banner
+          options:
+            label: First name
+            initialValue: =@ctx.datasources.userData.banner
         - type: component.text-field
           instanceId: firstName
           options:

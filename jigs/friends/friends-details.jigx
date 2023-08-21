@@ -74,7 +74,7 @@ children:
               - type: component.entity-field
                 options:
                   label: Date of birth
-                  value: =@ctx.datasources.friendData.dateOfBirth
+                  value: =$fromMillis($toMillis(@ctx.datasources.friendData.dateOfBirth), '[D1o] [MNn] [Y]')
               - type: component.entity-field
                 options:
                   label: Phone number

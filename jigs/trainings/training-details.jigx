@@ -45,14 +45,13 @@ datasources:
           lng: 12.7688430
 
 children:
-  - type: component.location
-    options:
-      pathsData: =@ctx.datasources.coordinates
-    
   # - type: component.location
   #   options:
-  #     address: =@ctx.datasources.trainingDetails.street & ',' & @ctx.datasources.trainingDetails.city & ',' & @ctx.datasources.trainingDetails.country
-  #     zoomLevel: 9
+  #     pathsData: =@ctx.datasources.coordinates
+  - type: component.location
+    options:
+      address: =@ctx.datasources.trainingDetails.street & ',' & @ctx.datasources.trainingDetails.city & ',' & @ctx.datasources.trainingDetails.country
+      zoomLevel: 9
   - type: component.entity
     options:
       children:

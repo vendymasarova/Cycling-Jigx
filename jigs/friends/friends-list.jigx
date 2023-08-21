@@ -47,7 +47,7 @@ item:
   type: component.list-item
   options:
     title: =@ctx.current.item.firstName & ' ' & @ctx.current.item.lastName
-    subtitle: =@ctx.current.item.statistics
+    subtitle: =@ctx.current.item.statistics & '%'
     horizontalItemSize: regular
     leftElement: 
       element: avatar

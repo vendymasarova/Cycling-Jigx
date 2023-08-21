@@ -1,12 +1,12 @@
 name: cycling-recording-new
-title: cycling recording
+title: Aim cycling
 category: business
 widgets:
   - size: 4x2 
     jigId: user-data
   - size: 4x2 
     jigId: traning-composite
-  - size: 4x2 
+  - size: 2x2 
     jigId: statistics
   # - size: 2x2 
   #   jigId: goal

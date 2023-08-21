@@ -7,3 +7,4 @@ tables:
   trainings:
   user-profile:
   goals: 
+  account-settings:

@@ -24,9 +24,22 @@ children:
         - data: =@ctx.datasources.static-data
           layout: pie
           color: color3
+  - type: component.bar-chart
+    options:
+      yAxis:
+        labels: 
+          format:
+            notation: standard
+        tickAmount: 2
+        isFirstTickHidden: false
+        isFirstLabelHidden: false
+      series:
+      - data: =@ctx.datasources.progress-data-dynamic
+        name: "Month view"
+        color: color9
           
 widgets:
-  "4x2": 
+  "2x2": 
     type: widget.chart
     options:
       chart: 
@@ -41,7 +54,7 @@ widgets:
             isFirstLabelHidden: false
           series:
           - data: =@ctx.datasources.progress-data-dynamic
-            name: "2021/2022"
+            name: Month view
             color: color9
       top:
         type: component.titles
