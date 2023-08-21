@@ -1,0 +1,67 @@
+title: Name
+description: Description of your Jig
+type: jig.default
+
+
+datasources:
+  trainingData: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/trainings
+  
+      query: |
+        SELECT
+          id
+          ,'$.avg_heart_rate'
+          ,'$.date'
+          ,'$.elevation'
+          ,'$.country'
+          ,'$.distance'
+          ,'$.avg_speed'
+          ,'$.city'
+          ,'$.street'
+          ,'$.name'
+          ,'$.calories'
+          ,'$.moving_time'
+        FROM [default/trainings] WHERE '$.city' LIKE @filter or @filter IS NULL
+      queryParameters:
+        filter: =@ctx.components.filter-trainings.state.filter
+        
+outputs:
+  output-key: =@ctx.solution.state.hello
+
+children:
+  - type: component.list
+    instanceId: filter-trainings
+    options:
+      data: =@ctx.datasources.trainingData
+      maximumItemsToRender: 8
+      filter: 
+        - title: All
+          value: ''
+        - title: Horní Slavkov
+          value: Horní Slavkov
+        - title: Boží Dar
+          value: Boží Dar
+      item:
+        type: component.list-item
+        options:
+          title: =@ctx.current.item.name
+          subtitle: =@ctx.current.item.date
+          horizontalItemSize: large
+
+          progress: =@ctx.current.item.id = @ctx.solution.state.hello ? 1 :0
+          color:
+            - when: =@ctx.current.item.id = @ctx.solution.state.hello ? true :false
+              color: color2
+          onPress: 
+            type: action.action-list
+            options:
+              actions:
+                - type: action.set-state
+                  options:
+                    state: =@ctx.solution.state.hello
+                    value: =@ctx.current.item.id 

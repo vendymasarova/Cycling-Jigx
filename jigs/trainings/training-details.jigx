@@ -1,8 +1,8 @@
-title: =@ctx.datasources.training-data-dynamic.name != null ? "Training details":" "
+title: =@ctx.datasources.trainingDetails.name != null ? "Training details":" "
 type: jig.default
 placeholders:
   - title: Please choose a service
-    when: =@ctx.datasources.training-data-dynamic.name != null ? false:true
+    when: =@ctx.datasources.trainingDetails.name != null ? false:true
     icon: loading-data
     
 datasources:
@@ -30,19 +30,21 @@ datasources:
           ,'$.name'
           ,'$.calories'
           ,'$.moving_time'
-        FROM [default/trainings] WHERE id = @trainingId
-  coordinates:
-    type: datasource.static
-    options:
-      data:
-        - lat: 50.1042100
-          lng: 12.7688230
-        - lat: 50.1042060
-          lng: 12.7688420
-        - lat: 50.1041870
-          lng: 12.7688400
-        - lat: 50.1041660
-          lng: 12.7688430
+          ,'$.carpool'
+        FROM [default/trainings] 
+        WHERE id = @trainingId
+  # coordinates:
+  #   type: datasource.static
+  #   options:
+  #     data:
+  #       - lat: 50.1042100
+  #         lng: 12.7688230
+  #       - lat: 50.1042060
+  #         lng: 12.7688420
+  #       - lat: 50.1041870
+  #         lng: 12.7688400
+  #       - lat: 50.1041660
+  #         lng: 12.7688430
 
 children:
   # - type: component.location
@@ -88,3 +90,28 @@ children:
                 options:
                   label: Average Heart Rate
                   value: =@ctx.datasources.trainingDetails.avg_heart_rate
+
+  - type: component.section
+    options:
+      title: Participants
+      children:
+        - type: component.list
+          options:
+            data: =@ctx.datasources.friends-data-dynamic[1]
+            maximumItemsToRender: 8
+            item: 
+              type: component.list-item
+              options:
+                title: =@ctx.current.item.firstName & ' ' & @ctx.current.item.lastName
+                subtitle: =@ctx.current.item.statistics & '%'
+                leftElement: 
+                  element: avatar
+                  text: ''
+                  uri: =@ctx.current.item.picture
+                onPress: 
+                  type: action.go-to
+                  options:
+                    linkTo: friends-details
+                    parameters:
+                      friend: =@ctx.current.item.id
+             
