@@ -8,8 +8,6 @@ widgets:
     jigId: traning-composite
   - size: 2x2 
     jigId: statistics
-  # - size: 2x2 
-  #   jigId: goal
   - size: 2x2 
     jigId: friends-list
     

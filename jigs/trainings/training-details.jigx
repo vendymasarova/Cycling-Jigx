@@ -31,8 +31,31 @@ datasources:
           ,'$.calories'
           ,'$.moving_time'
           ,'$.carpool'
+          ,'$.friendId'
         FROM [default/trainings] 
         WHERE id = @trainingId
+        
+  participantsData: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/friends
+  
+      query: |
+        SELECT
+          id
+          ,'$.firstName'
+          ,'$.lastName'
+          ,'$.picture'
+          ,'$.statistics'
+          ,'$.dateOfBirth'
+          ,'$.friendId'
+        FROM [default/friends]
+        WHERE '$.friendId' = @participantId
+      queryParameters:
+        participantId: =@ctx.datasources.trainingDetails.friendId
   # coordinates:
   #   type: datasource.static
   #   options:
@@ -97,7 +120,7 @@ children:
       children:
         - type: component.list
           options:
-            data: =@ctx.datasources.friends-data-dynamic[1]
+            data: =@ctx.datasources.participantsData
             maximumItemsToRender: 8
             item: 
               type: component.list-item

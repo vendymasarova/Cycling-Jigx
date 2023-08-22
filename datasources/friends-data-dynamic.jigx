@@ -12,6 +12,7 @@ options:
       ,'$.lastName'
       ,'$.picture'
       ,'$.statistics'
+      ,'$.dateOfBirth'
     FROM [default/friends]
   queryParameters:
     myParam: value
