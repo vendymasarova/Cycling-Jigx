@@ -1,11 +1,10 @@
-title: List of trainings
-
+title: Cleaning Services
+description: List of available Cleaning Services
 type: jig.list
 icon: contact 
 isHorizontal: true
-isCollapsible: false
-isInitiallyCollapsed: true
-
+isHorizontalScrollIndicatorHidden: false
+    
 header:
   type: component.jig-header
   options:
@@ -14,24 +13,45 @@ header:
       type: component.image
       options:
         source:
-          uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+          uri: https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80
 
-outputs:
-  output-key: =@ctx.solution.state.hello
+datasources:
+  trainingData: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/trainings
+  
+      query: |
+        SELECT
+          id
+          ,'$.avg_heart_rate'
+          ,'$.date'
+          ,'$.elevation'
+          ,'$.country'
+          ,'$.distance'
+          ,'$.avg_speed'
+          ,'$.city'
+          ,'$.street'
+          ,'$.name'
+          ,'$.calories'
+          ,'$.moving_time'
+        FROM [default/trainings]
 
-data: =@ctx.datasources.training-data-dynamic
+data: =@ctx.datasources.trainingData
 item:
-  instanceId: filter-trainings
   type: component.list-item
   options:
     title: =@ctx.current.item.name
-    subtitle: =@ctx.current.item.date
-    horizontalItemSize: large
-
+    subtitle: ='Date:' & @ctx.current.item.date
+    
     progress: =@ctx.current.item.id = @ctx.solution.state.hello ? 1 :0
     color:
       - when: =@ctx.current.item.id = @ctx.solution.state.hello ? true :false
         color: color9
+    horizontalItemSize: large
     onPress: 
       type: action.action-list
       options:
@@ -40,3 +60,5 @@ item:
             options:
               state: =@ctx.solution.state.hello
               value: =@ctx.current.item.id
+      
+    

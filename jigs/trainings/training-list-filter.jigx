@@ -56,7 +56,7 @@ children:
           progress: =@ctx.current.item.id = @ctx.solution.state.hello ? 1 :0
           color:
             - when: =@ctx.current.item.id = @ctx.solution.state.hello ? true :false
-              color: color2
+              color: color9
           onPress: 
             type: action.action-list
             options:

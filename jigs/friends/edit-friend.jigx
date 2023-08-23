@@ -15,7 +15,8 @@ actions:
             id: =@ctx.datasources.friendData.id
           goBack: previous
           onSuccess: 
-            title: Friend data updated updated
+            title: data updated
+            description: Your friend data were succesfully udpdated
 
 datasources:
   friendData: 
