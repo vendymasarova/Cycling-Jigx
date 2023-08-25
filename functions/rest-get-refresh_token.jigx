@@ -1,0 +1,10 @@
+provider: DATA_PROVIDER_REST
+method: POST
+url: url
+
+parameters:
+  accessToken:
+    location: header
+    required: true
+    type: string
+    value: service.oauth #Use manage.jigx.com to define credentials for your solution

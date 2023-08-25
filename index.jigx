@@ -4,8 +4,14 @@ category: business
 widgets:
   - size: 4x2 
     jigId: user-data
-  - size: 4x2 
-    jigId: traning-composite
+  # - size: 4x2 
+  #   jigId: traning-composite
+  - size: "2x2"
+    jigId: strava-ride-composite
+  - size: "2x2"
+    jigId: strava-run-composite
+  - size: "2x2"
+    jigId: strava-walk-composite
   - size: 2x2 
     jigId: statistics
   - size: 2x2 

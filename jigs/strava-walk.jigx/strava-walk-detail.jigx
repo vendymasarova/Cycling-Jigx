@@ -1,0 +1,83 @@
+title: =@ctx.datasources.trainingDetails.name != null ? "@ctx.datasources.trainingDetails.name":" "
+type: jig.default
+placeholders:
+  - title: Please choose a service
+    when: =@ctx.datasources.trainingDetails.name != null ? false:true
+    icon: loading-data
+    
+datasources:
+  trainingDetails: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: activities
+  
+      query: 
+        SELECT 
+        id
+        ,'$.id'
+        ,'$.avg_heart_rate'
+        ,'$.date'
+        ,'$.country'
+        ,'$.distance'
+        ,'$.average_speed'
+        ,'$.city'
+        ,'$.street'
+        ,'$.name'
+        ,'$.calories'
+        ,'$.moving_time'
+        ,'$.elapsed_time'
+        ,'$.carpool'
+        ,'$.max_speed'
+        ,'$.has_heartrate'
+        ,'$.average_heartrate'
+        ,'$.max_heartrate'
+        ,'$.elev_high'
+        ,'$.elev_low'
+        ,'$.total_elevation_gain'
+        FROM [activities] 
+        WHERE '$.id' = @walkId
+        
+      queryParameters:
+        walkId: =@ctx.solution.state.walk
+        
+children:
+  - type: component.entity
+    options:
+      children:
+        - type: component.field-row
+          options:
+            children:
+              - type: component.entity-field
+                options:
+                  label: Distance
+                  value: =@ctx.datasources.trainingDetails.distance & ' km'
+              - type: component.entity-field
+                options:
+                  label: Elevation Gain
+                  value: =@ctx.datasources.trainingDetails.total_elevation_gain & ' m'
+        - type: component.field-row
+          options:
+            children:
+              - type: component.entity-field
+                options:
+                  label: Moving Time
+                  value: =@ctx.datasources.trainingDetails.moving_time & ' minutes'
+              - type: component.entity-field
+                options:
+                  label: Average Speed
+                  value: =@ctx.datasources.trainingDetails.average_speed & ' km/h'
+        - type: component.field-row
+          options:
+            children:
+              - type: component.entity-field
+                options:
+                  label: Calories
+                  value: =@ctx.datasources.trainingDetails.calories
+              - type: component.entity-field
+                options:
+                  label: Average Heart Rate
+                  value: =@ctx.datasources.trainingDetails.average_heartrate
+             

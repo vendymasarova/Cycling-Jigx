@@ -1,0 +1,48 @@
+title: Ride
+description: Description of your Jig
+type: jig.list
+icon: contact
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+
+onFocus:
+  type: action.action-list
+  options:
+    actions:
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_REST
+          entities:
+            - entity: activities
+              function: rest-get-activities
+
+datasources:
+  mydata: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: activities
+  
+      query: 
+        SELECT id, 
+        '$.name',
+        '$.type'
+        FROM [activities] 
+        WHERE '$.type' = 'Ride'
+
+data: =@ctx.datasources.mydata
+item:
+  type: component.list-item
+  options:
+    title: =@ctx.current.item.name
