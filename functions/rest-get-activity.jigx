@@ -1,0 +1,14 @@
+provider: DATA_PROVIDER_REST
+method: GET
+url: https://www.strava.com/api/v3/activities/{activityId}?include_all_efforts=true&access_token={access_token}
+
+parameters:
+  access_token:
+      location: query
+      required: true
+      type: secret
+      value: stravaActivitieAapi.key #Use manage.jigx.com to define credentials for your solution
+  activityId:
+    type: string
+    location: query
+    required: true

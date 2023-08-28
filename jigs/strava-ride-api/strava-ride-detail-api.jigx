@@ -38,7 +38,7 @@ datasources:
         ,'$.elev_low'
         ,'$.total_elevation_gain'
         FROM [activities] 
-        WHERE '$.id' = @rideId
+        WHERE '$.id' = activityId
         
       queryParameters:
         rideId: =@ctx.solution.state.ride

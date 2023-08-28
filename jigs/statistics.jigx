@@ -1,5 +1,22 @@
 title: Statistics
 type: jig.default
+
+datasources:
+  activityData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: activities
+  
+      query: 
+        SELECT 
+        '$.id',
+        json_extract(data, '$.start_date') as x, 
+        json_extract(data, '$.distance') as y
+        FROM [activities] 
+        WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
           
 children:
   - type: component.section
@@ -17,7 +34,7 @@ children:
                 layout: pie
   - type: component.section
     options:
-      title: Month overview
+      title: =@ctx.datasources.activityData.x
       children:
         - type: component.bar-chart
           options:
@@ -29,12 +46,12 @@ children:
               isFirstTickHidden: false
               isFirstLabelHidden: false
             series:
-            - data: =@ctx.datasources.progress-data-dynamic
+            - data: =@ctx.datasources.activityData
               name: "Month view"
               color: color9
           
 widgets:
-  "2x2": 
+  "4x2": 
     type: widget.chart
     options:
       chart: 
@@ -48,7 +65,7 @@ widgets:
             isFirstTickHidden: false
             isFirstLabelHidden: false
           series:
-          - data: =@ctx.datasources.progress-data-dynamic
+          - data: =@ctx.datasources.activityData
             name: Month view
             color: color9
       top:

@@ -76,7 +76,22 @@ datasources:
           ,'$.isSwitched'
           ,'$.title'
         FROM [default/account-settings]
-
+  activityData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: activities
+  
+      query: 
+        SELECT 
+        '$.id',
+        '$.distance',
+        '$.start_date'
+        FROM [activities] 
+        WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
+        
 children:
   - type: component.avatar
     options:
@@ -151,8 +166,8 @@ children:
                 subtitle: =@ctx.datasources.score-desc-data.subtitle
                 leftElement: 
                   element: progress
-                  title: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
-                  value: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) / 100
+                  title: =$ceil(($sum(@ctx.datasources.activityData.distance) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
+                  value: =$ceil(($sum(@ctx.datasources.activityData.distance) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100) / 100
                 onPress: 
                   type: action.go-to
                   options:
@@ -208,7 +223,7 @@ widgets:
                 icon: pie-line-graph
                 iconColor: color9
                 
-            value: =$ceil($sum(@ctx.datasources.training-data-dynamic.distance))
+            value: =$floor($sum(@ctx.datasources.activityData.distance )) / 1000
             format:
               unit: ='/ ' & @ctx.datasources.goal-data-dynamic.amount & 'km'
             align: right
@@ -216,7 +231,7 @@ widgets:
             bottom: 
               type: component.titles
               options:
-                subtitle: ='Your score' & ':' & ' ' & $ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
+                subtitle: ='Your score' & ':' & ' ' & $ceil(($sum(@ctx.datasources.activityData.distance) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
                 align: right
                 
   

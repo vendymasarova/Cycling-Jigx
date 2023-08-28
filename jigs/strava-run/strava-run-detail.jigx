@@ -53,7 +53,7 @@ children:
               - type: component.entity-field
                 options:
                   label: Distance
-                  value: =@ctx.datasources.trainingDetails.distance & ' km'
+                  value: =($floor(@ctx.datasources.trainingDetails.distance) / 1000) & ' km'
               - type: component.entity-field
                 options:
                   label: Elevation Gain
