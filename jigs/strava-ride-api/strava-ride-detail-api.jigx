@@ -1,60 +1,9 @@
-title: =@ctx.solution.state.activityId & @ctx.datasources.activityDetail.id
-# title: =@ctx.datasources.activityDetail.name != null ? "Training details":" "
-description: fdfs
+title: =@ctx.datasources.activityDetail.name
 type: jig.default
 placeholders:
-  - title: Please choose a service
+  - title: Please choose a activity
     when: =@ctx.datasources.activityDetail.name != null ? false:true
     icon: loading-data
-    
-onFocus: 
-  type: action.sync-entities
-  options: 
-    provider: DATA_PROVIDER_REST
-    entities:
-      - entity: getActivity
-        function: rest-get-activity
-        functionParameters:
-          access_token: stravaActivitieAapi.key
-          activityId: =@ctx.solution.state.activityId
-    
-# datasources:
-#   trainingDetails: 
-#     type: datasource.sqlite
-#     options:
-#       provider: DATA_PROVIDER_LOCAL
-  
-#       entities:
-#         - entity: activities
-  
-#       query: 
-#         SELECT 
-#         id
-#         ,'$.id'
-#         ,'$.avg_heart_rate'
-#         ,'$.date'
-#         ,'$.country'
-#         ,'$.distance'
-#         ,'$.average_speed'
-#         ,'$.city'
-#         ,'$.street'
-#         ,'$.name'
-#         ,'$.calories'
-#         ,'$.moving_time'
-#         ,'$.elapsed_time'
-#         ,'$.carpool'
-#         ,'$.max_speed'
-#         ,'$.has_heartrate'
-#         ,'$.average_heartrate'
-#         ,'$.max_heartrate'
-#         ,'$.elev_high'
-#         ,'$.elev_low'
-#         ,'$.total_elevation_gain'
-#         FROM [activities] 
-#         WHERE '$.id' = activityId
-        
-#       queryParameters:
-#         rideId: =@ctx.solution.state.ride
 
 datasources:
   activityDetail:
@@ -67,33 +16,23 @@ datasources:
   
       query: 
         SELECT 
-        '$.id'
-        ,'$.avg_heart_rate'
-        ,'$.date'
-        ,'$.country'
-        ,'$.distance'
-        ,'$.average_speed'
-        ,'$.city'
-        ,'$.street'
-        ,'$.name'
-        ,'$.calories'
-        ,'$.moving_time'
-        ,'$.elapsed_time'
-        ,'$.carpool'
-        ,'$.max_speed'
-        ,'$.has_heartrate'
-        ,'$.average_heartrate'
-        ,'$.max_heartrate'
-        ,'$.elev_high'
-        ,'$.elev_low'
-        ,'$.total_elevation_gain'
+        '$.id',
+        '$.name',
+        '$.distance',
+        '$.elevation_gain',
+        '$.moving_time',
+        '$.average_speed',
+        '$.calories',
+        '$.average_heartrate',
+        '$.photo'
         FROM [getActivity] 
-        WHERE '$.id' = @currId
-        
-      queryParameters:
-        currId: =@ctx.solution.state.activityId
         
 children:
+  - type: component.image
+    options:
+      source:
+        uri: =@ctx.datasources.activityDetail.photo ? @ctx.datasources.activityDetail.photo :' '
+      resizeMode: cover
   - type: component.entity
     options:
       children:
@@ -103,22 +42,22 @@ children:
               - type: component.entity-field
                 options:
                   label: Distance
-                  value: =($floor(@ctx.datasources.activityDetail.distance) / 1000) & ' km'
+                  value: =$round(@ctx.datasources.activityDetail.distance / 1000, 2) & ' km'
               - type: component.entity-field
                 options:
                   label: Elevation Gain
-                  value: =@ctx.datasources.activityDetail.total_elevation_gain & ' m'
+                  value: =@ctx.datasources.activityDetail.elevation_gain & ' m'
         - type: component.field-row
           options:
             children:
               - type: component.entity-field
                 options:
                   label: Moving Time
-                  value: =@ctx.datasources.activityDetail.moving_time & ' minutes'
+                  value: =$floor(@ctx.datasources.activityDetail.moving_time / 3600) & ' h ' & $substring($string($number($substringAfter($string($round(@ctx.datasources.activityDetail.moving_time / 3600, 2)), '.')) * 6), 0,2) & ' m'
               - type: component.entity-field
                 options:
                   label: Average Speed
-                  value: =@ctx.datasources.activityDetail.average_speed & ' km/h'
+                  value: =$round(@ctx.datasources.activityDetail.average_speed * 3.6, 2) & ' km/h'
         - type: component.field-row
           options:
             children:
@@ -130,4 +69,5 @@ children:
                 options:
                   label: Average Heart Rate
                   value: =@ctx.datasources.activityDetail.average_heartrate
+                  rightIcon: chart
              

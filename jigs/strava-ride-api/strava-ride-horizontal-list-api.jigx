@@ -41,7 +41,7 @@ datasources:
         '$.start_date',
         '$.type'
         FROM [apiActivities] 
-        WHERE '$.type' = 'Ride'
+        WHERE '$.type' = 'Walk'
 
 data: =@ctx.datasources.mydata
 item:
@@ -55,21 +55,24 @@ item:
       - when: =@ctx.current.item.id = @ctx.solution.state.activityId ? true :false
         color: color9
     horizontalItemSize: large
-    # onPress: 
-      
-    #   type: action.execute-entity
-    #   options: 
-    #     provider: DATA_PROVIDER_REST
-    #     entity: getActivity
-    #     function: rest-get-activity
-    #     functionParameters:
-    #       access_token: stravaActivitieAapi.key
-    #       activityId: =@ctx.current.item.id
     onPress: 
-      type: action.set-state
+      type: action.action-list
       options:
-        state: =@ctx.solution.state.activityId
-        value: =@ctx.current.item.id
+        isSequential: true
+        actions:
+          - type: action.set-state
+            options:
+              state: =@ctx.solution.state.activityId
+              value: =@ctx.current.item.id
+          - type: action.sync-entities
+            options: 
+              provider: DATA_PROVIDER_REST
+              entities:
+                - entity: getActivity
+                  function: rest-get-activity
+                  functionParameters:
+                    access_token: stravaActivitieAapi.key
+                    activityId: =@ctx.solution.state.activityId
 
           
           

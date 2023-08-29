@@ -12,3 +12,15 @@ parameters:
     type: string
     location: path
     required: true
+    
+outputTransform: |
+  {
+    "name" : $.name,
+    "distance" : $.distance,
+    "elevation_gain" : $.total_elevation_gain,
+    "moving_time" : $.moving_time,
+    "average_speed" : $.average_speed,
+    "calories" : $.calories,
+    "average_heartrate" : $.average_heartrate,
+    "photo": $.photos.primary.urls."600"
+  }
