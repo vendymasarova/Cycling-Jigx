@@ -69,5 +69,4 @@ children:
                 options:
                   label: Average Heart Rate
                   value: =@ctx.datasources.activityDetail.average_heartrate
-                  rightIcon: chart
              
