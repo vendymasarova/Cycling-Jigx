@@ -12,7 +12,7 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: activities
+        - entity: rideActivity
   
       query: 
         SELECT 
@@ -37,7 +37,7 @@ datasources:
         ,'$.elev_high'
         ,'$.elev_low'
         ,'$.total_elevation_gain'
-        FROM [activities] 
+        FROM [rideActivity] 
         WHERE '$.id' = @rideId
         
       queryParameters:
@@ -64,11 +64,11 @@ children:
               - type: component.entity-field
                 options:
                   label: Moving Time
-                  value: =@ctx.datasources.trainingDetails.moving_time & ' minutes'
+                  value: =$floor(@ctx.datasources.trainingDetails.moving_time / 3600) & ' h ' & $substring($string($number($substringAfter($string($round(@ctx.datasources.trainingDetails.moving_time / 3600, 2)), '.')) * 6), 0,2) & ' m'
               - type: component.entity-field
                 options:
                   label: Average Speed
-                  value: =@ctx.datasources.trainingDetails.average_speed & ' km/h'
+                  value: =$round(@ctx.datasources.trainingDetails.average_speed * 3.6, 2) & ' km/h'
         - type: component.field-row
           options:
             children:

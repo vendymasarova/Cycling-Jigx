@@ -22,7 +22,7 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: activities
+        - entity: walkActivities
   
       query: 
         SELECT 
@@ -30,7 +30,7 @@ datasources:
         '$.name',
         '$.start_date',
         '$.type'
-        FROM [activities] 
+        FROM [walkActivities] 
         WHERE '$.type' = 'Walk'
 
 data: =@ctx.datasources.mydata

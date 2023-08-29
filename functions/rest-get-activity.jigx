@@ -4,11 +4,11 @@ url: https://www.strava.com/api/v3/activities/{activityId}?include_all_efforts=t
 
 parameters:
   access_token:
-      location: query
-      required: true
-      type: secret
-      value: stravaActivitieAapi.key #Use manage.jigx.com to define credentials for your solution
+    location: query
+    required: true
+    type: secret
+    value: stravaActivitieAapi.key
   activityId:
     type: string
-    location: query
+    location: path
     required: true

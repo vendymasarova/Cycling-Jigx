@@ -21,7 +21,7 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: activities
+        - entity: rideActivity
   
       query: 
         SELECT 
@@ -29,7 +29,7 @@ datasources:
         '$.name',
         '$.start_date',
         '$.type'
-        FROM [activities] 
+        FROM [rideActivity] 
         WHERE '$.type' = 'Ride'
 
 data: =@ctx.datasources.mydata
@@ -38,7 +38,6 @@ item:
   options:
     title: =@ctx.current.item.name
     subtitle: =$fromMillis($toMillis(@ctx.current.item.start_date), '[D1o] [MNn] [Y]')
-    
     progress: =@ctx.current.item.id = @ctx.solution.state.ride ? 1 :0
     color:
       - when: =@ctx.current.item.id = @ctx.solution.state.ride ? true :false
