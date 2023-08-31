@@ -9,7 +9,7 @@ onFocus:
         options:
           provider: DATA_PROVIDER_REST
           entities:
-            - entity: statistics
+            - entity: rideActivity
               function: rest-get-activities
 
 datasources:
@@ -19,15 +19,16 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: statistics
+        - entity: rideActivity
   
       query: 
         SELECT 
         '$.id',
-        json_extract(data, '$.start_date') as x, 
+        STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
         json_extract(data, '$.distance') as y
-        FROM [statistics] 
+        FROM [rideActivity] 
         WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
+        ORDER BY x 
           
 children:
   - type: component.section
@@ -39,19 +40,23 @@ children:
             chart:
               title:
                 text: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
-                verticalAlign: center         
+                verticalAlign: center   
+              width: 130
+              height: 130
             series:
-              - data: =[{"y":$number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"color2"}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"transparent"}]
+              - data: =[{"y":$number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"color3"}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"transparent"}]
                 layout: pie
                 name: Success
                 dataLabels:
                   - isEnabled: true
-                description: your succes 
+                    
+                description: your succes
+                color: positive
             legend:
               isHidden: false
   - type: component.section
     options:
-      title: =@ctx.datasources.activityData.x
+      title: Month view by date
       children:
         - type: component.bar-chart
           options:
