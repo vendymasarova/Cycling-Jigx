@@ -2,7 +2,6 @@ title: Name
 description: Description of your Jig
 type: jig.default
 
-
 datasources:
   trainingData: 
     type: datasource.sqlite

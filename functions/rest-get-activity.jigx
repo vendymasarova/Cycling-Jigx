@@ -22,5 +22,9 @@ outputTransform: |
     "average_speed" : $.average_speed,
     "calories" : $.calories,
     "average_heartrate" : $.average_heartrate,
-    "photo": $.photos.primary.urls."600"
+    "photo": $.photos.primary.urls."600",
+    "startLat": $.start_latlng[1],
+    "startLng": $.start_latlng[0],
+    "endLat": $.end_latlng[1],
+    "endLng": $.end_latlng[0]
   }

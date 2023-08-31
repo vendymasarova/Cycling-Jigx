@@ -30,16 +30,30 @@ children:
   - jigId: strava-ride-detail
     instanceId: ride
     inputs:
-      id: =@ctx.solution.state.ride
+      id: =@ctx.solution.state.rideActivityId
     
 widgets:
-  2x2:
-    type: widget.image
+  2x4:
+    type: widget.group
     options:
-      source:
-        uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
-      isContentOverlaid: true
-      bottom: 
-        type: component.titles
-        options:
-          title: Cycling
+      children:
+        - type: widget.image
+          options:
+            source:
+              uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+            resizeMode: cover
+            top: 
+              type: component.titles
+              options:
+                title: Cycling
+        - type: widget.image
+          options:
+            source:
+              uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+            resizeMode: cover
+            top: 
+              type: component.titles
+              options:
+                title: Cycling
+        
+          

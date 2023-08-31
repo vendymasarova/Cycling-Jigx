@@ -29,6 +29,15 @@ datasources:
         FROM [rideActivity] 
         WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
         ORDER BY x 
+        
+  legendData:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          name: Success
+        - id: 2
+          name: Needs to be done
           
 children:
   - type: component.section
@@ -46,10 +55,9 @@ children:
             series:
               - data: =[{"y":$number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"color3"}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"transparent"}]
                 layout: pie
-                name: Success
+                name: =@ctx.datasources.legendData.name
                 dataLabels:
                   - isEnabled: true
-                    
                 description: your succes
                 color: positive
             legend:

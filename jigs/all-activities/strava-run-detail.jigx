@@ -1,4 +1,4 @@
-title: =@ctx.datasources.trainingDetails.name != null ? "@ctx.datasources.trainingDetails.name":" "
+title: =@ctx.datasources.trainingDetails.name != null ? "Training details":" "
 type: jig.default
 placeholders:
   - title: Please choose a service
@@ -12,7 +12,7 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: walkActivities
+        - entity: runActivity
   
       query: 
         SELECT 
@@ -37,11 +37,11 @@ datasources:
         ,'$.elev_high'
         ,'$.elev_low'
         ,'$.total_elevation_gain'
-        FROM [walkActivities] 
-        WHERE '$.id' = @walkId
+        FROM [runActivity] 
+        WHERE '$.id' = @runId
         
       queryParameters:
-        walkId: =@ctx.solution.state.walk
+        runId: =@ctx.solution.state.run
         
 children:
   - type: component.entity
@@ -53,7 +53,7 @@ children:
               - type: component.entity-field
                 options:
                   label: Distance
-                  value: =($ceil(@ctx.datasources.trainingDetails.distance) / 1000) & ' km'
+                  value: =($floor(@ctx.datasources.trainingDetails.distance) / 1000) & ' km'
               - type: component.entity-field
                 options:
                   label: Elevation Gain
@@ -64,7 +64,7 @@ children:
               - type: component.entity-field
                 options:
                   label: Moving Time
-                  value: =@ctx.datasources.trainingDetails.moving_time / 60
+                  value: =@ctx.datasources.trainingDetails.moving_time & ' minutes'
               - type: component.entity-field
                 options:
                   label: Average Speed

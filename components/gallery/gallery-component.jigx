@@ -1,0 +1,22 @@
+type: component.default
+children:
+  - type: component.view
+    options:
+      style:
+        flex: 
+          direction: column 
+        padding: 
+          right: medium
+          bottom: medium
+        width: 240
+      children:
+      - type: component.card
+        options:
+          children:
+            
+            - type: component.image
+              options:
+                source:
+                  uri: =@ctx.inputs.image
+                resizeMode: cover
+                height: 150

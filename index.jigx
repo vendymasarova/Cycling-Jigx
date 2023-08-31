@@ -6,18 +6,18 @@ widgets:
     jigId: user-data
   # - size: 4x2 
   #   jigId: traning-composite
-  - size: "2x2"
+  - size: "2x4"
     jigId: strava-ride-composite
   - size: "2x2"
     jigId: strava-run-composite
-  - size: "2x2"
-    jigId: strava-walk-composite
+  # - size: "2x2"
+  #   jigId: activities-composite
   - size: 4x2 
     jigId: statistics
-  - size: 2x2 
-    jigId: friends-list
   - size: 1x1
-    jigId: strava-ride-composite-api
+    jigId: friends-list
+  - size: "1x1"
+    jigId: gallery
     
 stories: 
   - solution-story

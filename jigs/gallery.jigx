@@ -1,0 +1,28 @@
+title: Your Gallery
+type: jig.default
+
+datasources:
+  gallery-data: 
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          image: https://images.unsplash.com/photo-1501147830916-ce44a6359892?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
+        - id: 2
+          image: https://images.unsplash.com/photo-1531502774286-5e4e8e94879f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3087&q=80
+
+children:
+  - type: component.list
+    options:
+      isHorizontal: true
+      isHorizontalScrollIndicatorHidden: true
+      data: =@ctx.datasources.gallery-data
+      maximumItemsToRender: 8
+      item: 
+        type: component.custom-component
+        componentId: gallery-component
+        inputs:
+          image: =@ctx.current.item.image
+            
+        
+    

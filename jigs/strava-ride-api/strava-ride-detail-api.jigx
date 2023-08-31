@@ -29,6 +29,7 @@ datasources:
         
 children:
   - type: component.image
+    when: =@ctx.datasources.activityDetail.photo ? true:false
     options:
       source:
         uri: =@ctx.datasources.activityDetail.photo ? @ctx.datasources.activityDetail.photo :' '

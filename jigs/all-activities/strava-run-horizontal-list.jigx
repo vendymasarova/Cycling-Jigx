@@ -1,9 +1,15 @@
-title: Cleaning Services
+title: List
 description: List of available Cleaning Services
 type: jig.list
 icon: contact 
-isHorizontal: true
-isHorizontalScrollIndicatorHidden: false
+
+filter: 
+  - title: All
+    value: ''
+  - title: Ride
+    value: Ride
+  - title: Walk
+    value: Walk
     
 header:
   type: component.jig-header
@@ -31,7 +37,9 @@ datasources:
         '$.start_date',
         '$.type'
         FROM [runActivity] 
-        WHERE '$.type' = 'Run'
+        WHERE '$.type' LIKE @filter or @filter IS NULL
+      queryParameters:
+        filter: =@ctx.jig.state.filter
 
 data: =@ctx.datasources.mydata
 item:

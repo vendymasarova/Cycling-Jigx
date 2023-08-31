@@ -4,7 +4,7 @@ type: jig.list
 icon: contact 
 isHorizontal: true
 isHorizontalScrollIndicatorHidden: false
-    
+
 header:
   type: component.jig-header
   options:
@@ -22,7 +22,7 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: walkActivities
+        - entity: runActivity
   
       query: 
         SELECT 
@@ -30,8 +30,8 @@ datasources:
         '$.name',
         '$.start_date',
         '$.type'
-        FROM [walkActivities] 
-        WHERE '$.type' = 'Walk'
+        FROM [runActivity] 
+        WHERE '$.type' = 'Run'
 
 data: =@ctx.datasources.mydata
 item:
@@ -40,9 +40,9 @@ item:
     title: =@ctx.current.item.name
     subtitle: =$fromMillis($toMillis(@ctx.current.item.start_date), '[D1o] [MNn] [Y]')
     
-    progress: =@ctx.current.item.id = @ctx.solution.state.walk ? 1 :0
+    progress: =@ctx.current.item.id = @ctx.solution.state.run ? 1 :0
     color:
-      - when: =@ctx.current.item.id = @ctx.solution.state.walk ? true :false
+      - when: =@ctx.current.item.id = @ctx.solution.state.run ? true :false
         color: color9
     horizontalItemSize: large
     onPress: 
@@ -51,7 +51,7 @@ item:
         actions:
           - type: action.set-state
             options:
-              state: =@ctx.solution.state.walk
+              state: =@ctx.solution.state.run
               value: =@ctx.current.item.id
       
     
