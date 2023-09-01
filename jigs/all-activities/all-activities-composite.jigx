@@ -1,4 +1,4 @@
-title: Cycling trainings
+title: See your other activities
 type: jig.composite
 
 header:
@@ -9,8 +9,8 @@ header:
       type: component.image
       options:
         source:
-          uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
-
+          uri: https://images.unsplash.com/photo-1528543606781-2f6e6857f318?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2001&q=80
+          
 onFocus:
   type: action.action-list
   options:
@@ -19,27 +19,27 @@ onFocus:
         options:
           provider: DATA_PROVIDER_REST
           entities:
-            - entity: apiActivities
+            - entity: runActivity
               function: rest-get-activities
 
 children:
-  - jigId: strava-ride-horizontal-list-api
+  - jigId: all-activities-horizontal-list
     isTitleHidden: true
   # - jigId: training-list-horizontal
   #   isTitleHidden: true
-  - jigId: strava-ride-detail-api
-    instanceId: apiRide
+  - jigId: all-activities-detail
+    instanceId: run
     inputs:
-      id: =@ctx.solution.state.activityId
+      id: =@ctx.solution.state.run
     
 widgets:
   2x2:
     type: widget.image
     options:
       source:
-        uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+        uri: https://images.unsplash.com/photo-1528543606781-2f6e6857f318?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2001&q=80
       isContentOverlaid: true
       bottom: 
         type: component.titles
         options:
-          title: Cycling
+          title: Running

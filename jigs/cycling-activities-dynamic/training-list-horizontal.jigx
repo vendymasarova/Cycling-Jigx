@@ -1,15 +1,9 @@
-title: List
+title: Cleaning Services
 description: List of available Cleaning Services
 type: jig.list
 icon: contact 
-
-filter: 
-  - title: All
-    value: ''
-  - title: Ride
-    value: Ride
-  - title: Walk
-    value: Walk
+isHorizontal: true
+isHorizontalScrollIndicatorHidden: false
     
 header:
   type: component.jig-header
@@ -22,35 +16,39 @@ header:
           uri: https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80
 
 datasources:
-  mydata: 
+  trainingData: 
     type: datasource.sqlite
     options:
-      provider: DATA_PROVIDER_LOCAL
+      provider: DATA_PROVIDER_DYNAMIC
   
       entities:
-        - entity: runActivity
+        - default/trainings
   
-      query: 
-        SELECT 
-        '$.id',
-        '$.name',
-        '$.start_date',
-        '$.type'
-        FROM [runActivity] 
-        WHERE '$.type' LIKE @filter or @filter IS NULL
-      queryParameters:
-        filter: =@ctx.jig.state.filter
+      query: |
+        SELECT
+          id
+          ,'$.avg_heart_rate'
+          ,'$.date'
+          ,'$.elevation'
+          ,'$.country'
+          ,'$.distance'
+          ,'$.avg_speed'
+          ,'$.city'
+          ,'$.street'
+          ,'$.name'
+          ,'$.calories'
+          ,'$.moving_time'
+        FROM [default/trainings]
 
-data: =@ctx.datasources.mydata
+data: =@ctx.datasources.trainingData
 item:
   type: component.list-item
   options:
     title: =@ctx.current.item.name
-    subtitle: =$fromMillis($toMillis(@ctx.current.item.start_date), '[D1o] [MNn] [Y]')
-    
-    progress: =@ctx.current.item.id = @ctx.solution.state.run ? 1 :0
+    subtitle: ='Date:' & @ctx.current.item.date
+    progress: =@ctx.current.item.id = @ctx.solution.state.hello ? 1 :0
     color:
-      - when: =@ctx.current.item.id = @ctx.solution.state.run ? true :false
+      - when: =@ctx.current.item.id = @ctx.solution.state.hello ? true :false
         color: color9
     horizontalItemSize: large
     onPress: 
@@ -59,7 +57,7 @@ item:
         actions:
           - type: action.set-state
             options:
-              state: =@ctx.solution.state.run
+              state: =@ctx.solution.state.hello
               value: =@ctx.current.item.id
       
     

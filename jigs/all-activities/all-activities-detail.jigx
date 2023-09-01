@@ -1,4 +1,4 @@
-title: =@ctx.datasources.trainingDetails.name != null ? "Training details":" "
+title: =@ctx.datasources.trainingDetails.name != null ? "@ctx.datasources.trainingDetails.name":" "
 type: jig.default
 placeholders:
   - title: Please choose a service
@@ -64,15 +64,16 @@ children:
               - type: component.entity-field
                 options:
                   label: Moving Time
-                  value: =@ctx.datasources.trainingDetails.moving_time & ' minutes'
+                  value: =$floor(@ctx.datasources.trainingDetails.moving_time / 3600) & ' h ' & $substring($string($number($substringAfter($string($round(@ctx.datasources.trainingDetails.moving_time / 3600, 2)), '.')) * 6), 0,2) & ' m'
               - type: component.entity-field
                 options:
                   label: Average Speed
-                  value: =@ctx.datasources.trainingDetails.average_speed & ' km/h'
+                  value: =$round(@ctx.datasources.trainingDetails.average_speed * 3.6, 2) & ' km/h'
         - type: component.field-row
           options:
             children:
               - type: component.entity-field
+                when: =@ctx.datasources.trainingDetails.calories ? true:false
                 options:
                   label: Calories
                   value: =@ctx.datasources.trainingDetails.calories

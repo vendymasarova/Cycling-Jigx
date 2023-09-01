@@ -37,9 +37,39 @@ datasources:
         ,'$.elev_high'
         ,'$.elev_low'
         ,'$.elevation_gain'
-        ,'$.startLat'
-        ,'$.startLng'
+        ,'$.laps_averageHeartRate'
+        ,'$.laps_averageSpeed'
+        ,'$.laps_averageHeartRate'
+        ,'$.lap_name'
+        ,json_extract(data, '$.laps_averageHeartRate') as y
+        ,json_extract(data, '$.lap_name') as x
         FROM [getRideActivity] 
+  
+  lineChartData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: getRideActivity
+  
+      query: 
+        WITH cte AS (
+            SELECT 
+                '$.id' AS id,
+                REPLACE(REPLACE(REPLACE(json_extract(data, '$.lap_name'), '"', ''), '[', ''), ']', '') as x,
+                REPLACE(REPLACE(json_extract(data, '$.laps_averageHeartRate'), '[', ''), ']', '') as y
+            FROM [getRideActivity]
+        )
+        SELECT 
+            id,
+            GROUP_CONCAT(x, ', ') as x,
+            GROUP_CONCAT(y, ', ') as y
+        FROM cte
+        GROUP BY id
+        ORDER BY x;
+
+
         
 children:
   - type: component.entity
@@ -78,4 +108,38 @@ children:
                 options:
                   label: Average Heart Rate
                   value: =@ctx.datasources.trainingDetails.average_heartrate
-             
+        - type: component.field-row
+          options:
+            children:
+              - type: component.entity-field
+                options:
+                  label: Calories
+                  value: =$eval(@ctx.datasources.lineChartData.x)
+              - type: component.entity-field
+                options:
+                  label: Average Heart Rate
+                  value: =$eval(@ctx.datasources.lineChartData.y)
+  - type: component.section
+    options:
+      title: =@ctx.datasources.lineChartData.x
+      children:
+        - type: component.line-chart
+          options:
+            # yAxis:
+            #   # min: 0
+            series:
+              - data: =@ctx.datasources.lineChartData.{'x':x, 'y'.y}
+                color: color9
+        - type: component.bar-chart
+          options:
+            yAxis:
+              labels: 
+                format:
+                  notation: standard
+              tickAmount: 2
+              isFirstTickHidden: false
+              isFirstLabelHidden: false
+            series:
+            - data: =@ctx.datasources.lineChartData
+              name: "Month view"
+              color: color9

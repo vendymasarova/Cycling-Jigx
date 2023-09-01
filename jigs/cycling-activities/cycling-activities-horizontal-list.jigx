@@ -3,6 +3,7 @@ type: jig.list
 icon: contact 
 isHorizontal: true
 isHorizontalScrollIndicatorHidden: false
+
     
 header:
   type: component.jig-header
@@ -32,7 +33,7 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: apiActivities
+        - entity: rideActivity
   
       query: 
         SELECT 
@@ -40,8 +41,8 @@ datasources:
         '$.name',
         '$.start_date',
         '$.type'
-        FROM [apiActivities] 
-        WHERE '$.type' = 'Walk'
+        FROM [rideActivity] 
+        WHERE '$.type' = 'Ride'
 
 data: =@ctx.datasources.mydata
 item:
@@ -49,10 +50,9 @@ item:
   options:
     title: =@ctx.current.item.name
     subtitle: =$fromMillis($toMillis(@ctx.current.item.start_date), '[D1o] [MNn] [Y]')
-    
-    progress: =@ctx.current.item.id = @ctx.solution.state.activityId ? 1 :0
+    progress: =@ctx.current.item.id = @ctx.solution.state.rideActivityId ? 1 :0
     color:
-      - when: =@ctx.current.item.id = @ctx.solution.state.activityId ? true :false
+      - when: =@ctx.current.item.id = @ctx.solution.state.rideActivityId ? true :false
         color: color9
     horizontalItemSize: large
     onPress: 
@@ -62,17 +62,15 @@ item:
         actions:
           - type: action.set-state
             options:
-              state: =@ctx.solution.state.activityId
+              state: =@ctx.solution.state.rideActivityId
               value: =@ctx.current.item.id
           - type: action.sync-entities
             options: 
               provider: DATA_PROVIDER_REST
               entities:
-                - entity: getActivity
+                - entity: getRideActivity
                   function: rest-get-activity
                   functionParameters:
                     access_token: stravaActivitieAapi.key
-                    activityId: =@ctx.solution.state.activityId
-
-          
-          
+                    activityId: =@ctx.solution.state.rideActivityId
+    

@@ -64,7 +64,7 @@ children:
               isHidden: false
   - type: component.section
     options:
-      title: Month view by date
+      title: =@ctx.datasources.activityData.x
       children:
         - type: component.bar-chart
           options:

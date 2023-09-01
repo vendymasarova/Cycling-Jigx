@@ -26,5 +26,8 @@ outputTransform: |
     "startLat": $.start_latlng[1],
     "startLng": $.start_latlng[0],
     "endLat": $.end_latlng[1],
-    "endLng": $.end_latlng[0]
+    "endLng": $.end_latlng[0],
+    "laps_averageHeartRate": $.laps.average_heartrate,
+    "laps_averageSpeed": $.laps.average_speed,
+    "lap_name": $.laps.name
   }

@@ -7,9 +7,9 @@ widgets:
   # - size: 4x2 
   #   jigId: traning-composite
   - size: "2x4"
-    jigId: strava-ride-composite
+    jigId: cycling-activities-composite
   - size: "2x2"
-    jigId: strava-run-composite
+    jigId: all-activities-composite
   # - size: "2x2"
   #   jigId: activities-composite
   - size: 4x2 
