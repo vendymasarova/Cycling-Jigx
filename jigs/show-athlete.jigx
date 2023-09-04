@@ -1,0 +1,49 @@
+title: Show athlete
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+ 
+onFocus:
+  type: action.action-list
+  options:
+    actions:
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_REST
+          entities:
+            - entity: athlete
+              function: rest-get-athlete
+              functionParameters:
+                accessToken: stravaoauth
+
+datasources:
+  mydata:
+    type: datasource.sqlite
+    options:
+      isDocument: true
+      provider: DATA_PROVIDER_LOCAL
+      entities:
+        - entity: athlete
+
+      query: SELECT id, '$.count', '$.distance' FROM [athlete]
+
+children:
+  - type: component.entity
+    options:
+      children:
+        - type: component.entity-field
+          options:
+            label: Count
+            value: =@ctx.datasources.mydata.count
+        - type: component.entity-field
+          options:
+            label: Distance
+            value: =@ctx.datasources.mydata.distance

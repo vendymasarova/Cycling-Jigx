@@ -28,7 +28,7 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: runActivity
+        - entity: allActivities
   
       query: 
         SELECT 
@@ -36,7 +36,7 @@ datasources:
         '$.name',
         '$.start_date',
         '$.type'
-        FROM [runActivity] 
+        FROM [allActivities] 
         WHERE '$.type' LIKE @filter or @filter IS NULL
       queryParameters:
         filter: =@ctx.jig.state.filter

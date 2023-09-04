@@ -13,7 +13,6 @@ actions:
           method: update
           data: 
             id: =@ctx.datasources.userData.id
-          # goBack: previous
           onSuccess: 
             title: Data updated
 

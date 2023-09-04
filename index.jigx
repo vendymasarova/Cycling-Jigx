@@ -18,6 +18,17 @@ widgets:
     jigId: friends-list
   - size: "1x1"
     jigId: gallery
+  - size: "1x1"
+    jigId: show-athlete
     
+onLoad: 
+  type: action.sync-entities
+  options:
+    provider: DATA_PROVIDER_REST
+    entities:
+      - entity: allActivities
+        function: rest-get-activities
+        functionParameters:
+          accessToken: stravaoauth
 stories: 
   - solution-story

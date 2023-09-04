@@ -11,17 +11,6 @@ header:
         source:
           uri: =@ctx.datasources.userProfileData.banner
           
-onFocus:
-  type: action.action-list
-  options:
-    actions:
-      - type: action.sync-entities
-        options:
-          provider: DATA_PROVIDER_REST
-          entities:
-            - entity: userGoal
-              function: rest-get-activities
-          
 actions:
   - children:
       - type: action.go-to
@@ -93,14 +82,14 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: userGoal
+        - entity: allActivities
   
       query: 
         SELECT 
         '$.id',
         '$.distance',
         '$.start_date'
-        FROM [userGoal] 
+        FROM [allActivities] 
         WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
         
 children:

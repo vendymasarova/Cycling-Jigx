@@ -3,8 +3,8 @@ method: GET
 url: https://www.strava.com/api/v3/athlete/activities
 
 parameters:
-  access_token:
-      location: query
-      required: true
-      type: secret
-      value: stravaActivitieAapi.key #Use manage.jigx.com to define credentials for your solution
+  accessToken:
+    location: header
+    required: true
+    type: string
+    value: stravaoauth #Use manage.jigx.com to define credentials for your solution

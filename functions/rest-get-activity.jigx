@@ -23,11 +23,11 @@ outputTransform: |
     "calories" : $.calories,
     "average_heartrate" : $.average_heartrate,
     "photo": $.photos.primary.urls."600",
-    "startLat": $.start_latlng[1],
-    "startLng": $.start_latlng[0],
-    "endLat": $.end_latlng[1],
-    "endLng": $.end_latlng[0],
-    "laps_averageHeartRate": $.laps.average_heartrate,
-    "laps_averageSpeed": $.laps.average_speed,
-    "lap_name": $.laps.name
+    "laps": $map($.laps, function($lap, $idx, $arr) {
+        {
+          "name": $lap.name,
+          "heartRate": $lap.average_heartrate,
+          "speed": $lap.average_speed
+        }
+      })
   }

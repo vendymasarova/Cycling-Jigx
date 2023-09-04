@@ -43,6 +43,7 @@ datasources:
         ,'$.lap_name'
         ,json_extract(data, '$.laps_averageHeartRate') as y
         ,json_extract(data, '$.lap_name') as x
+        ,'$.laps'
         FROM [getRideActivity] 
   
   lineChartData:
@@ -56,18 +57,15 @@ datasources:
       query: 
         WITH cte AS (
             SELECT 
-                '$.id' AS id,
                 REPLACE(REPLACE(REPLACE(json_extract(data, '$.lap_name'), '"', ''), '[', ''), ']', '') as x,
                 REPLACE(REPLACE(json_extract(data, '$.laps_averageHeartRate'), '[', ''), ']', '') as y
             FROM [getRideActivity]
         )
         SELECT 
-            id,
             GROUP_CONCAT(x, ', ') as x,
             GROUP_CONCAT(y, ', ') as y
         FROM cte
-        GROUP BY id
-        ORDER BY x;
+        ORDER BY x ASC
 
 
         
@@ -108,38 +106,52 @@ children:
                 options:
                   label: Average Heart Rate
                   value: =@ctx.datasources.trainingDetails.average_heartrate
-        - type: component.field-row
-          options:
-            children:
-              - type: component.entity-field
-                options:
-                  label: Calories
-                  value: =$eval(@ctx.datasources.lineChartData.x)
-              - type: component.entity-field
-                options:
-                  label: Average Heart Rate
-                  value: =$eval(@ctx.datasources.lineChartData.y)
   - type: component.section
+    when: =$eval(@ctx.datasources.trainingDetails.laps).heartRate ? true:false
     options:
-      title: =@ctx.datasources.lineChartData.x
+      title: Your average heart Rate
       children:
         - type: component.line-chart
           options:
             # yAxis:
             #   # min: 0
             series:
-              - data: =@ctx.datasources.lineChartData.{'x':x, 'y'.y}
-                color: color9
-        - type: component.bar-chart
-          options:
+              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':heartRate}
+                color: color4
+                animation:
+                  direction: left-to-right
+                layout: area-gradient
+                dataLabels:
+                  - isEnabled: true
+            xAxis:
+              isFirstTickHidden: true
+              isFirstLabelHidden: true
+            
             yAxis:
-              labels: 
-                format:
-                  notation: standard
-              tickAmount: 2
+              isFirstTickHidden: true
+              isFirstLabelHidden: true
+  - type: component.section
+    when: =$eval(@ctx.datasources.trainingDetails.laps).speed ? true:false
+    options:
+      title: Your average heart Rate
+      children:
+        - type: component.line-chart
+          options:
+            # yAxis:
+            #   # min: 0
+            series:
+              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':speed}
+                color: color4
+                animation:
+                  direction: left-to-right
+                layout: area-gradient
+                dataLabels:
+                  - isEnabled: true
+            xAxis:
               isFirstTickHidden: false
               isFirstLabelHidden: false
-            series:
-            - data: =@ctx.datasources.lineChartData
-              name: "Month view"
-              color: color9
+            
+            yAxis:
+              isFirstTickHidden: false
+              isFirstLabelHidden: false
+              

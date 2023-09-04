@@ -1,17 +1,6 @@
 title: Statistics
 type: jig.default
 
-onFocus:
-  type: action.action-list
-  options:
-    actions:
-      - type: action.sync-entities
-        options:
-          provider: DATA_PROVIDER_REST
-          entities:
-            - entity: rideActivity
-              function: rest-get-activities
-
 datasources:
   activityData:
     type: datasource.sqlite
@@ -19,14 +8,14 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: rideActivity
+        - entity: allActivities
   
       query: 
         SELECT 
         '$.id',
         STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
         json_extract(data, '$.distance') as y
-        FROM [rideActivity] 
+        FROM [allActivities] 
         WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
         ORDER BY x 
         

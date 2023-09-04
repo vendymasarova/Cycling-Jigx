@@ -15,16 +15,16 @@ header:
         source:
           uri: https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80
 
-onFocus: 
-  type: action.sync-entities
-  options: 
-    provider: DATA_PROVIDER_REST
-    entities:
-      - entity: getActivity
-        function: rest-get-activity
-        functionParameters:
-          access_token: stravaActivitieAapi.key
-          activityId: =@ctx.solution.state.activityId
+# onFocus: 
+#   type: action.sync-entities
+#   options: 
+#     provider: DATA_PROVIDER_REST
+#     entities:
+#       - entity: getActivity
+#         function: rest-get-activity
+#         functionParameters:
+#           access_token: stravaActivitieAapi.key
+#           activityId: =@ctx.solution.state.activityId
 
 datasources:
   mydata: 
@@ -33,7 +33,7 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: rideActivity
+        - entity: allActivities
   
       query: 
         SELECT 
@@ -41,7 +41,7 @@ datasources:
         '$.name',
         '$.start_date',
         '$.type'
-        FROM [rideActivity] 
+        FROM [allActivities] 
         WHERE '$.type' = 'Ride'
 
 data: =@ctx.datasources.mydata
