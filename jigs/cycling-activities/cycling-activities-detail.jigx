@@ -44,6 +44,7 @@ datasources:
         ,json_extract(data, '$.laps_averageHeartRate') as y
         ,json_extract(data, '$.lap_name') as x
         ,'$.laps'
+        ,'$.segments'
         FROM [getRideActivity] 
   
   lineChartData:
@@ -133,15 +134,15 @@ children:
   - type: component.section
     when: =$eval(@ctx.datasources.trainingDetails.laps).speed ? true:false
     options:
-      title: Your average heart Rate
+      title: Your average speed
       children:
         - type: component.line-chart
           options:
             # yAxis:
             #   # min: 0
             series:
-              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':speed}
-                color: color4
+              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':speed * 3.6}
+                color: color2
                 animation:
                   direction: left-to-right
                 layout: area-gradient

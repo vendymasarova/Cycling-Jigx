@@ -3,11 +3,11 @@ method: GET
 url: https://www.strava.com/api/v3/activities/{activityId}?include_all_efforts=true&access_token={access_token}
 
 parameters:
-  access_token:
-    location: query
+  accessToken:
+    location: header
     required: true
-    type: secret
-    value: stravaActivitieAapi.key
+    type: string
+    value: stravaoauth
   activityId:
     type: string
     location: path
@@ -28,6 +28,13 @@ outputTransform: |
           "name": $lap.name,
           "heartRate": $lap.average_heartrate,
           "speed": $lap.average_speed
+        }
+      }),
+    "segments": $map($.segment_efforts.segment, function($segment, $idx, $arr) {
+        {
+          "city": $segment.city,
+          "state": $segment.state.
+          "country": $segment.country.
         }
       })
   }

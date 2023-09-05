@@ -1,0 +1,27 @@
+title: Name
+description: Description of your Jig
+type: jig.default
+
+children:
+  - type: component.form
+    instanceId: gallery-form
+    options:
+      children:
+        - type: component.media-field
+          instanceId: image
+          options:
+            label: new image
+            mediaType: image
+
+actions:
+  - children:
+      - type: action.submit-form
+        options:
+          formId: gallery-form
+          provider: DATA_PROVIDER_DYNAMIC
+          title: Submit form
+          entity: default/gallery
+          method: save
+          onSuccess: 
+            title: Huraa
+        

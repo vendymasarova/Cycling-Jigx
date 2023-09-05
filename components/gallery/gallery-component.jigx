@@ -8,7 +8,6 @@ children:
         padding: 
           right: medium
           bottom: medium
-        width: 240
       children:
       - type: component.card
         options:
@@ -19,4 +18,3 @@ children:
                 source:
                   uri: =@ctx.inputs.image
                 resizeMode: cover
-                height: 150

@@ -1,4 +1,4 @@
-title: =@ctx.datasources.trainingDetails.name != null ? "@ctx.datasources.trainingDetails.name":" "
+title: =@ctx.datasources.trainingDetails.name != null ? @ctx.datasources.trainingDetails.name & " "
 type: jig.default
 placeholders:
   - title: Please choose a service

@@ -29,4 +29,18 @@ widgets:
       bottom: 
         type: component.titles
         options:
-          title: Running
+          title: Other activities
+          subtitle: running, walking
+          icon: running
+          iconColor: color14
+            
+          
+          
+          
+          
+          
+          
+          
+          
+          
+          

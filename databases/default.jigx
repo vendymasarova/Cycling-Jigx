@@ -8,3 +8,4 @@ tables:
   user-profile:
   goals: 
   account-settings:
+  gallery:

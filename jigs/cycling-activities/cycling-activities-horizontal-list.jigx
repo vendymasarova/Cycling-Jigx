@@ -71,6 +71,6 @@ item:
                 - entity: getRideActivity
                   function: rest-get-activity
                   functionParameters:
-                    access_token: stravaActivitieAapi.key
+                    accessToken: stravaoauth
                     activityId: =@ctx.solution.state.rideActivityId
     
