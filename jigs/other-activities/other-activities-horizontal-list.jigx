@@ -1,0 +1,74 @@
+title: List
+description: List of available Cleaning Services
+type: jig.list
+icon: contact 
+
+filter: 
+  - title: All
+    value: ''
+  - title: Run
+    value: Run
+  - title: Walk
+    value: Walk
+    
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1628177142898-93e36e4e3a50?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2070&q=80
+
+datasources:
+  mydata: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: allActivities
+  
+      query: 
+        SELECT 
+        '$.id',
+        '$.name',
+        '$.start_date',
+        '$.type'
+        FROM [allActivities] 
+        WHERE '$.type' LIKE @filter or @filter IS NULL
+      queryParameters:
+        filter: =@ctx.jig.state.filter
+
+data: =@ctx.datasources.mydata
+item:
+  type: component.list-item
+  options:
+    title: =@ctx.current.item.name
+    subtitle: =$fromMillis($toMillis(@ctx.current.item.start_date), '[D1o] [MNn] [Y]')
+    progress: =@ctx.current.item.id = @ctx.solution.state.run ? 1 :0
+    color:
+      - when: =@ctx.current.item.id = @ctx.solution.state.run ? true :false
+        color: color9
+    horizontalItemSize: large
+    onPress: 
+      type: action.action-list
+      options:
+        isSequential: true
+        actions:
+          - type: action.set-state
+            options:
+              state: =@ctx.solution.state.activityId
+              value: =@ctx.current.item.id
+          - type: action.sync-entities
+            options: 
+              provider: DATA_PROVIDER_REST
+              entities:
+                - entity: getOtherActivities
+                  function: rest-get-activity
+                  functionParameters:
+                    accessToken: stravaoauth
+                    activityId: =@ctx.solution.state.activityId
+      
+    

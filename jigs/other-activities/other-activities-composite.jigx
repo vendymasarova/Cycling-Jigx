@@ -1,5 +1,6 @@
-title: See your other activities
+title: Other activities
 type: jig.composite
+icon: workout
 
 header:
   type: component.jig-header
@@ -33,6 +34,7 @@ widgets:
           subtitle: running, walking
           icon: running
           iconColor: color14
+          
             
           
           

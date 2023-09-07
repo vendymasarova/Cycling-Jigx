@@ -9,11 +9,13 @@ widgets:
   - size: "2x4"
     jigId: cycling-activities-composite
   - size: "2x2"
-    jigId: all-activities-composite
+    jigId: run-activities-composite
   # - size: "2x2"
   #   jigId: activities-composite
   - size: 4x2 
     jigId: statistics
+  - size: "1x1"
+    jigId: other-activities-composite
   - size: 1x1
     jigId: friends-list
   - size: "1x1"

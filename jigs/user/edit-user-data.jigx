@@ -15,7 +15,8 @@ actions:
             id: =@ctx.datasources.userData.id
           onSuccess: 
             title: Data updated
-
+            description: Your user data were succesfully udpdated
+            
 datasources:
   userData: 
     type: datasource.sqlite
@@ -35,9 +36,9 @@ datasources:
           ,'$.phoneNum'
           ,'$.userId'
         FROM [default/user-profile]
-        WHERE id = @userId
-      queryParameters:
-        userId: =@ctx.jig.inputs.userId
+      #   WHERE id = @userId
+      # queryParameters:
+      #   userId: =@ctx.jig.inputs.userId
         
 children:
   - type: component.form
@@ -68,9 +69,14 @@ children:
           instanceId: dateOfBirth
           options:
             label: Date of Birth
-            initialValue: =$fromMillis($toMillis(@ctx.datasources.userData.dateOfBirth), '[D1o] [MNn] [Y]') 
+            initialValue: =@ctx.datasources.userData.dateOfBirth
+        - type: component.number-field
+          instanceId: phoneNum
+          options:
+            label: Tel. number
+            initialValue: =@ctx.datasources.userData.phoneNum
         - type: component.email-field
-          instanceId: picture
+          instanceId: email
           options:
             label: email
             initialValue: =@ctx.datasources.userData.email

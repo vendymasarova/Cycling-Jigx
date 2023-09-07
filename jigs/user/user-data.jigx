@@ -227,7 +227,7 @@ widgets:
             format:
               unit: ='/ ' & @ctx.datasources.goal-data-dynamic.amount & 'km'
             align: right
-
+            
             bottom: 
               type: component.titles
               options:

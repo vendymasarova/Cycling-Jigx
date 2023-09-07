@@ -18,3 +18,4 @@ children:
                 source:
                   uri: =@ctx.inputs.image
                 resizeMode: cover
+                

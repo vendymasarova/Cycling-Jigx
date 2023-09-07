@@ -2,14 +2,8 @@ title: List
 description: List of available Cleaning Services
 type: jig.list
 icon: contact 
-
-filter: 
-  - title: All
-    value: ''
-  - title: Ride
-    value: Ride
-  - title: Walk
-    value: Walk
+isHorizontal: true
+isHorizontalScrollIndicatorHidden: false
     
 header:
   type: component.jig-header
@@ -37,9 +31,8 @@ datasources:
         '$.start_date',
         '$.type'
         FROM [allActivities] 
-        WHERE '$.type' LIKE @filter or @filter IS NULL
-      queryParameters:
-        filter: =@ctx.jig.state.filter
+        WHERE '$.type' = 'Run'
+
 
 data: =@ctx.datasources.mydata
 item:
@@ -47,18 +40,28 @@ item:
   options:
     title: =@ctx.current.item.name
     subtitle: =$fromMillis($toMillis(@ctx.current.item.start_date), '[D1o] [MNn] [Y]')
-    progress: =@ctx.current.item.id = @ctx.solution.state.run ? 1 :0
+    progress: =@ctx.current.item.id = @ctx.solution.state.runActivityId ? 1 :0
     color:
-      - when: =@ctx.current.item.id = @ctx.solution.state.run ? true :false
+      - when: =@ctx.current.item.id = @ctx.solution.state.runActivityId ? true :false
         color: color9
     horizontalItemSize: large
     onPress: 
       type: action.action-list
       options:
+        isSequential: true
         actions:
           - type: action.set-state
             options:
-              state: =@ctx.solution.state.run
+              state: =@ctx.solution.state.runActivityId
               value: =@ctx.current.item.id
+          - type: action.sync-entities
+            options: 
+              provider: DATA_PROVIDER_REST
+              entities:
+                - entity: getRunActivities
+                  function: rest-get-activity
+                  functionParameters:
+                    accessToken: stravaoauth
+                    activityId: =@ctx.solution.state.runActivityId
       
     

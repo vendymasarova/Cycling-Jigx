@@ -12,7 +12,7 @@ datasources:
       provider: DATA_PROVIDER_LOCAL
   
       entities:
-        - entity: allActivities
+        - entity: getRunActivities
   
       query: 
         SELECT 
@@ -36,12 +36,8 @@ datasources:
         ,'$.max_heartrate'
         ,'$.elev_high'
         ,'$.elev_low'
-        ,'$.total_elevation_gain'
-        FROM [allActivities] 
-        WHERE '$.id' = @runId
-        
-      queryParameters:
-        runId: =@ctx.solution.state.run
+        ,'$.elevation_gain'
+        FROM [getRunActivities] 
         
 children:
   - type: component.entity
@@ -57,7 +53,7 @@ children:
               - type: component.entity-field
                 options:
                   label: Elevation Gain
-                  value: =@ctx.datasources.trainingDetails.total_elevation_gain & ' m'
+                  value: =@ctx.datasources.trainingDetails.elevation_gain & ' m'
         - type: component.field-row
           options:
             children:
@@ -68,7 +64,7 @@ children:
               - type: component.entity-field
                 options:
                   label: Average Speed
-                  value: =$round(@ctx.datasources.trainingDetails.average_speed * 3.6, 2) & ' km/h'
+                  value: =$round((60 / (@ctx.datasources.trainingDetails.average_speed * 3.6)), 2)
         - type: component.field-row
           options:
             children:
