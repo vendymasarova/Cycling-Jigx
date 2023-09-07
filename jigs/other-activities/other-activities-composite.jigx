@@ -13,9 +13,9 @@ header:
           uri: https://images.unsplash.com/photo-1528543606781-2f6e6857f318?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2001&q=80        
 
 children:
-  - jigId: all-activities-horizontal-list
+  - jigId: other-activities-horizontal-list
     isTitleHidden: true
-  - jigId: all-activities-detail
+  - jigId: other-activities-detail
     instanceId: run
     inputs:
       id: =@ctx.solution.state.run

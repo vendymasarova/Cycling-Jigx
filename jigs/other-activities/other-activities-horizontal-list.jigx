@@ -47,9 +47,9 @@ item:
   options:
     title: =@ctx.current.item.name
     subtitle: =$fromMillis($toMillis(@ctx.current.item.start_date), '[D1o] [MNn] [Y]')
-    progress: =@ctx.current.item.id = @ctx.solution.state.run ? 1 :0
+    progress: =@ctx.current.item.id = @ctx.solution.state.otherActivitiesId ? 1 :0
     color:
-      - when: =@ctx.current.item.id = @ctx.solution.state.run ? true :false
+      - when: =@ctx.current.item.id = @ctx.solution.state.otherActivitiesId ? true :false
         color: color9
     horizontalItemSize: large
     onPress: 
@@ -59,7 +59,7 @@ item:
         actions:
           - type: action.set-state
             options:
-              state: =@ctx.solution.state.activityId
+              state: =@ctx.solution.state.otherActivitiesId
               value: =@ctx.current.item.id
           - type: action.sync-entities
             options: 
@@ -69,6 +69,6 @@ item:
                   function: rest-get-activity
                   functionParameters:
                     accessToken: stravaoauth
-                    activityId: =@ctx.solution.state.activityId
+                    activityId: =@ctx.solution.state.otherActivitiesId
       
     
