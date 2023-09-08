@@ -37,6 +37,7 @@ datasources:
         ,'$.elev_high'
         ,'$.elev_low'
         ,'$.elevation_gain'
+        ,'$.laps'
         FROM [getRunActivities] 
         
 children:
@@ -77,4 +78,58 @@ children:
                 options:
                   label: Average Heart Rate
                   value: =@ctx.datasources.trainingDetails.average_heartrate
-             
+  - type: component.section
+    when: =$eval(@ctx.datasources.trainingDetails.laps).heartRate ? true:false
+    options:
+      title: Your average heart Rate
+      children:
+        - type: component.line-chart
+          options:
+            # yAxis:
+            #   # min: 0
+            series:
+              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':heartRate}
+                color: color4
+                animation:
+                  direction: left-to-right
+                layout: area-gradient
+                dataLabels:
+                  - isEnabled: true
+            xAxis:
+              isFirstTickHidden: true
+              isFirstLabelHidden: true
+            
+            yAxis:
+              isFirstTickHidden: true
+              isFirstLabelHidden: true
+  - type: component.section
+    when: =$eval(@ctx.datasources.trainingDetails.laps).speed ? true:false
+    options:
+      title: Your average speed
+      children:
+        - type: component.line-chart
+          options:
+            # yAxis:
+            #   # min: 0
+            series:
+              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':60/speed * 3.6}
+                color: color2
+                animation:
+                  direction: left-to-right
+                layout: area-gradient
+                dataLabels:
+                  - isEnabled: true
+            xAxis:
+              isFirstTickHidden: false
+              isFirstLabelHidden: false
+            
+            yAxis:
+              isFirstTickHidden: false
+              isFirstLabelHidden: false
+  - type: component.entity
+    options:
+      children:
+        - type: component.entity-field
+          options:
+            label: sdfa
+            value: =$substring($string(@ctx.datasources.trainingDetails.average_speed, 0,1)

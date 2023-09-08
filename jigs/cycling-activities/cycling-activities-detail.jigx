@@ -37,38 +37,9 @@ datasources:
         ,'$.elev_high'
         ,'$.elev_low'
         ,'$.elevation_gain'
-        ,'$.laps_averageHeartRate'
-        ,'$.laps_averageSpeed'
-        ,'$.laps_averageHeartRate'
-        ,'$.lap_name'
-        ,json_extract(data, '$.laps_averageHeartRate') as y
-        ,json_extract(data, '$.lap_name') as x
         ,'$.laps'
         ,'$.segments'
         FROM [getRideActivity] 
-  
-  lineChartData:
-    type: datasource.sqlite
-    options:
-      provider: DATA_PROVIDER_LOCAL
-  
-      entities:
-        - entity: getRideActivity
-  
-      query: 
-        WITH cte AS (
-            SELECT 
-                REPLACE(REPLACE(REPLACE(json_extract(data, '$.lap_name'), '"', ''), '[', ''), ']', '') as x,
-                REPLACE(REPLACE(json_extract(data, '$.laps_averageHeartRate'), '[', ''), ']', '') as y
-            FROM [getRideActivity]
-        )
-        SELECT 
-            GROUP_CONCAT(x, ', ') as x,
-            GROUP_CONCAT(y, ', ') as y
-        FROM cte
-        ORDER BY x ASC
-
-
         
 children:
   - type: component.entity
