@@ -1,0 +1,138 @@
+title: Priority activity goal
+description: Description of your Jig
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+
+# onFocus:
+#   type: action.action-list
+#   options:
+#     actions:
+#       - type: action.sync-entities
+#         options:
+#           provider: 
+#           entities:
+#             - entity: 
+
+datasources:
+  activityData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: allActivities
+  
+      query: 
+          SELECT 
+          '$.id',
+          STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
+          json_extract(data, '$.distance') as y
+          FROM [allActivities] 
+          WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
+          ORDER BY x 
+          
+  score-desc-data:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          title: Your score
+          subtitle: click to edit
+children:
+  - type: component.section
+    options:
+      title: Cycling
+      children:
+        - type: component.bar-chart
+          options:
+            yAxis:
+              labels: 
+                format:
+                  notation: standard
+              tickAmount: 2
+              isFirstTickHidden: false
+              isFirstLabelHidden: false
+            series:
+            - data: =@ctx.datasources.activityData
+              name: Cycling
+              color: color9
+  - type: component.section
+    options:
+      title: Training progress
+      children:
+        - type: component.list
+          options:
+            data: =@ctx.datasources.score-desc-data
+            maximumItemsToRender: 8
+            item: 
+              type: component.list-item
+              options:
+                title: =@ctx.datasources.score-desc-data.title
+                subtitle: =@ctx.datasources.score-desc-data.subtitle
+                leftElement: 
+                  element: progress
+                  title: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) & '%'
+                  value: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) / 100
+                onPress: 
+                  type: action.go-to
+                  options:
+                    linkTo: goal
+
+widgets:
+  "4x2": 
+    type: widget.group
+    options:
+      children:
+        - type: widget.chart
+          options:
+            chart: 
+              type: component.pie-chart
+              when: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) != 100 ? true:false
+              options:
+                chart:
+                  title:
+                    text: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) & '%'
+                    verticalAlign: center   
+                  width: 130
+                  height: 130
+                series:
+                  - data: =[{"y":$number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100)), "color":"color3"}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100)), "color":"transparent"}]
+                    layout: arch
+                    dataLabels:
+                      - isEnabled: true
+                    description: your succes
+                    color: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) = 100 ? color3:color2
+                      
+                legend:
+                  isHidden: false
+
+        - type: widget.value
+          options:
+            top: 
+              type: component.titles
+              options:
+                title: Cycling goal
+                subtitle: =$fromMillis($toMillis(@ctx.datasources.goal-data-cycling-dynamic.start), '[D]. [M]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.goal-data-cycling-dynamic.end), '[D]. [M]. [Y]')
+                align: left
+                icon: pie-line-graph
+                iconColor: color9
+                
+            value: =$floor($sum(@ctx.datasources.activityData.y )) / 1000
+            format:
+              unit: ='/ ' & @ctx.datasources.goal-data-cycling-dynamic.amount & 'km'
+            align: right
+            
+            bottom: 
+              type: component.titles
+              options:
+                subtitle: See detail
+                align: right

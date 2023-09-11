@@ -1,0 +1,78 @@
+title: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) >= @ctx.datasources.goal-data-run-dynamic.amount ? 'true':'false'
+description: Description of your Jig
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+          
+# onFocus: 
+#   type: action.go-to
+#   options:
+#     linkTo: goal-run
+
+datasources:
+  mydata: 
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          horizontalPadding: 20
+          verticalPadding: 16
+          activityName: Cycling
+          date: '01. 08. - 31. 08. 2023'
+          value: 213/250km
+          linkName: Update your goal
+          iconName: running
+          linkTo: goal-run
+          
+  activityData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: allActivities
+  
+      query: 
+          SELECT 
+          '$.id',
+          STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
+          json_extract(data, '$.distance') as y
+          FROM [allActivities] 
+          WHERE '$.type' = 'Run' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
+          ORDER BY x 
+
+children:
+  - type: component.entity
+    options:
+      children:
+        - type: component.entity-field
+          when: =$ceil($sum(@ctx.datasources.activityData.y) / 1000) >= @ctx.datasources.goal-data-run-dynamic.amount ? true:false
+          options:
+            label: ''
+            value: Congratulations! You achieved your goal!
+            isMultiline: true
+  - type: component.custom-component
+    componentId: goal-card-custom
+    inputs:
+      horizontalPadding: =@ctx.datasources.mydata.horizontalPadding
+      verticalPadding: =@ctx.datasources.mydata.verticalPadding
+      activityName: =@ctx.datasources.mydata.activityName
+      date:  =$fromMillis($toMillis(@ctx.datasources.goal-data-run-dynamic.start), '[D]. [M]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.goal-data-run-dynamic.end), '[D]. [M]. [Y]')
+      value: =$floor($sum(@ctx.datasources.activityData.y) / 1000)  & ' / ' & @ctx.datasources.goal-data-run-dynamic.amount & ' km'
+      linkName: =@ctx.datasources.mydata.linkName
+      iconName: =@ctx.datasources.mydata.iconName
+      linkTo: =@ctx.datasources.mydata.linkTo
+      pieChartData: =[{"y":$number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100)), "color":$floor($sum(@ctx.datasources.activityData.y) / 1000) >= @ctx.datasources.goal-data-run-dynamic.amount ? 'color2':'color3'}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100)), "color":"transparent"}]
+      pieChartText: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100) & '%'
+      # color: =$floor($sum(@ctx.datasources.activityData.y) / 1000) >= @ctx.datasources.goal-data-run-dynamic.amount ? 'color2':'color3'
+      # color: color1
+      
+  

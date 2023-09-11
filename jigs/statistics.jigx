@@ -2,7 +2,7 @@ title: Statistics
 type: jig.default
 
 datasources:
-  activityData:
+  CyclingActivityData:
     type: datasource.sqlite
     options:
       provider: DATA_PROVIDER_LOCAL
@@ -19,6 +19,23 @@ datasources:
         WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
         ORDER BY x 
         
+  RunActivityData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: allActivities
+  
+      query: 
+        SELECT 
+        '$.id',
+        STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
+        json_extract(data, '$.distance') as y
+        FROM [allActivities] 
+        WHERE '$.type' = 'Run' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
+        ORDER BY x 
+        
   legendData:
     type: datasource.static
     options:
@@ -31,29 +48,7 @@ datasources:
 children:
   - type: component.section
     options:
-      title: Your progress
-      children:
-        - type: component.pie-chart
-          options:
-            chart:
-              title:
-                text: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100) & '%'
-                verticalAlign: center   
-              width: 130
-              height: 130
-            series:
-              - data: =[{"y":$number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"color3"}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-dynamic.amount * 100)), "color":"transparent"}]
-                layout: pie
-                name: =@ctx.datasources.legendData.name
-                dataLabels:
-                  - isEnabled: true
-                description: your succes
-                color: positive
-            legend:
-              isHidden: false
-  - type: component.section
-    options:
-      title: Month view
+      title: Cycling
       children:
         - type: component.bar-chart
           options:
@@ -65,10 +60,26 @@ children:
               isFirstTickHidden: false
               isFirstLabelHidden: false
             series:
-            - data: =@ctx.datasources.activityData
-              name: "Month view"
+            - data: =@ctx.datasources.CyclingActivityData
+              name: Cycling
               color: color9
-          
+  - type: component.section
+    options:
+      title: Running
+      children:
+        - type: component.bar-chart
+          options:
+            yAxis:
+              labels: 
+                format:
+                  notation: standard
+              tickAmount: 2
+              isFirstTickHidden: false
+              isFirstLabelHidden: false
+            series:
+            - data: =@ctx.datasources.RunActivityData
+              name: Running
+              color: color3
 widgets:
   "4x2": 
     type: widget.chart
@@ -84,11 +95,21 @@ widgets:
             isFirstTickHidden: false
             isFirstLabelHidden: false
           series:
-          - data: =@ctx.datasources.activityData
-            name: Month view
+          - data: =@ctx.datasources.CyclingActivityData
+            name: Cycling
             color: color9
       top:
         type: component.titles
         options:
-          title: Quick overview 
+          title: Your data
+          subtitle: cycling
           align: center
+      bottom:
+        type: component.titles
+        options:
+          subtitle: click here for more
+          icon: arrow-right
+          align: right
+          iconColor: color9
+          
+            

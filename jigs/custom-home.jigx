@@ -1,0 +1,75 @@
+title: Name
+description: Description of your Jig
+type: jig.default
+
+datasources:
+  mydata: 
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          avatar: https://ca.slack-edge.com/T01V4Q0ACQ4-U059J9K9GC8-11f076bfa055-512
+          welcomeMessage: 'Hi,'
+          name: Wendy
+          date: It's
+  goal-card-data-static:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          horizontalPadding: 20
+          verticalPadding: 16
+          activityName: Cycling
+          date: '1. 8. - 31. 8. 2023'
+          value: 213/250km
+          linkName: Update your goal
+        - id: 1
+          horizontalPadding: 20
+          verticalPadding: 16
+          activityName: Running
+          date: '1. 8. - 31. 8. 2023'
+          value: 213/250km
+          linkName: Update your goal
+
+children:
+  - type: component.custom-component
+    componentId: header-component
+    inputs:
+      avatar: =@ctx.datasources.mydata.avatar
+      welcomeMessage: =@ctx.datasources.mydata.welcomeMessage & ' ' & @ctx.datasources.mydata.name & '!' & ' 👋'
+      name: =@ctx.datasources.mydata.name
+      date: =@ctx.datasources.mydata.date & ' ' & $fromMillis($toMillis($now()), '[FNn], [D]. [M]. [Y]')
+  
+  - type: component.custom-component
+    componentId: section
+    inputs:
+      title: Your main challenge
+      
+
+  - type: component.widgets
+    options:
+      children:
+      - size: 4x2 
+        jigId: goal-data
+        
+  - type: component.custom-component
+    componentId: section
+    inputs:
+      title: Your activities
+      
+  - type: component.widgets
+    options:
+      children:
+      - size: "2x4"
+        jigId: cycling-activities-composite
+      - size: "2x2"
+        jigId: run-activities-composite
+
+      - size: 4x2 
+        jigId: statistics
+      - size: "1x1"
+        jigId: other-activities-composite
+      - size: 1x1
+        jigId: friends-list
+      - size: "1x1"
+        jigId: gallery

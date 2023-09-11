@@ -10,7 +10,24 @@ header:
       options:
         source:
           uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
-
+datasources:
+  activityData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: allActivities
+  
+      query: 
+          SELECT 
+          '$.id',
+          STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
+          json_extract(data, '$.distance') as y
+          FROM [allActivities] 
+          WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
+          ORDER BY x 
+          
 children:
   - jigId: cycling-activities-horizontal-list
     isTitleHidden: true
@@ -27,7 +44,12 @@ widgets:
         uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
       resizeMode: cover
       isContentOverlaid: true
-      bottom: 
+      bottom:
+        type: component.titles
+        options:
+          title: =$ceil($sum(@ctx.datasources.activityData.y)/ 1000)  & ' / ' & @ctx.datasources.goal-data-cycling-dynamic.amount & ' km'
+          align: center
+      top: 
         type: component.titles
         options:
           title: Cycling

@@ -45,16 +45,17 @@ children:
     instanceId: user-form
     options:
       children:
+        - type: component.media-field
+          instanceId: banner
+          options:
+            label: Image banner
+            mediaType: image
+            initialValue: =@ctx.datasources.userData.banner
         - type: component.avatar-field
           instanceId: avatar
           options:
-            label: First name
+            label: Avatar
             initialValue: =@ctx.datasources.userData.avatar
-        - type: component.avatar-field
-          instanceId: banner
-          options:
-            label: First name
-            initialValue: =@ctx.datasources.userData.banner
         - type: component.text-field
           instanceId: firstName
           options:

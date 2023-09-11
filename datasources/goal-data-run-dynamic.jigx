@@ -3,7 +3,7 @@ options:
   provider: DATA_PROVIDER_DYNAMIC
 
   entities:
-    - default/goals
+    - default/goals-run
 
   query: | 
     SELECT 
@@ -12,4 +12,4 @@ options:
       ,'$.amount'
       ,'$.start'
       ,'$.end'
-    FROM [default/goals]
+    FROM [default/goals-run]

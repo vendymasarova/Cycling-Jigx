@@ -6,17 +6,17 @@ actions:
       - type: action.go-to
         options:
           title: Edit goal
-          linkTo: edit-goal
+          linkTo: edit-goal-run
           parameters:
-            goalId: =@ctx.datasources.goalData.id
+            goalRunId: =@ctx.datasources.goalDataRunning.id
 
 datasources:
-  goalData:
+  goalDataRunning:
     type: datasource.sqlite
     options:
       provider: DATA_PROVIDER_DYNAMIC
       entities:
-        - default/goals-cycling
+        - default/goals-run
       query: |
         SELECT   
           id
@@ -24,7 +24,7 @@ datasources:
           ,'$.start'
           ,'$.end'
           ,'$.amount'
-        FROM [default/goals-cycling]
+        FROM [default/goals-run]
 
 children:
   - type: component.entity
@@ -37,19 +37,19 @@ children:
               - type: component.entity-field
                 options:
                   label: Activity Name
-                  value: =@ctx.datasources.goalData.activity-name
+                  value: =@ctx.datasources.goalDataRunning.activity-name
               - type: component.entity-field
                 options:
                   label: Starting date
-                  value: =$fromMillis($toMillis(@ctx.datasources.goalData.start), '[D1o] [MNn] [Y]')
+                  value: =$fromMillis($toMillis(@ctx.datasources.goalDataRunning.start), '[D1o] [MNn] [Y]')
               - type: component.entity-field
                 options:
                   label: End date
-                  value: =$fromMillis($toMillis(@ctx.datasources.goalData.end), '[D1o] [MNn] [Y]')
+                  value: =$fromMillis($toMillis(@ctx.datasources.goalDataRunning.end), '[D1o] [MNn] [Y]')
               - type: component.entity-field
                 options:
                   label: Goal for the activity
-                  value: =@ctx.datasources.goalData.amount
+                  value: =@ctx.datasources.goalDataRunning.amount
 
 widgets:
   "2x2": 
@@ -62,7 +62,7 @@ widgets:
         options:
           align: center
           title:  See your goal for
-          subtitle: =@ctx.datasources.goalData.activity-name
+          subtitle: =@ctx.datasources.goalDataRunning.activity-name
         
           
         

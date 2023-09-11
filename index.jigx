@@ -1,6 +1,11 @@
 name: cycling-recording-new
-title: Aim cycling
+title: Aim higher
 category: business
+
+home:
+  - instanceId: home
+    jigId: custom-home
+  
 widgets:
   - size: 4x2 
     jigId: user-data

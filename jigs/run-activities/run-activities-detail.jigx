@@ -112,7 +112,7 @@ children:
             # yAxis:
             #   # min: 0
             series:
-              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':60/speed * 3.6}
+              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':(60/speed) * 3.6}
                 color: color2
                 animation:
                   direction: left-to-right
@@ -126,10 +126,10 @@ children:
             yAxis:
               isFirstTickHidden: false
               isFirstLabelHidden: false
-  - type: component.entity
-    options:
-      children:
-        - type: component.entity-field
-          options:
-            label: sdfa
-            value: =$substring($string(@ctx.datasources.trainingDetails.average_speed, 0,1)
+  # - type: component.entity
+  #   options:
+  #     children:
+  #       - type: component.entity-field
+  #         options:
+  #           label: sdfa
+  #           value: =$substring($string(@ctx.datasources.trainingDetails.average_speed, 0,1)

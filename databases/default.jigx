@@ -6,6 +6,7 @@ tables:
   friends:
   trainings:
   user-profile:
-  goals: 
+  goals-cycling: 
+  goals-run: 
   account-settings:
   gallery:

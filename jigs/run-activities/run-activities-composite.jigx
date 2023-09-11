@@ -9,9 +9,29 @@ header:
       type: component.image
       options:
         source:
-          uri: https://images.unsplash.com/photo-1528543606781-2f6e6857f318?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2001&q=80        
-
+          uri: https://plus.unsplash.com/premium_photo-1674605376169-bf229a108e73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
+          
+datasources:
+  activityData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: allActivities
+  
+      query: 
+          SELECT 
+          '$.id',
+          STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
+          json_extract(data, '$.distance') as y
+          FROM [allActivities] 
+          WHERE '$.type' = 'Run' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
+          ORDER BY x 
+          
 children:
+  - jigId: run-goal
+    isTitleHidden: true
   - jigId: run-activities-horizontal-list
     isTitleHidden: true
   - jigId: run-activities-detail
@@ -24,15 +44,21 @@ widgets:
     type: widget.image
     options:
       source:
-        uri: https://images.unsplash.com/photo-1528543606781-2f6e6857f318?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2001&q=80
+        uri: https://plus.unsplash.com/premium_photo-1674605376169-bf229a108e73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
       isContentOverlaid: true
-      bottom: 
+      top: 
         type: component.titles
         options:
           title: Running
-          subtitle: Second priority activity
+          subtitle: Second priority
           icon: running
-          iconColor: color9
+          iconColor: color14
+          # iconColor: color9
+      bottom:
+        type: component.titles
+        options:
+          title: =$floor($sum(@ctx.datasources.activityData.y)/ 1000)  & ' / ' & @ctx.datasources.goal-data-run-dynamic.amount & ' km'
+          align: center
             
           
           

@@ -12,12 +12,12 @@ header:
           uri: https://images.unsplash.com/photo-1517245386807-bb43f82c33c4?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1740&q=80
 
 datasources:
-  goalData:
+  goalDataRunning:
     type: datasource.sqlite
     options:
       provider: DATA_PROVIDER_DYNAMIC
       entities:
-        - default/goals-cycling
+        - default/goals-run
       query: |
         SELECT   
           id
@@ -25,10 +25,10 @@ datasources:
           ,'$.start'
           ,'$.end'
           ,'$.amount'
-        FROM [default/goals-cycling]
-        WHERE id = @goalId
+        FROM [default/goals-run]
+        WHERE id = @goalRunId
       queryParameters:
-        goalId: =@ctx.jig.inputs.goalId
+        goalRunId: =@ctx.jig.inputs.goalRunId
 
 children:
   - type: component.form
@@ -39,24 +39,24 @@ children:
           instanceId: activity-name
           options:
             label: Activity name
-            initialValue: =@ctx.datasources.goalData.activity-name
+            initialValue: =@ctx.datasources.goalDataRunning.activity-name
         - type: component.date-picker
           instanceId: start
           options:
             label: Start date
-            initialValue: =@ctx.datasources.goalData.start
+            initialValue: =@ctx.datasources.goalDataRunning.start
             format: LL
         - type: component.date-picker
           instanceId: end
           options:
             label: End date
-            initialValue: =@ctx.datasources.goalData.end 
+            initialValue: =@ctx.datasources.goalDataRunning.end 
             format: LL
         - type: component.number-field
           instanceId: amount
           options:
             label: How much km do you want to ride?
-            initialValue: =@ctx.datasources.goalData.amount
+            initialValue: =@ctx.datasources.goalDataRunning.amount
         
 actions:
   - children:
@@ -65,9 +65,9 @@ actions:
         title: Edit goal
         provider: DATA_PROVIDER_DYNAMIC
         method: update
-        entity: default/goals-cycling
+        entity: default/goals-run
         data:
-          id: =@ctx.datasources.goalData.id
+          id: =@ctx.datasources.goalDataRunning.id
           activity-name: =@ctx.components.activity-name.state.value
           amount: =@ctx.components.amount.state.value
           start: =@ctx.components.start.state.value
