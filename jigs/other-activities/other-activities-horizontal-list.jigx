@@ -6,8 +6,8 @@ icon: contact
 filter: 
   - title: All
     value: ''
-  - title: Run
-    value: Run
+  - title: Weight Training
+    value: WeightTraining
   - title: Walk
     value: Walk
     

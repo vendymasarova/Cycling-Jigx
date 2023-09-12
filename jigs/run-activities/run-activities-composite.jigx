@@ -81,7 +81,7 @@ widgets:
       bottom:
         type: component.titles
         options:
-          title: =$floor($sum(@ctx.datasources.activityData.y)/ 1000)  & ' / ' & @ctx.datasources.goal-data-run-dynamic.amount & ' km'
+          title: =$round($floor($sum(@ctx.datasources.activityData.y))/ 1000)  & ' / ' & @ctx.datasources.goal-data-run-dynamic.amount & ' km'
           align: center
             
           

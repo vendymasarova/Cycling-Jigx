@@ -1,5 +1,4 @@
 title: Name
-description: Description of your Jig
 type: jig.default
 
 datasources:
@@ -65,8 +64,8 @@ children:
       - size: "2x2"
         jigId: run-activities-composite
 
-      - size: 4x2 
-        jigId: statistics
+      # - size: 4x2 
+      #   jigId: statistics
       - size: "1x1"
         jigId: other-activities-composite
       - size: 1x1
