@@ -35,45 +35,57 @@ children:
     instanceId: new-goal-form
     options:
       children:
-        - type: component.text-field
-          instanceId: activity-name
+        - type: component.field-row
           options:
-            label: Activity name
-            initialValue: =@ctx.datasources.goalDataRunning.activity-name
-        - type: component.date-picker
-          instanceId: start
+            children:
+              - type: component.text-field
+                instanceId: activity-name
+                options:
+                  label: Activity name
+                  initialValue: =@ctx.datasources.goalDataRunning.activity-name
+              - type: component.number-field
+                instanceId: amount
+                options:
+                  label: Your goal in km
+                  initialValue: =@ctx.datasources.goalDataRunning.amount
+        - type: component.field-row
           options:
-            label: Start date
-            initialValue: =@ctx.datasources.goalDataRunning.start
-            format: LL
-        - type: component.date-picker
-          instanceId: end
-          options:
-            label: End date
-            initialValue: =@ctx.datasources.goalDataRunning.end 
-            format: LL
-        - type: component.number-field
-          instanceId: amount
-          options:
-            label: How much km do you want to ride?
-            initialValue: =@ctx.datasources.goalDataRunning.amount
-        
+            children:
+              - type: component.date-picker
+                instanceId: from
+                options:
+                  label: Start date
+                  mode: date
+                  initialValue: =@ctx.datasources.goalDataRunning.start
+                  format: LL
+              - type: component.date-picker
+                instanceId: to
+                options:
+                  label: End date
+                  mode: date
+                  initialValue: =@ctx.datasources.goalDataRunning.end 
+                  format: LL
+       
 actions:
   - children:
-    - type: action.execute-entity
-      options:
-        title: Edit goal
-        provider: DATA_PROVIDER_DYNAMIC
-        method: update
-        entity: default/goals-run
-        data:
-          id: =@ctx.datasources.goalDataRunning.id
-          activity-name: =@ctx.components.activity-name.state.value
-          amount: =@ctx.components.amount.state.value
-          start: =@ctx.components.start.state.value
-          end: =@ctx.components.end.state.value
-        onSuccess: 
-          title: Goal updated
-        icon: check
-        # goBack: previous
+      - type: action.action-list
+        options:
+          isSequential: true
+          title: Edit goal
+          actions:
+            - type: action.execute-entity
+              options:
+                provider: DATA_PROVIDER_DYNAMIC
+                method: update
+                entity: default/goals-run
+                data:
+                  id: =@ctx.datasources.goalDataRunning.id
+                  activity-name: =@ctx.components.activity-name.state.value
+                  amount: =@ctx.components.amount.state.value
+                  start: =@ctx.components.from.state.value
+                  end: =@ctx.components.to.state.value
+                onSuccess: 
+                  title: Goal updated
+                goBack: previous
+
         

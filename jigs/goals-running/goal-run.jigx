@@ -11,6 +11,21 @@ actions:
             goalRunId: =@ctx.datasources.goalDataRunning.id
 
 datasources:
+  mydata: 
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          horizontalPadding: 20
+          verticalPadding: 16
+          activityName: Cycling
+          date: '01. 08. - 31. 08. 2023'
+          value: 213/250km
+          linkName: ''
+          iconName: synchronize-arrows-1
+          linkTo: goal-run
+          # linkIcon: arrow-right
+          
   goalDataRunning:
     type: datasource.sqlite
     options:
@@ -25,14 +40,56 @@ datasources:
           ,'$.end'
           ,'$.amount'
         FROM [default/goals-run]
+        
+  activityData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: allActivities
+  
+      query: 
+        SELECT 
+          '$.id',
+          STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
+          json_extract(data, '$.distance') as y
+        FROM [allActivities] 
+        WHERE '$.type' = 'Run' AND '$.start_date' > @dateFrom AND '$.start_date' < @dateTo
+        ORDER BY x
+      queryParameters:
+        dateFrom: =@ctx.datasources.goalDataRunning.start
+        dateTo: =@ctx.datasources.goalDataRunning.end
 
 children:
   - type: component.entity
     options:
       children:
-        - type: component.section
+        - type: component.entity-field
+          when: =$ceil($sum(@ctx.datasources.activityData.y) / 1000) >= @ctx.datasources.goalDataRunning.amount ? true:false
           options:
-            title: Training Goal
+            label: ''
+            value: Congratulations! You achieved your goal!
+            isMultiline: true
+  - type: component.custom-component
+    componentId: goal-card-custom
+    inputs:
+      horizontalPadding: =@ctx.datasources.mydata.horizontalPadding
+      verticalPadding: =@ctx.datasources.mydata.verticalPadding
+      activityName: =@ctx.datasources.mydata.activityName
+      date:  =$fromMillis($toMillis(@ctx.datasources.goal-data-run-dynamic.start), '[D]. [M]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.goal-data-run-dynamic.end), '[D]. [M]. [Y]')
+      value: =$round($floor($sum(@ctx.datasources.activityData.y)) / 1000)  & ' / ' & @ctx.datasources.goal-data-run-dynamic.amount & ' km'
+      linkName: =@ctx.datasources.mydata.linkName
+      iconName: =@ctx.datasources.mydata.iconName
+      # linkTo: =@ctx.datasources.mydata.linkTo
+      # linkIcon: =@ctx.datasources.mydata.linkIcon
+      pieChartData: =[{"y":$number($round($floor(($sum(@ctx.datasources.activityData.y)) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100)), "color":$round($floor($sum(@ctx.datasources.activityData.y)) / 1000) >= @ctx.datasources.goal-data-run-dynamic.amount ? 'color2':'color3'}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100)), "color":"transparent"}]
+      pieChartText: =$round(($round($floor($sum(@ctx.datasources.activityData.y))/ 1000) / @ctx.datasources.goal-data-run-dynamic.amount) * 100) & ' %'
+  - type: component.entity
+    options:
+      children:
+        - type: component.field-row
+          options:
             children:
               - type: component.entity-field
                 options:
@@ -40,16 +97,40 @@ children:
                   value: =@ctx.datasources.goalDataRunning.activity-name
               - type: component.entity-field
                 options:
-                  label: Starting date
-                  value: =$fromMillis($toMillis(@ctx.datasources.goalDataRunning.start), '[D1o] [MNn] [Y]')
+                  label: Goal
+                  value: =@ctx.datasources.goalDataRunning.amount & ' km'
+        - type: component.field-row
+          options:
+            children:
+              - type: component.entity-field
+                options:
+                  label: Start date
+                  value: =$fromMillis($toMillis(@ctx.datasources.goalDataRunning.start), '[D]. [M]. [Y]')
+                  rightIcon: calendar
               - type: component.entity-field
                 options:
                   label: End date
-                  value: =$fromMillis($toMillis(@ctx.datasources.goalDataRunning.end), '[D1o] [MNn] [Y]')
-              - type: component.entity-field
-                options:
-                  label: Goal for the activity
-                  value: =@ctx.datasources.goalDataRunning.amount
+                  value: =$fromMillis($toMillis(@ctx.datasources.goalDataRunning.end), '[D]. [M]. [Y]')
+                  rightIcon: calendar
+             
+  - type: component.section
+    options:
+      title: Daily view
+      children:
+        - type: component.bar-chart
+          options:
+            yAxis:
+              labels: 
+                format:
+                  notation: standard
+              tickAmount: 2
+              isFirstTickHidden: false
+              isFirstLabelHidden: false
+            series:
+            - data: =@ctx.datasources.activityData
+              name: Cycling
+              color: color9
+
 
 widgets:
   "2x2": 

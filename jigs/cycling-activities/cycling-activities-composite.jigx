@@ -20,17 +20,38 @@ datasources:
         - entity: allActivities
   
       query: 
-          SELECT 
+        SELECT 
           '$.id',
           STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
           json_extract(data, '$.distance') as y
-          FROM [allActivities] 
-          WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
-          ORDER BY x 
+        FROM [allActivities] 
+        WHERE '$.type' = 'Ride' AND '$.start_date' > @dateFrom AND '$.start_date' < @dateTo
+        ORDER BY x
+      queryParameters:
+        dateFrom: =@ctx.datasources.goalCyclingData.start
+        dateTo: =@ctx.datasources.goalCyclingData.end
+  
+  goalCyclingData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/goals-cycling
+  
+      query: |
+        SELECT 
+          id, 
+          '$.start', 
+          '$.end' 
+        FROM [default/goals-cycling]
           
 children:
   - jigId: cycling-activities-horizontal-list
     isTitleHidden: true
+    inputs: 
+      from: =@ctx.datasources.goalCyclingData.start
+      to: =@ctx.datasources.goalCyclingData.end
   - jigId: cycling-activities-detail
     instanceId: ride
     inputs:
@@ -55,7 +76,7 @@ widgets:
           title: Cycling
           icon: synchronize-arrows-1
           iconColor: color9
-          subtitle: Top priority activity
+          subtitle: =$fromMillis($toMillis(@ctx.datasources.goal-data-cycling-dynamic.start), '[D]. [M]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.goal-data-cycling-dynamic.end), '[D]. [M]. [Y]')
       
         
           

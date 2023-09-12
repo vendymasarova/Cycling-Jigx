@@ -10,6 +10,7 @@ children:
         - type: component.card
           options:
             onPress: 
+              when: =@ctx.inputs.linkTo ? true:false
               type: action.go-to
               options:
                 linkTo: =@ctx.inputs.linkTo
@@ -87,6 +88,7 @@ children:
                                           size: medium
                                           weight: semi-bold
                                       - type: component.text
+                                        when: =@ctx.inputs.date ? true:false
                                         options:
                                           value: =@ctx.inputs.date
                                           size: small
@@ -118,5 +120,7 @@ children:
                                     align: right
                                     weight: semi-bold
                                 - type: component.icon
+                                  when: =@ctx.inputs.linkIcon ? true:false
                                   options:
-                                    icon: arrow-right
+                                    icon: =@ctx.inputs.linkIcon
+                                    

@@ -61,11 +61,11 @@ children:
               - type: component.entity-field
                 options:
                   label: Moving Time
-                  value: =$floor(@ctx.datasources.trainingDetails.moving_time / 3600) & ' h ' & $substring($string($number($substringAfter($string($round(@ctx.datasources.trainingDetails.moving_time / 3600, 2)), '.')) * 6), 0,2) & ' m'
+                  value: =$floor(@ctx.datasources.trainingDetails.moving_time / 3600) & ' h ' & $substring($string($number($substringAfter($string($round(@ctx.datasources.trainingDetails.moving_time / 3600, 2)), '.')) * 6), 0,2) & ' min'
               - type: component.entity-field
                 options:
                   label: Average Speed
-                  value: =$round((60 / (@ctx.datasources.trainingDetails.average_speed * 3.6)), 2)
+                  value: =$substringBefore($string($round((60 / (@ctx.datasources.trainingDetails.average_speed * 3.6)), 2)), '.') & ':' & ($number($substringAfter($string($round((60 / (@ctx.datasources.trainingDetails.average_speed * 3.6)), 1)), '.')) / 10) * 60 & 'min'
         - type: component.field-row
           options:
             children:
@@ -112,7 +112,7 @@ children:
             # yAxis:
             #   # min: 0
             series:
-              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':(60/speed) * 3.6}
+              - data: =$eval(@ctx.datasources.trainingDetails.laps).{'x':name, 'y':$substringBefore($string($round((60 / (speed * 3.6)), 2)), '.') & ':' & ($number($substringAfter($string($round((60 / (speed * 3.6)), 1)), '.')) / 10) * 60}
                 color: color2
                 animation:
                   direction: left-to-right
@@ -126,10 +126,3 @@ children:
             yAxis:
               isFirstTickHidden: false
               isFirstLabelHidden: false
-  # - type: component.entity
-  #   options:
-  #     children:
-  #       - type: component.entity-field
-  #         options:
-  #           label: sdfa
-  #           value: =$substring($string(@ctx.datasources.trainingDetails.average_speed, 0,1)

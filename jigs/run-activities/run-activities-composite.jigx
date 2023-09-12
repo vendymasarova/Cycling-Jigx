@@ -12,6 +12,21 @@ header:
           uri: https://plus.unsplash.com/premium_photo-1674605376169-bf229a108e73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
           
 datasources:
+  goalRunData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/goals-run
+  
+      query: |
+        SELECT 
+          id, 
+          '$.start', 
+          '$.end' 
+        FROM [default/goals-run]
+        
   activityData:
     type: datasource.sqlite
     options:
@@ -21,18 +36,27 @@ datasources:
         - entity: allActivities
   
       query: 
-          SELECT 
+        SELECT 
           '$.id',
           STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
           json_extract(data, '$.distance') as y
-          FROM [allActivities] 
-          WHERE '$.type' = 'Run' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
-          ORDER BY x 
+        FROM [allActivities] 
+        WHERE '$.type' = 'Run' AND '$.start_date' > @dateFrom AND '$.start_date' < @dateTo
+        ORDER BY x
+      queryParameters:
+        dateFrom: =@ctx.datasources.goalRunData.start
+        dateTo: =@ctx.datasources.goalRunData.end
           
 children:
   - jigId: run-goal
     isTitleHidden: true
+    inputs: 
+      fromRun: =@ctx.datasources.goalRunData.start
+      toRun: =@ctx.datasources.goalRunData.end
   - jigId: run-activities-horizontal-list
+    inputs: 
+      fromRun: =@ctx.datasources.goalRunData.start
+      toRun: =@ctx.datasources.goalRunData.end
     isTitleHidden: true
   - jigId: run-activities-detail
     instanceId: run
@@ -50,7 +74,7 @@ widgets:
         type: component.titles
         options:
           title: Running
-          subtitle: Second priority
+          subtitle: =$fromMillis($toMillis(@ctx.datasources.goal-data-run-dynamic.start), '[D]. [M]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.goal-data-run-dynamic.end), '[D]. [M]. [Y]')
           icon: running
           iconColor: color14
           # iconColor: color9

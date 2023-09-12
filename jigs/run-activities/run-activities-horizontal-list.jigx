@@ -31,8 +31,11 @@ datasources:
         '$.start_date',
         '$.type'
         FROM [allActivities] 
-        WHERE '$.type' = 'Run'
-
+        WHERE '$.type' = 'Run' AND '$.start_date' > @dateFrom AND '$.start_date' < @dateTo
+        ORDER BY '$.start_date' 
+      queryParameters:
+        dateFrom: =@ctx.jig.inputs.fromRun
+        dateTo: =@ctx.jig.inputs.toRun
 
 data: =@ctx.datasources.mydata
 item:

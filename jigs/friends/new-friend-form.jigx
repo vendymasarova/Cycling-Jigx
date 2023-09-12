@@ -12,7 +12,6 @@ actions:
           method: save
           onSuccess: 
             title: Huraa
-          
 
 children:
   - type: component.form

@@ -8,7 +8,7 @@ options:
   query: | 
     SELECT 
       id
-      ,'$.activity_name'
+      ,'$.activity-name'
       ,'$.amount'
       ,'$.start'
       ,'$.end'

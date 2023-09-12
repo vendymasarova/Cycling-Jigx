@@ -18,6 +18,21 @@ header:
 #     linkTo: goal-run
 
 datasources:
+  goalRunData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/goals-run
+  
+      query: |
+        SELECT 
+          id, 
+          '$.start', 
+          '$.end' 
+        FROM [default/goals-run]
+        
   mydata: 
     type: datasource.static
     options:
@@ -25,12 +40,13 @@ datasources:
         - id: 1
           horizontalPadding: 20
           verticalPadding: 16
-          activityName: Cycling
+          activityName: Running
           date: '01. 08. - 31. 08. 2023'
           value: 213/250km
           linkName: Update your goal
           iconName: running
           linkTo: goal-run
+          linkIcon: arrow-right
           
   activityData:
     type: datasource.sqlite
@@ -41,13 +57,16 @@ datasources:
         - entity: allActivities
   
       query: 
-          SELECT 
+        SELECT 
           '$.id',
           STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
           json_extract(data, '$.distance') as y
-          FROM [allActivities] 
-          WHERE '$.type' = 'Run' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
-          ORDER BY x 
+        FROM [allActivities] 
+        WHERE '$.type' = 'Run' AND '$.start_date' > @dateFrom AND '$.start_date' < @dateTo
+        ORDER BY x 
+      queryParameters:
+        dateFrom: =@ctx.datasources.goalRunData.start
+        dateTo: =@ctx.datasources.goalRunData.end 
 
 children:
   - type: component.entity
@@ -66,13 +85,12 @@ children:
       verticalPadding: =@ctx.datasources.mydata.verticalPadding
       activityName: =@ctx.datasources.mydata.activityName
       date:  =$fromMillis($toMillis(@ctx.datasources.goal-data-run-dynamic.start), '[D]. [M]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.goal-data-run-dynamic.end), '[D]. [M]. [Y]')
-      value: =$floor($sum(@ctx.datasources.activityData.y) / 1000)  & ' / ' & @ctx.datasources.goal-data-run-dynamic.amount & ' km'
+      value: =$round($floor($sum(@ctx.datasources.activityData.y)) / 1000)  & ' / ' & @ctx.datasources.goal-data-run-dynamic.amount & ' km'
       linkName: =@ctx.datasources.mydata.linkName
       iconName: =@ctx.datasources.mydata.iconName
       linkTo: =@ctx.datasources.mydata.linkTo
-      pieChartData: =[{"y":$number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100)), "color":$floor($sum(@ctx.datasources.activityData.y) / 1000) >= @ctx.datasources.goal-data-run-dynamic.amount ? 'color2':'color3'}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100)), "color":"transparent"}]
-      pieChartText: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100) & '%'
-      # color: =$floor($sum(@ctx.datasources.activityData.y) / 1000) >= @ctx.datasources.goal-data-run-dynamic.amount ? 'color2':'color3'
-      # color: color1
+      linkIcon: =@ctx.datasources.mydata.linkIcon
+      pieChartData: =[{"y":$number($round($floor(($sum(@ctx.datasources.activityData.y)) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100)), "color":$round($floor($sum(@ctx.datasources.activityData.y)) / 1000) >= @ctx.datasources.goal-data-run-dynamic.amount ? 'color2':'color3'}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-run-dynamic.amount * 100)), "color":"transparent"}]
+      pieChartText: =$round(($round($floor($sum(@ctx.datasources.activityData.y))/ 1000) / @ctx.datasources.goal-data-run-dynamic.amount) * 100) & ' %'
       
   

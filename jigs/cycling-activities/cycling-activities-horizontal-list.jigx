@@ -37,12 +37,16 @@ datasources:
   
       query: 
         SELECT 
-        '$.id',
-        '$.name',
-        '$.start_date',
-        '$.type'
+          '$.id',
+          '$.name',
+          '$.start_date',
+          '$.type'
         FROM [allActivities] 
-        WHERE '$.type' = 'Ride'
+        WHERE '$.type' = 'Ride' AND '$.start_date' > @dateFrom AND '$.start_date' < @dateTo
+        ORDER BY '$.start_date' 
+      queryParameters:
+        dateFrom: =@ctx.jig.inputs.from
+        dateTo: =@ctx.jig.inputs.to
 
 data: =@ctx.datasources.mydata
 item:

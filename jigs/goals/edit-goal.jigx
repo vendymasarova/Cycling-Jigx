@@ -35,28 +35,34 @@ children:
     instanceId: new-goal-form
     options:
       children:
-        - type: component.text-field
-          instanceId: activity-name
+        - type: component.field-row
           options:
-            label: Activity name
-            initialValue: =@ctx.datasources.goalData.activity-name
-        - type: component.date-picker
-          instanceId: start
+            children:
+              - type: component.text-field
+                instanceId: activity-name
+                options:
+                  label: Activity name
+                  initialValue: =@ctx.datasources.goalData.activity-name
+              - type: component.number-field
+                instanceId: amount
+                options:
+                  label: Your goal in km
+                  initialValue: =@ctx.datasources.goalData.amount
+        - type: component.field-row
           options:
-            label: Start date
-            initialValue: =@ctx.datasources.goalData.start
-            format: LL
-        - type: component.date-picker
-          instanceId: end
-          options:
-            label: End date
-            initialValue: =@ctx.datasources.goalData.end 
-            format: LL
-        - type: component.number-field
-          instanceId: amount
-          options:
-            label: How much km do you want to ride?
-            initialValue: =@ctx.datasources.goalData.amount
+            children:
+              - type: component.date-picker
+                instanceId: start
+                options:
+                  label: Start date
+                  initialValue: =@ctx.datasources.goalData.start
+                  format: LL
+              - type: component.date-picker
+                instanceId: end
+                options:
+                  label: End date
+                  initialValue: =@ctx.datasources.goalData.end 
+                  format: LL
         
 actions:
   - children:

@@ -1,6 +1,15 @@
-title: Priority activity goal
-description: Description of your Jig
+title: Cycling activity goal
+description: Here you can see and edit your goal
 type: jig.default
+
+actions:
+  - children:
+      - type: action.go-to
+        options:
+          title: Edit goal
+          linkTo: edit-goal
+          parameters:
+            goalId: =@ctx.datasources.goalCyclingData.id
 
 header:
   type: component.jig-header
@@ -12,17 +21,39 @@ header:
         source:
           uri: https://builder.jigx.com/assets/images/header.jpg
 
-# onFocus:
-#   type: action.action-list
-#   options:
-#     actions:
-#       - type: action.sync-entities
-#         options:
-#           provider: 
-#           entities:
-#             - entity: 
-
 datasources:
+  mydata: 
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          horizontalPadding: 20
+          verticalPadding: 16
+          activityName: Cycling
+          date: '01. 08. - 31. 08. 2023'
+          value: 213/250km
+          linkName: ''
+          iconName: synchronize-arrows-1
+          linkTo: goal-run
+          # linkIcon: arrow-right
+          
+  goalCyclingData:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/goals-cycling
+  
+      query: |
+        SELECT 
+          id, 
+          '$.start', 
+          '$.activity-name', 
+          '$.end',
+          '$.amount' 
+        FROM [default/goals-cycling]
+        
   activityData:
     type: datasource.sqlite
     options:
@@ -32,13 +63,16 @@ datasources:
         - entity: allActivities
   
       query: 
-          SELECT 
+        SELECT 
           '$.id',
           STRFTIME('%d.%m', json_extract(data, '$.start_date')) as x, 
           json_extract(data, '$.distance') as y
-          FROM [allActivities] 
-          WHERE '$.type' = 'Ride' AND '$.start_date' >= '2023-08-01T15:50:55Z' AND '$.start_date' <= '2023-08-31T15:50:55Z'
-          ORDER BY x 
+        FROM [allActivities] 
+        WHERE '$.type' = 'Ride' AND '$.start_date' > @dateFrom AND '$.start_date' < @dateTo
+        ORDER BY x
+      queryParameters:
+        dateFrom: =@ctx.datasources.goalCyclingData.start
+        dateTo: =@ctx.datasources.goalCyclingData.end
           
   score-desc-data:
     type: datasource.static
@@ -48,9 +82,61 @@ datasources:
           title: Your score
           subtitle: click to edit
 children:
+  - type: component.entity
+    options:
+      children:
+        - type: component.entity-field
+          when: =$ceil($sum(@ctx.datasources.activityData.y) / 1000) >= @ctx.datasources.goal-data-cycling-dynamic.amount ? true:false
+          options:
+            label: ''
+            value: Congratulations! You achieved your goal!
+            isMultiline: true
+  - type: component.custom-component
+    componentId: goal-card-custom
+    inputs:
+      horizontalPadding: =@ctx.datasources.mydata.horizontalPadding
+      verticalPadding: =@ctx.datasources.mydata.verticalPadding
+      activityName: =@ctx.datasources.goalCyclingData.activity-name
+      # date:  ''
+      value: =$ceil($sum(@ctx.datasources.activityData.y) / 1000)  & ' / ' & @ctx.datasources.goal-data-cycling-dynamic.amount & ' km'
+      linkName: =@ctx.datasources.mydata.linkName
+      iconName: =@ctx.datasources.mydata.iconName
+      # linkIcon: synchronize-arrows
+      pieChartData: =[{"y":$number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100)), "color":$floor($sum(@ctx.datasources.activityData.y) / 1000) >= @ctx.datasources.goal-data-cycling-dynamic.amount ? 'color2':'color3'}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100)), "color":"transparent"}]
+      pieChartText: =$round($floor($sum(@ctx.datasources.activityData.y)) / @ctx.datasources.goalCyclingData.amount / 10) & '%'
+      
+  
+  - type: component.entity
+    options:
+      children:
+        - type: component.field-row
+          options:
+            children:
+              - type: component.entity-field
+                options:
+                  label: Activity Name
+                  value: =@ctx.datasources.goalCyclingData.activity-name
+              - type: component.entity-field
+                options:
+                  label: Goal
+                  value: =@ctx.datasources.goalCyclingData.amount & ' km'
+        - type: component.field-row
+          options:
+            children:
+              - type: component.entity-field
+                options:
+                  label: Start date
+                  value: =$fromMillis($toMillis(@ctx.datasources.goalCyclingData.start), '[D]. [M]. [Y]')
+                  rightIcon: calendar
+              - type: component.entity-field
+                options:
+                  label: End date
+                  value: =$fromMillis($toMillis(@ctx.datasources.goalCyclingData.end), '[D]. [M]. [Y]')
+                  rightIcon: calendar
+             
   - type: component.section
     options:
-      title: Cycling
+      title: Daily view
       children:
         - type: component.bar-chart
           options:
@@ -65,27 +151,6 @@ children:
             - data: =@ctx.datasources.activityData
               name: Cycling
               color: color9
-  - type: component.section
-    options:
-      title: Training progress
-      children:
-        - type: component.list
-          options:
-            data: =@ctx.datasources.score-desc-data
-            maximumItemsToRender: 8
-            item: 
-              type: component.list-item
-              options:
-                title: =@ctx.datasources.score-desc-data.title
-                subtitle: =@ctx.datasources.score-desc-data.subtitle
-                leftElement: 
-                  element: progress
-                  title: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) & '%'
-                  value: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) / 100
-                onPress: 
-                  type: action.go-to
-                  options:
-                    linkTo: goal
 
 widgets:
   "4x2": 
@@ -96,21 +161,20 @@ widgets:
           options:
             chart: 
               type: component.pie-chart
-              when: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) != 100 ? true:false
               options:
                 chart:
                   title:
-                    text: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) & '%'
+                    text: =$round($floor($sum(@ctx.datasources.activityData.y)) / @ctx.datasources.goalCyclingData.amount / 10) & '%'
                     verticalAlign: center   
                   width: 130
                   height: 130
                 series:
-                  - data: =[{"y":$number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100)), "color":"color3"}, {"y":100 - $number($ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100)), "color":"transparent"}]
+                  - data: =[{"y":$number($floor(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100)), "color":"color3"}, {"y":100 - $number($floor(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100)), "color":"transparent"}]
                     layout: arch
                     dataLabels:
                       - isEnabled: true
                     description: your succes
-                    color: =$ceil(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) = 100 ? color3:color2
+                    color: =$floor(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) = 100 ? color3:color2
                       
                 legend:
                   isHidden: false
