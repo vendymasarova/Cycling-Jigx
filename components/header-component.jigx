@@ -3,59 +3,80 @@ children:
   - type: component.view
     options:
       style:
-        flex: 
-          direction: row
-        justifyContent: space-between
-      onPress: 
-        type: action.go-to
-        options:
-          linkTo: user-data
-        
+        gap: medium
       children:
         - type: component.view
           options:
             style:
-              flex:
-                direction: row
-              gap: small
-              alignItems: center 
+              justifyContent: flex-end
+              alignItems: flex-end
             children:
-              # Avatar
-              - type: component.avatar
+              - type: component.button
                 options:
-                  title: =@ctx.inputs.name
-                  uri: =@ctx.inputs.avatar
-                  size: large
-                  align: left
-              # Text
-              - type: component.view
-                options:
-                  style:
-                    # justifyContent: space-between
-                    alignItems: center
-                    gap: small
-                  children:
-                    - type: component.text
-                      options:
-                        value: =@ctx.inputs.welcomeMessage
-                        align: center
-                        weight: semi-bold
-                        size: large
-                        # emphasis: high
-                    - type: component.text
-                      options:
-                        value: =@ctx.inputs.date
-                        emphasis: high
+                  title: Choose period
+                  type: secondary
+                  isCompact: false
+                  onPress: 
+                    type: action.go-to
+                    options:
+                      linkTo: set-period
         - type: component.view
           options:
             style:
+              flex: 
+                direction: row
+              justifyContent: space-between
+            onPress: 
+              type: action.go-to
+              options:
+                linkTo: user-data
               
             children:
-              - type: component.icon
+              - type: component.view
                 options:
-                  icon: pencil-2
-                  color: color9
-                  shape: circle
-                  type: duotone
-                  size: small
-                
+                  style:
+                    flex:
+                      direction: row
+                    gap: small
+                    alignItems: center 
+                  children:
+                    # Avatar
+                    - type: component.avatar
+                      options:
+                        title: =@ctx.inputs.name
+                        uri: =@ctx.inputs.avatar
+                        size: large
+                        align: left
+                    # Text
+                    - type: component.view
+                      options:
+                        style:
+                          # justifyContent: space-between
+                          alignItems: center
+                          gap: small
+                        children:
+                          - type: component.text
+                            options:
+                              value: =@ctx.inputs.welcomeMessage
+                              align: center
+                              weight: semi-bold
+                              size: large
+                              # emphasis: high
+                          - type: component.text
+                            options:
+                              value: =@ctx.inputs.date
+                              emphasis: high
+              - type: component.view
+                options:
+                  style:
+                    flex:
+                      direction: column
+                  children:
+                    - type: component.icon
+                      options:
+                        icon: pencil-2
+                        color: color9
+                        shape: circle
+                        type: duotone
+                        size: small
+                      

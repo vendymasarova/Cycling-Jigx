@@ -164,8 +164,8 @@ widgets:
               options:
                 chart:
                   title:
-                    text: =$round($floor($sum(@ctx.datasources.activityData.y)) / @ctx.datasources.goalCyclingData.amount / 10) & '%'
-                    verticalAlign: center   
+                    text: =$round($floor($sum(@ctx.datasources.activityData.y)) / @ctx.datasources.goalCyclingData.amount / 10) != 0 ?  $round($floor($sum(@ctx.datasources.activityData.y)) / @ctx.datasources.goalCyclingData.amount / 10) & '%':'No data 🥲'
+                    verticalAlign: center  
                   width: 130
                   height: 130
                 series:

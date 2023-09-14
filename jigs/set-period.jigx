@@ -1,0 +1,95 @@
+title: Set your period
+description: If your monthly goal is always the same, you can just edit your period here.
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1541625602330-2277a4c46182?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1740&q=80
+datasources:
+  goalDataCycling:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+      entities:
+        - default/goals-cycling
+      query: |
+        SELECT   
+          id
+          ,'$.activity-name'
+          ,'$.start'
+          ,'$.end'
+          ,'$.amount'
+        FROM [default/goals-cycling]
+        
+  goalDataRun:
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+      entities:
+        - default/goals-cycling
+      query: |
+        SELECT   
+          id
+          ,'$.activity-name'
+          ,'$.start'
+          ,'$.end'
+          ,'$.amount'
+        FROM [default/goals-run]
+
+children:
+  - type: component.form
+    instanceId: period
+    options:
+      children:
+        - type: component.field-row
+          options:
+            children:
+              - type: component.date-picker
+                instanceId: start
+                options:
+                  label: Start date
+                  initialValue: 2023-08-01
+                  format: LL
+              - type: component.date-picker
+                instanceId: end
+                options:
+                  label: End date
+                  initialValue: 2023-08-31
+                  format: LL
+        
+actions:
+  - children:
+    - type: action.action-list
+      options:
+        title: Update period
+        isSequential: true
+        actions:
+          - type: action.execute-entity
+            options:
+              provider: DATA_PROVIDER_DYNAMIC
+              entity: default/goals-cycling
+              method: update
+              data:
+                id: =@ctx.datasources.goalDataCycling.id
+                start: =@ctx.components.start.state.value
+                end: =@ctx.components.end.state.value
+              
+          - type: action.execute-entity
+            options:
+              provider: DATA_PROVIDER_DYNAMIC
+              entity: default/goals-run
+              method: update
+              data:
+                id: =@ctx.datasources.goalDataRun.id
+                start: =@ctx.components.start.state.value
+                end: =@ctx.components.end.state.value
+              onSuccess: 
+                title: Data succesfully updated
+              goBack: previous
+              

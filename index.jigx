@@ -42,3 +42,15 @@ stories:
 assets:
   images:
     - https://plus.unsplash.com/premium_photo-1674605376169-bf229a108e73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
+  theme:
+    palette:
+      light:
+        # color9: 
+        #   background: '#D1CBFF'
+        #   onBackground: '#342F5C'
+        # primary: 
+        #   background: '#D1CBFF'
+        #   onBackground: '#342F5C'
+        secondary: 
+          background: '#FFE99D'
+          onBackground: '#595031'
