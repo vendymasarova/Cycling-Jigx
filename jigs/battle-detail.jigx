@@ -1,0 +1,86 @@
+title: =@ctx.datasources.battle-dynamic.name
+description: =@ctx.datasources.battle-dynamic.description
+type: jig.default
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://images.unsplash.com/photo-1606224547099-b15c94ca5ef2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3024&q=80
+
+datasources:
+  mydata: 
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          horizontalPadding: 20
+          verticalPadding: 16
+          activityName: Running
+          date: '01. 08. - 31. 08. 2023'
+          value: 213/250km
+          linkName: Update your goal
+          iconName: running
+          linkTo: goal-run
+          linkIcon: arrow-right 
+  battle-dynamic: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/battles
+  
+      query: |
+       SELECT 
+        id, 
+        '$.name',
+        '$.result_km',
+        '$.from',
+        '$.to',
+        '$.icon',
+        '$.description',
+        '$.battle_id',
+        '$.aim_km',
+        '$.friends'
+        FROM [default/battles] WHERE id = @battleId
+        ORDER BY '$.aim_km'
+      queryParameters:
+        battleId: =@ctx.jig.inputs.battle
+
+children:
+  - type: component.custom-component
+    componentId: goal-card-custom
+    inputs:
+      horizontalPadding: =@ctx.datasources.mydata.horizontalPadding
+      verticalPadding: =@ctx.datasources.mydata.verticalPadding
+      activityName: =@ctx.datasources.battle-dynamic.name
+      # date:  ''
+      value: =@ctx.datasources.battle-dynamic.result_km
+      linkName: ''
+      iconName: ''
+      # linkIcon: synchronize-arrows
+      # pieChartData: =[{"y":@ctx.datasources.battle-dynamic.result_km}, {"y":100 - @ctx.datasources.battle-dynamic.result_km}]
+      pieChartText: =j(@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100 & ' %'
+      pieChartData: =[{"y":(@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100, "color":"color3"}, {"y":100 - (@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100, "color":"transparent"}]
+      battle: 1
+      id: =@ctx.datasources.battle-dynamic.id
+  - type: component.list
+    options:
+      maximumItemsToRender: 8
+      data: =$eval(@ctx.datasources.battle-dynamic.friends)
+      item:
+        type: component.list-item
+        options:
+          divider: solid
+          title: =@ctx.current.item.name & @ctx.current.item.surname
+          description: =@ctx.current.item.result_km & ' km'
+          leftElement:
+            element: avatar
+            text: =@ctx.current.item.nickname
+            uri: =@ctx.current.item.image_url
+            # =@ctx.current.item.result_km / @ctx.datasources.battle-dynamic.aimkm

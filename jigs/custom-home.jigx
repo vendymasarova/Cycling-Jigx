@@ -29,6 +29,48 @@ datasources:
           date: '1. 8. - 31. 8. 2023'
           value: 213/250km
           linkName: Update your goal
+          
+  battle-card-data-static:
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          title: September 400 km
+          friendPhoto1: https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2960&q=80
+          friendPhoto2: https://images.unsplash.com/photo-1535713875002-d1d0cf377fde?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2960&q=80 
+          friendName: Julian
+          result: 1/5
+          aim: 270 / 400
+          daysLeft: 2
+        - id: 2
+          title: Weekend 100km!
+          friendPhoto1: https://images.unsplash.com/photo-1633332755192-727a05c4013d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2960&q=80
+          friendName: https://plus.unsplash.com/premium_photo-1684783848496-afeca1349af5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
+          result: 2/5
+          aim: 70 / 100
+          daysLeft: 1
+  battle-dynamic: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/battles
+  
+      query: |
+       SELECT 
+        id, 
+        '$.name',
+        '$.result_km',
+        '$.from',
+        '$.to',
+        '$.icon',
+        '$.description',
+        '$.battle_id',
+        '$.aim_km',
+        '$.friends'
+        FROM [default/battles] 
+        
 
 children:
   - type: component.custom-component
@@ -72,3 +114,28 @@ children:
         jigId: friends-list
       - size: "1x1"
         jigId: gallery
+      - size: "1x1"
+        jigId: battle-detail
+        
+  - type: component.custom-component
+    componentId: section
+    inputs:
+      title: Your battles
+          
+  - type: component.list
+    options:
+      isHorizontal: true
+      isHorizontalScrollIndicatorHidden: true
+      data: =@ctx.datasources.battle-dynamic
+      item: 
+        type: component.custom-component
+        componentId: battle-card-custom
+        inputs:
+          id: =@ctx.current.item.id
+          title: =@ctx.current.item.name
+          friendPhoto1: https://images.unsplash.com/photo-1606224547099-b15c94ca5ef2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3024&q=80
+          friendPhoto2: https://images.unsplash.com/photo-1606224547099-b15c94ca5ef2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3024&q=80
+          friendName: Jeremy
+          result: =@ctx.current.item.result_km & ' / ' & @ctx.current.item.aim_km
+          aim: =@ctx.current.item.result_km & ' / ' & @ctx.current.item.aim_km
+          daysLeft: 1
