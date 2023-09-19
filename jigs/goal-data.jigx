@@ -69,7 +69,7 @@ datasources:
           json_extract(data, '$.distance') as y
         FROM [allActivities] 
         WHERE '$.type' = 'Ride' AND '$.start_date' > @dateFrom AND '$.start_date' < @dateTo
-        ORDER BY x ASC
+        ORDER BY x ASC 
       queryParameters:
         dateFrom: =@ctx.datasources.goalCyclingData.start
         dateTo: =@ctx.datasources.goalCyclingData.end
@@ -151,6 +151,8 @@ children:
             - data: =@ctx.datasources.activityData
               name: Cycling
               color: color9
+              
+              
 
 widgets:
   "4x2": 

@@ -62,7 +62,7 @@ children:
                                     children:
                                       - type: component.icon
                                         options:
-                                          icon: running
+                                          icon: =@ctx.inputs.icon
                                           size: regular
                                       - type: component.text
                                         options:

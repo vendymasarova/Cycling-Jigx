@@ -36,19 +36,44 @@ datasources:
         - default/battles
   
       query: |
+        SELECT 
+          id, 
+          json_extract(data, '$.name') AS name,
+          json_extract(data, '$.result_km') AS result_km,
+          json_extract(data, '$.from') AS start,
+          json_extract(data, '$.icon') AS icon,
+          json_extract(data, '$.description') AS description,
+          json_extract(data, '$.battle_id') AS battle_id,
+          json_extract(data, '$.aim_km') AS aim_km,
+          json_extract(data, '$.friends') AS friends,
+          json_extract(data, '$.icon') AS icon,
+          json_extract(data, '$.unit') AS unit,
+          json_extract(data, '$.rank') AS rank,
+          json_array_length(json_extract(data, '$.friends')) AS num_friends 
+        FROM [default/battles] 
+        WHERE '$.battle_id' = @battleId
+        
+      queryParameters:
+        battleId: =@ctx.jig.inputs.battle
+  friends-dynamic: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_DYNAMIC
+  
+      entities:
+        - default/friends-battle
+  
+      query: |
        SELECT 
         id, 
         '$.name',
+        '$.surname',
         '$.result_km',
-        '$.from',
-        '$.to',
-        '$.icon',
-        '$.description',
         '$.battle_id',
-        '$.aim_km',
-        '$.friends'
-        FROM [default/battles] WHERE id = @battleId
-        ORDER BY '$.aim_km'
+        '$.image'
+        FROM [default/friends-battle]
+        WHERE '$.battle_id' = @battleId
+        ORDER BY '$.result_km'
       queryParameters:
         battleId: =@ctx.jig.inputs.battle
 
@@ -72,7 +97,7 @@ children:
   - type: component.list
     options:
       maximumItemsToRender: 8
-      data: =$eval(@ctx.datasources.battle-dynamic.friends)
+      data: =@ctx.datasources.friends-dynamic
       item:
         type: component.list-item
         options:
@@ -81,6 +106,6 @@ children:
           description: =@ctx.current.item.result_km & ' km'
           leftElement:
             element: avatar
-            text: =@ctx.current.item.nickname
-            uri: =@ctx.current.item.image_url
+            text: =@ctx.current.item.name
+            uri: =@ctx.current.item.image
             # =@ctx.current.item.result_km / @ctx.datasources.battle-dynamic.aimkm

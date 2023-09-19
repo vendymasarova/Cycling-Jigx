@@ -58,17 +58,20 @@ datasources:
         - default/battles
   
       query: |
-       SELECT 
-        id, 
-        '$.name',
-        '$.result_km',
-        '$.from',
-        '$.to',
-        '$.icon',
-        '$.description',
-        '$.battle_id',
-        '$.aim_km',
-        '$.friends'
+        SELECT 
+          id, 
+          json_extract(data, '$.name') AS name,
+          json_extract(data, '$.result_km') AS result_km,
+          json_extract(data, '$.from') AS start,
+          json_extract(data, '$.icon') AS icon,
+          json_extract(data, '$.description') AS description,
+          json_extract(data, '$.battle_id') AS battle_id,
+          json_extract(data, '$.aim_km') AS aim_km,
+          json_extract(data, '$.friends') AS friends,
+          json_extract(data, '$.icon') AS icon,
+          json_extract(data, '$.unit') AS unit,
+          json_extract(data, '$.rank') AS rank,
+          json_array_length(json_extract(data, '$.friends')) AS num_friends 
         FROM [default/battles] 
         
 
@@ -131,11 +134,12 @@ children:
         type: component.custom-component
         componentId: battle-card-custom
         inputs:
-          id: =@ctx.current.item.id
+          id: =@ctx.current.item.battle_id
+          icon: =@ctx.current.item.icon
           title: =@ctx.current.item.name
           friendPhoto1: https://images.unsplash.com/photo-1606224547099-b15c94ca5ef2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3024&q=80
           friendPhoto2: https://images.unsplash.com/photo-1606224547099-b15c94ca5ef2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3024&q=80
           friendName: Jeremy
-          result: =@ctx.current.item.result_km & ' / ' & @ctx.current.item.aim_km
-          aim: =@ctx.current.item.result_km & ' / ' & @ctx.current.item.aim_km
+          result: =@ctx.current.item.rank & ' /' &  @ctx.current.item.num_friends
+          aim: =@ctx.current.item.result_km & ' / ' & @ctx.current.item.aim_km & @ctx.current.item.unit
           daysLeft: 1
