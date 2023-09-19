@@ -39,7 +39,6 @@ datasources:
         ,'$.total_elevation_gain'
         FROM [runActivity] 
         WHERE '$.id' = @runId
-        
       queryParameters:
         runId: =@ctx.solution.state.run
         

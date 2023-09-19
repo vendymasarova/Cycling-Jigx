@@ -38,23 +38,24 @@ datasources:
       query: |
         SELECT 
           id, 
-          json_extract(data, '$.name') AS name,
-          json_extract(data, '$.result_km') AS result_km,
-          json_extract(data, '$.from') AS start,
-          json_extract(data, '$.icon') AS icon,
-          json_extract(data, '$.description') AS description,
-          json_extract(data, '$.battle_id') AS battle_id,
-          json_extract(data, '$.aim_km') AS aim_km,
-          json_extract(data, '$.friends') AS friends,
-          json_extract(data, '$.icon') AS icon,
-          json_extract(data, '$.unit') AS unit,
-          json_extract(data, '$.rank') AS rank,
-          json_array_length(json_extract(data, '$.friends')) AS num_friends 
+          '$.name',
+          '$.result_km',
+          '$.from',
+          '$.to',
+          '$.icon',
+          '$.description',
+          '$.battle_id',
+          '$.aim_km',
+          '$.friends',
+          '$.icon',
+          '$.unit',
+          '$.rank',
+          '$.friends'
         FROM [default/battles] 
         WHERE '$.battle_id' = @battleId
-        
       queryParameters:
         battleId: =@ctx.jig.inputs.battle
+        
   friends-dynamic: 
     type: datasource.sqlite
     options:
@@ -64,18 +65,19 @@ datasources:
         - default/friends-battle
   
       query: |
-       SELECT 
-        id, 
-        '$.name',
-        '$.surname',
-        '$.result_km',
-        '$.battle_id',
-        '$.image'
+        SELECT 
+          id, 
+          '$.name',
+          '$.surname',
+          '$.battle_id',
+          '$.result_km',
+          '$.image'
         FROM [default/friends-battle]
         WHERE '$.battle_id' = @battleId
-        ORDER BY '$.result_km'
+        ORDER BY result_km DESC;
       queryParameters:
         battleId: =@ctx.jig.inputs.battle
+      
 
 children:
   - type: component.custom-component
@@ -83,16 +85,12 @@ children:
     inputs:
       horizontalPadding: =@ctx.datasources.mydata.horizontalPadding
       verticalPadding: =@ctx.datasources.mydata.verticalPadding
-      activityName: =@ctx.datasources.battle-dynamic.name
-      # date:  ''
+      activityName: =$fromMillis($toMillis(@ctx.datasources.battle-dynamic.from), '[D]. [M]. [Y]') & '-' & $fromMillis($toMillis(@ctx.datasources.battle-dynamic.to), '[D]. [M]. [Y]') 
       value: =@ctx.datasources.battle-dynamic.result_km
       linkName: ''
       iconName: ''
-      # linkIcon: synchronize-arrows
-      # pieChartData: =[{"y":@ctx.datasources.battle-dynamic.result_km}, {"y":100 - @ctx.datasources.battle-dynamic.result_km}]
-      pieChartText: =j(@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100 & ' %'
+      pieChartText: =$floor((@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100) & ' %'
       pieChartData: =[{"y":(@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100, "color":"color3"}, {"y":100 - (@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100, "color":"transparent"}]
-      battle: 1
       id: =@ctx.datasources.battle-dynamic.id
   - type: component.list
     options:
@@ -102,7 +100,7 @@ children:
         type: component.list-item
         options:
           divider: solid
-          title: =@ctx.current.item.name & @ctx.current.item.surname
+          title: =@ctx.current.item.name & ' ' & @ctx.current.item.surname
           description: =@ctx.current.item.result_km & ' km'
           leftElement:
             element: avatar
