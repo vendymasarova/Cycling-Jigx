@@ -123,9 +123,11 @@ children:
         jigId: battle-detail
         
   - type: component.custom-component
-    componentId: section
+    componentId: section1
     inputs:
-      title: Your battles
+      title: Your active battles
+      link: all-battles
+      link-name: Show all
           
   - type: component.list
     options:
@@ -136,6 +138,7 @@ children:
         type: component.custom-component
         componentId: battle-card-custom
         inputs:
+          to: =@ctx.current.item.to
           id: =@ctx.current.item.battle_id
           icon: =@ctx.current.item.icon
           title: =@ctx.current.item.name

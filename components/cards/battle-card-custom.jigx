@@ -10,6 +10,7 @@ children:
           right: small
       children:
         - type: component.card
+          when: =$number($number($fromMillis($toMillis(@ctx.inputs.to), '[D]')) - $number($fromMillis($toMillis($now()), '[D]'))) <= 0 ? false:true
           options:
             direction: row
             children: 
