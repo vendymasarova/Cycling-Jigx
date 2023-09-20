@@ -48,7 +48,7 @@ datasources:
           friendName: https://plus.unsplash.com/premium_photo-1684783848496-afeca1349af5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
           result: 2/5
           aim: 70 / 100
-          daysLeft: 1
+          daysLeft: ''
           
   battle-dynamic: 
     type: datasource.sqlite
@@ -64,6 +64,7 @@ datasources:
           '$.name',
           '$.result_km',
           '$.from',
+          '$.to',
           '$.icon',
           '$.description',
           '$.battle_id',
@@ -74,7 +75,7 @@ datasources:
           '$.rank',
           json_array_length(json_extract(data, '$.friends')) AS num_friends 
         FROM [default/battles] 
-        ORDER BY '$.battle_id'
+        ORDER BY '$.from'
 
 children:
   - type: component.custom-component
@@ -143,4 +144,4 @@ children:
           friendName: Jeremy
           result: =@ctx.current.item.rank & ' /' &  @ctx.current.item.num_friends
           aim: =@ctx.current.item.result_km & ' / ' & @ctx.current.item.aim_km & @ctx.current.item.unit
-          daysLeft: 1
+          daysLeft: =$number($fromMillis($toMillis(@ctx.current.item.to), '[D]')) - $number($fromMillis($toMillis($now()), '[D]'))

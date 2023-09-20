@@ -10,7 +10,7 @@ header:
       type: component.image
       options:
         source:
-          uri: https://images.unsplash.com/photo-1606224547099-b15c94ca5ef2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3024&q=80
+          uri: =@ctx.datasources.battle-dynamic.image
 
 datasources:
   mydata: 
@@ -23,10 +23,12 @@ datasources:
           activityName: Running
           date: '01. 08. - 31. 08. 2023'
           value: 213/250km
-          linkName: Update your goal
+          linkName: ''
           iconName: running
           linkTo: goal-run
           linkIcon: arrow-right 
+          linkBeforeText: 'Ends in'
+          linkAfterText: days
   battle-dynamic: 
     type: datasource.sqlite
     options:
@@ -50,7 +52,9 @@ datasources:
           '$.icon',
           '$.unit',
           '$.rank',
-          '$.friends'
+          '$.friends',
+          '$.image',
+          '$.activity_type'
         FROM [default/battles] 
         WHERE '$.battle_id' = @battleId
       queryParameters:
@@ -85,10 +89,11 @@ children:
     inputs:
       horizontalPadding: =@ctx.datasources.mydata.horizontalPadding
       verticalPadding: =@ctx.datasources.mydata.verticalPadding
-      activityName: =$fromMillis($toMillis(@ctx.datasources.battle-dynamic.from), '[D]. [M]. [Y]') & '-' & $fromMillis($toMillis(@ctx.datasources.battle-dynamic.to), '[D]. [M]. [Y]') 
-      value: =@ctx.datasources.battle-dynamic.result_km
-      linkName: ''
-      iconName: ''
+      activityName: =@ctx.datasources.battle-dynamic.activity_type
+      date: =$fromMillis($toMillis(@ctx.datasources.battle-dynamic.from), '[D]. [M]. [Y]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.battle-dynamic.to), '[D]. [M]. [Y]') 
+      value: =@ctx.datasources.battle-dynamic.result_km & ' / ' & @ctx.datasources.battle-dynamic.aim_km & @ctx.datasources.battle-dynamic.unit
+      linkName: =$number($fromMillis($toMillis(@ctx.datasources.battle-dynamic.to), '[D]')) - $number($fromMillis($toMillis($now()), '[D]')) & ' days till end'
+      iconName: =@ctx.datasources.battle-dynamic.icon
       pieChartText: =$floor((@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100) & ' %'
       pieChartData: =[{"y":(@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100, "color":"color3"}, {"y":100 - (@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100, "color":"transparent"}]
       id: =@ctx.datasources.battle-dynamic.id
