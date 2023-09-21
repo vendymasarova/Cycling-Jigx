@@ -92,7 +92,7 @@ children:
       activityName: =@ctx.datasources.battle-dynamic.activity_type
       date: =$fromMillis($toMillis(@ctx.datasources.battle-dynamic.from), '[D]. [M]. [Y]') & ' - ' & $fromMillis($toMillis(@ctx.datasources.battle-dynamic.to), '[D]. [M]. [Y]') 
       value: =@ctx.datasources.battle-dynamic.result_km & ' / ' & @ctx.datasources.battle-dynamic.aim_km & @ctx.datasources.battle-dynamic.unit
-      linkName: =$number($fromMillis($toMillis(@ctx.datasources.battle-dynamic.to), '[D]')) - $number($fromMillis($toMillis($now()), '[D]')) & ' days till end'
+      linkName: =$number($fromMillis($toMillis(@ctx.datasources.battle-dynamic.to), '[D]')) - $number($fromMillis($toMillis($now()), '[D]')) < 0 ? '':$number($fromMillis($toMillis(@ctx.datasources.battle-dynamic.to), '[D]')) - $number($fromMillis($toMillis($now()), '[D]')) & ' days till end'
       iconName: =@ctx.datasources.battle-dynamic.icon
       pieChartText: =$floor((@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100) & ' %'
       pieChartData: =[{"y":(@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100, "color":"color3"}, {"y":100 - (@ctx.datasources.battle-dynamic.result_km / @ctx.datasources.battle-dynamic.aim_km) * 100, "color":"transparent"}]
@@ -105,6 +105,10 @@ children:
         type: component.list-item
         options:
           divider: solid
+          progress: =@ctx.current.item.name = 'Vendy' ? 1 :0
+          color:
+            - when: =@ctx.current.item.name = 'Vendy' ? true :false
+              color: color9
           title: =@ctx.current.item.name & ' ' & @ctx.current.item.surname
           description: =@ctx.current.item.result_km & ' km'
           leftElement:
@@ -112,3 +116,5 @@ children:
             text: =@ctx.current.item.name
             uri: =@ctx.current.item.image
             # =@ctx.current.item.result_km / @ctx.datasources.battle-dynamic.aimkm
+            
+  

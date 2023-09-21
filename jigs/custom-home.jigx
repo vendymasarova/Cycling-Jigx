@@ -11,6 +11,7 @@ datasources:
           welcomeMessage: 'Hi,'
           name: Wendy
           date: It's
+          isShownall: false
   goal-card-data-static:
     type: datasource.static
     options:
@@ -128,7 +129,8 @@ children:
       title: Your active battles
       link: all-battles
       link-name: Show all
-          
+      
+      
   - type: component.list
     options:
       isHorizontal: true
@@ -138,6 +140,7 @@ children:
         type: component.custom-component
         componentId: battle-card-custom
         inputs:
+          isShownall: =@ctx.datasources.mydata.isShownall
           to: =@ctx.current.item.to
           id: =@ctx.current.item.battle_id
           icon: =@ctx.current.item.icon
