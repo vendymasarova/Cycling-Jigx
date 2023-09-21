@@ -21,8 +21,6 @@ widgets:
     jigId: statistics
   - size: "1x1"
     jigId: other-activities-composite
-  - size: 1x1
-    jigId: friends-list
   - size: "1x1"
     jigId: gallery
 

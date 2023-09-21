@@ -115,6 +115,12 @@ children:
             element: avatar
             text: =@ctx.current.item.name
             uri: =@ctx.current.item.image
+          onPress: 
+            type: action.go-to
+            options:
+              linkTo: friends-details
+              parameters:
+                friend: =@ctx.current.item.id
             # =@ctx.current.item.result_km / @ctx.datasources.battle-dynamic.aimkm
             
   
