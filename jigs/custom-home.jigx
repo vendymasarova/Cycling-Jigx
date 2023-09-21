@@ -121,7 +121,7 @@ children:
       - size: "1x1"
         jigId: gallery
       - size: "1x1"
-        jigId: battle-detail
+        jigId: calendar
         
   - type: component.custom-component
     componentId: section1

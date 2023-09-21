@@ -1,0 +1,36 @@
+title: Calendar
+type: jig.calendar
+icon: calendar
+
+datasources:
+  mydata: 
+    type: datasource.sqlite
+    options:
+      provider: DATA_PROVIDER_LOCAL
+  
+      entities:
+        - entity: allActivities
+  
+      query: 
+        SELECT 
+        '$.id',
+        '$.name',
+        '$.start_date',
+        '$.type'
+        FROM [allActivities] 
+        
+data: =@ctx.datasources.mydata
+item:
+  type: component.event
+  options:
+    from: =@ctx.current.item.start_date
+    to: =@ctx.current.item.start_date
+    title: =@ctx.current.item.name
+    description: =@ctx.current.item.type
+    tags: =@ctx.current.item.type
+    onButtonPress: 
+      type: action.go-to
+      options:
+        title:  =@ctx.current.item.type = 'Ride' ? 'All cycling activities':@ctx.current.item.type = 'All running activities' ? 'run-activities-composite':'See activities'
+        linkTo: =@ctx.current.item.type = 'Ride' ? 'cycling-activities-composite':@ctx.current.item.type = 'Run' ? 'run-activities-composite':'other-activities-composite'
+          
