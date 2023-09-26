@@ -29,42 +29,6 @@ children:
                       isMultiline: true
                       label: =@ctx.current.item.description
                       
-                      
-  # - type: component.expander
-  #   options:
-  #     header:
-  #       centerElement: 
-  #         type: component.titles
-  #         options:
-  #           title: Motivation
-  
-  #     children:
-  #       - type: component.entity
-  #         options:
-  #           children:
-  #             - type: component.entity-field
-  #               options:
-  #                 label: =@ctx.datasources.story-static.title[1]
-  #                 value: =@ctx.datasources.story-static.description[1]
-  # - type: component.list
-  #   instanceId: list
-  #   options:
-  #     maximumItemsToRender: 8
-  #     data: =@ctx.datasources.story-static
-  #     item:
-  #       type: component.list-item
-  #       options:
-  #         title: =@ctx.current.item.title
-  #         description: =@ctx.current.item.description
-  #         leftElement: 
-  #           element: image
-  #           text: ''
-  #           uri: =@ctx.current.item.image
-          # leftElement:
-          #   element: progress
-          #   title: Title
-          #   value: =$number($ceil($sum(@ctx.datasources.training-data-dynamic.distance) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100)) / 100
-
 stories:
   type: component.story-group
   options:

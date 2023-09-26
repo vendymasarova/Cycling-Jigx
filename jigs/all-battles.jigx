@@ -10,7 +10,7 @@ header:
       type: component.image
       options:
         source:
-          uri: https://builder.jigx.com/assets/images/header.jpg
+          uri: https://images.unsplash.com/photo-1452573992436-6d508f200b30?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2946&q=80
 
 datasources:
   battle-dynamic: 

@@ -73,16 +73,17 @@ datasources:
           id, 
           '$.name',
           '$.surname',
-          '$.battle_id',
+          CAST(json_extract(data, '$.battle_id') AS STRING) as battle_id,
           '$.result_km',
-          '$.image'
+          '$.image',
+          '$.activities'
         FROM [default/friends-battle]
         WHERE '$.battle_id' = @battleId
         ORDER BY result_km DESC;
       queryParameters:
         battleId: =@ctx.jig.inputs.battle
       
-
+      
 children:
   - type: component.custom-component
     componentId: goal-card-custom
@@ -110,7 +111,7 @@ children:
             - when: =@ctx.current.item.name = 'Vendy' ? true :false
               color: color9
           title: =@ctx.current.item.name & ' ' & @ctx.current.item.surname
-          description: =@ctx.current.item.result_km & ' km'
+          description: =$sum($eval(@ctx.current.item.activities).result_km) & ' km'
           leftElement:
             element: avatar
             text: =@ctx.current.item.name
@@ -118,9 +119,8 @@ children:
           onPress: 
             type: action.go-to
             options:
-              linkTo: friends-details
+              linkTo: =@ctx.current.item.name != 'Vendy' ? 'friends-details':'custom-home'
               parameters:
                 friend: =@ctx.current.item.id
-            # =@ctx.current.item.result_km / @ctx.datasources.battle-dynamic.aimkm
             
   

@@ -1,5 +1,4 @@
-title: ' '
-
+title: =@ctx.datasources.friendData.name & ' ' & @ctx.datasources.friendData.surname
 type: jig.default
 
 header:
@@ -44,14 +43,6 @@ datasources:
 children:
   - type: component.section
     options:
-      title: Info
-      children:
-        - type: component.avatar
-          options:
-            title: =@ctx.datasources.friendData.name
-            uri: =@ctx.datasources.friendData.image
-  - type: component.section
-    options:
       title: Activities
       children:
         - type: component.list
@@ -59,7 +50,19 @@ children:
             data: =$eval(@ctx.datasources.friendData.activities)
             maximumItemsToRender: 8
             item: 
-              type: component.list-item
-              options:
+              type: component.custom-component
+              componentId: activity-friends-card
+              inputs:
+                icon: =@ctx.current.item.icon
                 title: =@ctx.current.item.title
-                description: =@ctx.current.item.result_km
+                mainValue: =@ctx.current.item.activity_type != 'WeightTraining' ? @ctx.current.item.result_km & ' km':@ctx.current.item.moving_time & ' h'
+                value1: =@ctx.current.item.activity_type != 'WeightTraining' ? @ctx.current.item.moving_time:'' 
+                value2: =@ctx.current.item.activity_type = 'WeightTraining' ? @ctx.current.item.heart_rate:@ctx.current.item.activity_type = 'Cycling' ? @ctx.current.item.average_speed:@ctx.current.item.average_pace
+                type: =@ctx.current.item.activity_type
+              # # type: component.list-item
+              # # options:
+              # #   title: =@ctx.current.item.title
+              # #   description: =@ctx.current.item.activity_type != 'WeightTraining' ? @ctx.current.item.result_km:''
+              # #   leftElement: 
+              # #     element: icon
+              # #     icon: =@ctx.current.item.icon

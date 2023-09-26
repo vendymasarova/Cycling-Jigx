@@ -6,8 +6,10 @@ children:
       style:
         flex: 
           shrink: 1
+          grow: 1
         gap: medium
         margin: 
+          bottom: small
           right: small
       children:
         - type: component.card

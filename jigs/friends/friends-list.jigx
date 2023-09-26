@@ -28,17 +28,16 @@ datasources:
       provider: DATA_PROVIDER_DYNAMIC
   
       entities:
-        - default/friends
+        - default/friends-battle
   
       query: |
         SELECT
           id
-          ,'$.firstName'
-          ,'$.lastName'
-          ,'$.picture'
-          ,'$.statistics'
-        FROM [default/friends] 
-        WHERE '$.firstName' LIKE '%'||@friendQ||'%' OR @friendQ IS NULL
+          ,'$.name'
+          ,'$.surname'
+          ,'$.image'
+        FROM [default/friends-battle] 
+        WHERE '$.firstName' LIKE '%'||@friendQ||'%' OR @friendQ IS NULL AND '$.name' != 'Vendy'
       queryParameters:
         friendQ: =@ctx.jig.state.searchText
 
@@ -46,13 +45,14 @@ data: =@ctx.datasources.friendsData
 item:
   type: component.list-item
   options:
-    title: =@ctx.current.item.firstName & ' ' & @ctx.current.item.lastName
-    subtitle: =@ctx.current.item.statistics & '%'
-    horizontalItemSize: regular
+    title: =@ctx.current.item.name & ' ' & @ctx.current.item.surname
     leftElement: 
       element: avatar
       text: ''
-      uri: =@ctx.current.item.picture
+      uri: =@ctx.current.item.image
+    rightElement: 
+      element: icon
+      icon: arrow-right
     onPress: 
       type: action.go-to
       options:
@@ -67,7 +67,7 @@ item:
             type: action.execute-entity
             options:
               provider: DATA_PROVIDER_DYNAMIC
-              entity: default/friends
+              entity: default/friends-battle
               method: delete
               data: 
                 id: =@ctx.current.item.id

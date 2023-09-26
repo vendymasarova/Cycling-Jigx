@@ -9,14 +9,10 @@ home:
 widgets:
   - size: 4x2 
     jigId: user-data
-  # - size: 4x2 
-  #   jigId: traning-composite
   - size: "2x4"
     jigId: cycling-activities-composite
   - size: "2x2"
     jigId: run-activities-composite
-  # - size: "2x2"
-  #   jigId: activities-composite
   - size: 4x2 
     jigId: statistics
   - size: "1x1"
@@ -46,12 +42,15 @@ assets:
   theme:
     palette:
       light:
-        # color9: 
-        #   background: '#D1CBFF'
-        #   onBackground: '#342F5C'
-        # primary: 
-        #   background: '#D1CBFF'
-        #   onBackground: '#342F5C'
         secondary: 
           background: '#FFE99D'
           onBackground: '#595031'
+        color3:
+          background: "#FFE99D"
+          onBackground: "#595031"
+        color11:
+          background: "#D1CBFF"
+          onBackground: "#342F5C"
+        color10: 
+          background: '#C7F4C3'
+          onBackground: '#3E5B3C'
