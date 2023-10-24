@@ -56,13 +56,9 @@ assets:
           onBackground: '#3E5B3C'
   icons:
     - arrow-right # auto-generated
-    - building-modern-1-building # auto-generated
     - calendar # auto-generated
-    - car-3 # auto-generated
     - check # auto-generated
     - contact # auto-generated
-    - desktop-computer-1-computers # auto-generated
-    - home-improvement-1-building # auto-generated
     - location # auto-generated
     - party-beer-cheers # auto-generated
     - pencil-2 # auto-generated
