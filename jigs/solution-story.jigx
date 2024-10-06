@@ -33,7 +33,7 @@ stories:
   type: component.story-group
   options:
     data: =@ctx.datasources.story-static
-    groupName: Account News
+    # groupName: Account
     item: 
       type: component.image
       options:

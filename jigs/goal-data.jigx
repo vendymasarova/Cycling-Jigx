@@ -178,7 +178,7 @@ widgets:
                     description: your succes
                     color: =$floor(($sum(@ctx.datasources.activityData.y) / 1000) / @ctx.datasources.goal-data-cycling-dynamic.amount * 100) = 100 ? color3:color2
                       
-                legend:
+                legend: 
                   isHidden: false
 
         - type: widget.value

@@ -4,6 +4,7 @@ type: jig.list
 icon: contact 
 isHorizontal: true
 isHorizontalScrollIndicatorHidden: false
+
     
 header:
   type: component.jig-header
@@ -43,10 +44,12 @@ item:
   options:
     title: =@ctx.current.item.name
     subtitle: =$fromMillis($toMillis(@ctx.current.item.start_date), '[D1o] [MNn] [Y]')
-    progress: =@ctx.current.item.id = @ctx.solution.state.runActivityId ? 1 :0
-    color:
-      - when: =@ctx.current.item.id = @ctx.solution.state.runActivityId ? true :false
-        color: color9
+    progress: 
+    
+    # progress: =@ctx.current.item.id = @ctx.solution.state.runActivityId ? 1 :0
+    # color:
+    #   - when: =@ctx.current.item.id = @ctx.solution.state.runActivityId ? true :false
+    #     color: color9
     horizontalItemSize: large
     onPress: 
       type: action.action-list

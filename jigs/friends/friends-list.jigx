@@ -37,7 +37,7 @@ datasources:
           ,'$.surname'
           ,'$.image'
         FROM [default/friends-battle] 
-        WHERE '$.firstName' LIKE '%'||@friendQ||'%' OR @friendQ IS NULL AND '$.name' != 'Vendy'
+        WHERE '$.name' LIKE '%'||@friendQ||'%' OR @friendQ IS NULL AND '$.name' != 'Vendy'
       queryParameters:
         friendQ: =@ctx.jig.state.searchText
 
@@ -46,6 +46,8 @@ item:
   type: component.list-item
   options:
     title: =@ctx.current.item.name & ' ' & @ctx.current.item.surname
+    avatars:
+      '=@ctx.datasources.friendsData.{"text": name, "uri": image}[]'
     leftElement: 
       element: avatar
       text: ''

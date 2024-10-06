@@ -1,0 +1,18 @@
+# Assets are cached on solution load and will be available offline.
+# This file is auto populated with icons we detect in the solution.
+# You can manually add additional icons.
+# An array list of icon names is expected.
+
+icons:
+  - arrow-right # auto-generated
+  - calendar # auto-generated
+  - check # auto-generated
+  - contact # auto-generated
+  - location # auto-generated
+  - party-beer-cheers # auto-generated
+  - pencil # auto-generated
+  - pencil-2 # auto-generated
+  - pie-line-graph # auto-generated
+  - running # auto-generated
+  - synchronize-arrows-1 # auto-generated
+  - workout # auto-generated

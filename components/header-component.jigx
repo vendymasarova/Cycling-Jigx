@@ -75,7 +75,7 @@ children:
                     - type: component.icon
                       options:
                         icon: pencil-2
-                        color: color9
+                        color: color1 
                         shape: circle
                         type: duotone
                         size: small

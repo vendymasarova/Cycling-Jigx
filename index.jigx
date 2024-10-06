@@ -5,10 +5,11 @@ category: business
 home:
   - instanceId: home
     jigId: custom-home
+    
   
 widgets:
   - size: 4x2 
-    jigId: user-data
+    jigId: goal-data
   - size: "2x4"
     jigId: cycling-activities-composite
   - size: "2x2"
@@ -19,50 +20,32 @@ widgets:
     jigId: other-activities-composite
   - size: "1x1"
     jigId: gallery
+  - size: "2x4"
+    jigId: test
+  - size: "1x1"
+    jigId: list
 
 onLoad: 
-  type: action.sync-entities
+  type: action.action-list
   options:
-    provider: DATA_PROVIDER_REST
-    entities:
-      - entity: allActivities
-        function: rest-get-activities
-        functionParameters:
-          accessToken: stravaoauth
+    isSequential: true
+    actions:
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_REST
+          entities:
+            - entity: allActivities
+              function: rest-get-activities
+              functionParameters:
+                accessToken: stravaoauth
+      - type: action.sync-entities
+        options:
+          provider: DATA_PROVIDER_REST
+          entities:
+            - entity: athlete
+              function: rest-get-athlete
+              functionParameters:
+                accessToken: stravaoauth
 stories: 
+  - test
   - solution-story
-
-
-assets:
-  images:
-    - https://plus.unsplash.com/premium_photo-1674605376169-bf229a108e73?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
-    - https://images.unsplash.com/photo-1551818176-60579e574b91?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
-    - https://images.unsplash.com/photo-1532985716028-255a31586f6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=3138&q=80
-    - https://plus.unsplash.com/premium_photo-1670002497780-2e923d999215?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2940&q=80
-  theme:
-    palette:
-      light:
-        secondary: 
-          background: '#FFE99D'
-          onBackground: '#595031'
-        color3:
-          background: "#FFE99D"
-          onBackground: "#595031"
-        color11:
-          background: "#D1CBFF"
-          onBackground: "#342F5C"
-        color10: 
-          background: '#C7F4C3'
-          onBackground: '#3E5B3C'
-  icons:
-    - arrow-right # auto-generated
-    - calendar # auto-generated
-    - check # auto-generated
-    - contact # auto-generated
-    - location # auto-generated
-    - party-beer-cheers # auto-generated
-    - pencil-2 # auto-generated
-    - pie-line-graph # auto-generated
-    - running # auto-generated
-    - synchronize-arrows-1 # auto-generated
-    - workout # auto-generated

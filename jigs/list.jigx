@@ -1,0 +1,39 @@
+title: Name
+description: Description of your Jig
+type: jig.list
+icon: contact
+isSelectable: true
+
+header:
+  type: component.jig-header
+  options:
+    height: medium
+    children:
+      type: component.image
+      options:
+        source:
+          uri: https://builder.jigx.com/assets/images/header.jpg
+          
+          
+actions:
+  - children:
+      - type: action.go-back
+        options:
+          title: go back
+
+datasources:
+  mydata: 
+    type: datasource.static
+    options:
+      data:
+        - id: 1
+          field1: heeloo
+        - id: 2
+          field1: cuus
+
+data: =@ctx.datasources.mydata
+item:
+  type: component.list-item
+  options:
+    title: =@ctx.current.item.field1
+    subtitle: =@ctx.current.item.field1
